@@ -90,6 +90,45 @@ export default function HomePageExperience({ children }: HomePageExperienceProps
           }
         });
 
+        media.add("(min-width: 1200px)", () => {
+          const panelWrap = content.querySelector<HTMLElement>(".tp-funfact-panel-wrap");
+          const funFactPanels = gsap.utils.toArray<HTMLElement>(".tp-funfact-panel", content);
+
+          if (panelWrap && funFactPanels.length > 0) {
+            gsap.to(funFactPanels, {
+              xPercent: -100 * (funFactPanels.length - 1),
+              ease: "none",
+              scrollTrigger: {
+                trigger: panelWrap,
+                start: "top 70px",
+                pin: true,
+                scrub: 1,
+                end: () => `+=${panelWrap.clientWidth}`,
+              },
+            });
+          }
+        });
+
+        media.add("(min-width: 991px)", () => {
+          const teamArea = content.querySelector<HTMLElement>(".studio-team-area");
+          const teamTitle = teamArea?.querySelector<HTMLElement>(".studio-team-title-box");
+
+          if (teamArea && teamTitle) {
+            gsap.to(teamArea, {
+              scrollTrigger: {
+                trigger: teamArea,
+                pin: teamTitle,
+                scrub: 1,
+                start: "top 17%",
+                end: "bottom 90%",
+                endTrigger: teamArea,
+                pinSpacing: false,
+                markers: false,
+              },
+            });
+          }
+        });
+
         media.add("(min-width: 767px)", () => {
           const projectThumbs = gsap.utils.toArray<HTMLImageElement>(".studio-project-thumb img", content);
           const projectFrames = gsap.utils.toArray<HTMLElement>(".studio-project-thumb", content);
@@ -160,6 +199,31 @@ export default function HomePageExperience({ children }: HomePageExperienceProps
               : undefined,
           });
         });
+
+        const bounceItems = gsap.utils.toArray<HTMLElement>(".tp-text-bounce", content);
+
+        if (bounceItems.length > 0) {
+          gsap.set(bounceItems, { y: 100, opacity: 0 });
+
+          bounceItems.forEach((item) => {
+            const trigger = item.closest<HTMLElement>(".tp-text-bounce-trigger");
+
+            if (!trigger) return;
+
+            gsap.to(item, {
+              y: 0,
+              opacity: 1,
+              duration: 1,
+              delay: item.dataset.delay ? Number.parseFloat(item.dataset.delay) : 0.15,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger,
+                start: "top center",
+                markers: false,
+              },
+            });
+          });
+        }
       }, content);
 
       ScrollTrigger.refresh();

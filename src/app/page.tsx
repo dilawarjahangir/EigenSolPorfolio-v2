@@ -1,6 +1,8 @@
 import CreativeProjectsSection, {
   CreativeProjectsCursor,
 } from "@/components/CreativeProjectsSection";
+import CreativeTeamSection from "@/components/CreativeTeamSection";
+import FunFactsSection from "@/components/FunFactsSection";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import HomePageExperience from "@/components/HomePageExperience";
@@ -19,6 +21,8 @@ export default function Home() {
           <ServicesSection />
           <VideoSection />
           <CreativeProjectsSection />
+          <FunFactsSection />
+          <CreativeTeamSection />
         </main>
       </HomePageExperience>
       <CreativeProjectsCursor />

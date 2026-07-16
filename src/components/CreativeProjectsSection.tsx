@@ -164,7 +164,7 @@ export default function CreativeProjectsSection() {
             ctaHref="/case-studies"
           />
 
-          <div className={`${styles.projectWrap} studio-project-wrap`}>
+          <div className="studio-project-wrap">
             {projects.map((project) => (
               <article className={`${styles.projectItem} studio-project-item`} key={project.number}>
                 <div className={styles.row}>

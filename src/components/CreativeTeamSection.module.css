@@ -1,0 +1,309 @@
+.area {
+  margin-bottom: 60px;
+  color: #0e0f11;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.headingRow {
+  justify-content: center;
+}
+
+.titleBox {
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 20px;
+  color: #ff4851;
+  font-family: "ClashDisplay-Bold", serif;
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 0.79;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.firstTitleWord,
+.secondTitleWord {
+  display: inline;
+}
+
+.titleLine,
+.memberTitleLine {
+  display: inline-block;
+  transform: scaleX(0.96);
+  transform-origin: center;
+}
+
+.titleBox p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transform: scaleX(0.96);
+  transform-origin: center;
+}
+
+.teamWrap {
+  position: relative;
+  z-index: 5;
+}
+
+.thumbWrap {
+  position: relative;
+}
+
+.thumb {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 120px;
+  overflow: hidden;
+  transition: 0.4s ease-in-out;
+}
+
+.thumb::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(14, 15, 17, 0) 0%, #0e0f11 100%);
+  content: "";
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.4s;
+}
+
+.thumb img {
+  display: block;
+  width: 340px;
+  height: auto;
+  transition: 0.6s;
+}
+
+.memberContent {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 22;
+  margin: 30px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s ease-in-out;
+}
+
+.memberContent h3 {
+  margin: 0;
+  color: #f9f4e8;
+  font-family: "ClashDisplay-Semibold", serif;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.memberContent span {
+  color: #f9f4e8;
+  font-family: "ClashDisplay-Semibold", serif;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.thumb:hover {
+  border-radius: 300px;
+  transform: rotate(2deg);
+}
+
+.thumb:hover img {
+  border-radius: 300px;
+}
+
+.thumb:hover::after,
+.thumb:hover .memberContent {
+  opacity: 1;
+  visibility: visible;
+}
+
+.thumbTwo {
+  margin-left: 0;
+}
+
+.thumbFour {
+  margin-right: 0;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+
+  .teamColumn {
+    width: 50%;
+  }
+
+  .title {
+    font-size: 125px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+
+  .leftWrap {
+    margin-top: 160px;
+  }
+
+  .thumbTwo {
+    margin-left: 90px;
+  }
+
+  .thumbFour {
+    margin-left: 100px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+
+  .headingColumn {
+    width: 66.66666667%;
+  }
+
+  .rightWrap {
+    text-align: right;
+  }
+
+  .title {
+    font-size: 135px;
+  }
+
+  .thumbTwo {
+    margin-left: 90px;
+  }
+
+  .thumbFour {
+    margin-right: 90px;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1460px;
+  }
+
+  .title {
+    font-size: 170px;
+  }
+
+  .thumbTwo {
+    margin-left: 240px;
+  }
+
+  .thumbFour {
+    margin-right: 200px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .title {
+    font-size: 200px;
+  }
+}
+
+@media (max-width: 991px) {
+  .leftWrap {
+    margin-top: 0;
+  }
+
+  .thumbTwo,
+  .thumbFour {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .titleBox p {
+    font-size: 18px;
+  }
+
+  .titleLine,
+  .memberTitleLine {
+    transform: none;
+  }
+
+  .thumb {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (min-width: 1600px) {
+  .titleLine {
+    display: contents;
+    transform: none;
+  }
+
+  .firstTitleWord,
+  .secondTitleWord {
+    display: block;
+    transform: scaleX(0.96);
+  }
+
+  .titleWordSpace,
+  .titleBreak {
+    display: none;
+  }
+}
