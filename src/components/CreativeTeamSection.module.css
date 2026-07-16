@@ -40,7 +40,9 @@
 
 .title {
   margin: 0 0 20px;
-  color: #ff4851;
+  color: #6c6f7f;
+  background: linear-gradient(90deg, #6c6f7f 0%, #56ccf2 99%);
+  background-clip: text;
   font-family: "ClashDisplay-Bold", serif;
   font-size: 60px;
   font-weight: 500;
@@ -48,6 +50,8 @@
   letter-spacing: 0;
   text-transform: uppercase;
   white-space: nowrap;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .firstTitleWord,
@@ -58,8 +62,6 @@
 .titleLine,
 .memberTitleLine {
   display: inline-block;
-  transform: scaleX(0.96);
-  transform-origin: center;
 }
 
 .titleBox p {
@@ -274,11 +276,6 @@
     font-size: 18px;
   }
 
-  .titleLine,
-  .memberTitleLine {
-    transform: none;
-  }
-
   .thumb {
     width: 100%;
     margin-bottom: 40px;
@@ -293,13 +290,11 @@
 @media (min-width: 1600px) {
   .titleLine {
     display: contents;
-    transform: none;
   }
 
   .firstTitleWord,
   .secondTitleWord {
     display: block;
-    transform: scaleX(0.96);
   }
 
   .titleWordSpace,
