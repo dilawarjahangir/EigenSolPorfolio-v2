@@ -1,0 +1,122 @@
+.reveal {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.light {
+  padding: 28px;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.dark {
+  padding: 28px;
+  border-radius: 20px;
+  background: #101114;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.logo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/*
+ * The dash length is larger than every logo path.
+ * At 1200, the complete outline is hidden.
+ * At 0, the complete outline is visible.
+ */
+.outline {
+  fill: none;
+  stroke: #7d8289;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+
+/* Bottom shape */
+
+.bottomOutline {
+  stroke: #747980;
+  animation: drawBottom var(--logo-duration)
+    cubic-bezier(0.65, 0, 0.35, 1) var(--logo-delay)
+    var(--logo-iterations) both;
+}
+
+/* Middle shape */
+
+.middleOutline {
+  stroke: #9a9ea3;
+  animation: drawMiddle var(--logo-duration)
+    cubic-bezier(0.65, 0, 0.35, 1) var(--logo-delay)
+    var(--logo-iterations) both;
+}
+
+/* Top shape */
+
+.topOutline {
+  stroke: #747980;
+  animation: drawTop var(--logo-duration)
+    cubic-bezier(0.65, 0, 0.35, 1) var(--logo-delay)
+    var(--logo-iterations) both;
+}
+
+@keyframes drawBottom {
+  0%,
+  5% {
+    stroke-dashoffset: 1200;
+  }
+
+  50%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawMiddle {
+  0%,
+  28% {
+    stroke-dashoffset: 1200;
+  }
+
+  70%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawTop {
+  0%,
+  48% {
+    stroke-dashoffset: 1200;
+  }
+
+  90%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outline {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}

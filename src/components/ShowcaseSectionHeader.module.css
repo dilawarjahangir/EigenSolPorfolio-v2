@@ -1,0 +1,219 @@
+.topWrap {
+  margin-bottom: 70px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.subtitle,
+.title {
+  margin-top: 0;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin-bottom: 0;
+  color: #0e0f11;
+  font-family: "ClashDisplay-Semibold", serif;
+  font-size: 14px;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.subtitle i {
+  margin-left: 10px;
+  font-style: normal;
+}
+
+.subtitle svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.titleWrap {
+  margin-left: 90px;
+}
+
+.titleRow {
+  align-items: flex-end;
+}
+
+.title {
+  margin-bottom: 0;
+  color: #6c6f7f;
+  background: linear-gradient(90deg, #6c6f7f 0%, #56ccf2 99%);
+  background-clip: text;
+  font-family: "ClashDisplay-Bold", serif;
+  font-size: 130px;
+  line-height: 0.79;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionButton {
+  text-align: right;
+  transform: translateY(-10px);
+}
+
+.cta {
+  display: inline-block;
+  padding: 11px 20px;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  color: #6c6f7f;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(90deg, #6c6f7f 0%, #56ccf2 99%) border-box;
+  font-family: "ClashDisplay-Semibold", serif;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.cta span {
+  color: #6c6f7f;
+  background: linear-gradient(90deg, #6c6f7f 0%, #56ccf2 99%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  color: #ffffff;
+  background: linear-gradient(90deg, #6c6f7f 0%, #56ccf2 99%) border-box;
+}
+
+.cta:hover span,
+.cta:focus-visible span {
+  color: #ffffff;
+  background: none;
+  -webkit-text-fill-color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 85px;
+  }
+}
+
+@media (min-width: 992px) {
+  .titleColumn {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .buttonColumn {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .title {
+    font-size: 100px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .subtitleColumn {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .headingColumn {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .titleColumn {
+    width: 66.66666667%;
+  }
+
+  .buttonColumn {
+    width: 33.33333333%;
+  }
+
+  .title {
+    font-size: 110px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .subtitleColumn {
+    width: 33.33333333%;
+  }
+
+  .headingColumn {
+    width: 66.66666667%;
+  }
+
+  .title {
+    font-size: 115px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .titleWrap {
+    margin-left: 90px;
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1850px) {
+  .title {
+    font-size: 120px;
+  }
+}
+
+@media (min-width: 1851px) {
+  .title {
+    font-size: 130px;
+  }
+}
+
+@media (max-width: 1599px) {
+  .titleWrap {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1199px) {
+  .subtitle {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 991px) {
+  .topWrap {
+    margin-bottom: 0;
+  }
+
+  .titleBox {
+    margin-bottom: 40px;
+  }
+
+  .sectionButton {
+    text-align: left;
+  }
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 40px;
+  }
+}

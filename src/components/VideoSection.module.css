@@ -1,0 +1,67 @@
+.videoArea {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 120px;
+  overflow: hidden;
+  color: #2e2d2d;
+  background-color: #141414;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.containerFluid {
+  width: 100%;
+  padding: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.thumbWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  transform-origin: top center;
+}
+
+.thumb {
+  width: 32.5%;
+}
+
+.marginBottom {
+  margin-bottom: 25px;
+}
+
+.thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center center;
+  background-size: cover;
+}
+
+.thumbImage {
+  display: inline;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.desktopOnly {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .desktopOnly {
+    display: block;
+  }
+
+}
+
+@media (max-width: 1199px) {
+  .thumb {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}

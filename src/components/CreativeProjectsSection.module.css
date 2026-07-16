@@ -1,0 +1,287 @@
+.area {
+  padding-top: 120px;
+  padding-bottom: 60px;
+  color: #0e0f11;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.projectNumber svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.projectItem {
+  margin-bottom: 80px;
+}
+
+.contentWrap {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 55px;
+}
+
+.projectNumber {
+  flex: 0 0 auto;
+  margin-right: 45px;
+}
+
+.projectNumber span {
+  margin-right: 24.19px;
+  color: #0e0f11;
+  font-family: "ClashDisplay-Medium", serif;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.projectNumber i {
+  display: inline-block;
+  color: #0e0f11;
+  font-style: normal;
+  transform: translateY(-1px);
+}
+
+.projectContent {
+  margin-top: 5px;
+}
+
+.projectTitle {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #0e0f11;
+  font-family: "ClashDisplay-Semibold", serif;
+  font-size: 50px;
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.projectTitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.projectContent > span {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.projectThumb {
+  width: 1090px;
+  height: 630px;
+  margin-left: 90px;
+}
+
+.imageLink,
+.projectImage {
+  display: block;
+}
+
+.projectImage {
+  width: 100%;
+  height: auto;
+}
+
+.projectCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: #ffffff;
+  background-color: #ff535b;
+  pointer-events: none;
+  will-change: width, height, transform, opacity;
+}
+
+.projectCursor span {
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .cursorZone,
+  .cursorZone a {
+    cursor: none;
+  }
+
+  .projectCursor {
+    display: flex;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+
+  .projectItem {
+    margin-bottom: 0;
+  }
+
+  .projectContent {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .projectTitle {
+    width: 103.58%;
+    transform: scaleX(0.9654);
+    transform-origin: left center;
+  }
+
+  .projectThumb {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+
+  .contentColumn {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .imageColumn {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .contentWrap {
+    flex-wrap: wrap;
+  }
+
+  .projectContent {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .projectNumber {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1830px;
+  }
+
+}
+
+@media (min-width: 1600px) {
+  .projectItem {
+    margin-bottom: 80px;
+  }
+
+  .contentWrap {
+    flex-wrap: nowrap;
+  }
+
+  .projectContent {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .projectNumber {
+    margin-right: 45px;
+    margin-bottom: 0;
+  }
+
+  .projectThumb {
+    width: 1090px;
+    height: 630px;
+    margin-left: 90px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .projectTitle {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .projectThumb {
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .area {
+    padding-top: 80px;
+    padding-bottom: 0;
+  }
+
+  .projectTitle {
+    font-size: 30px;
+  }
+
+  .contentWrap {
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .projectNumber {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
