@@ -69,7 +69,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section id="down" className={`${styles.serviceArea} tp-service-area`}>
+    <section id="services" className={`${styles.serviceArea} tp-service-area`}>
       <div className={styles.headerContainer}>
         <ShowcaseSectionHeader
           subtitle={

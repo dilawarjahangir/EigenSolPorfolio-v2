@@ -1,0 +1,154 @@
+.hero {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.blueprintGrid {
+  --grid-bottom-offset: min(186.968px, calc(44.5161vw - 21.368px));
+
+  position: relative;
+  display: grid;
+  width: min(420px, calc(100vw - 48px));
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  animation: gridReveal 0.8s ease-out both;
+}
+
+.verticalGuides,
+.horizontalGuides {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.verticalGuides {
+  top: 0;
+  right: 0;
+  bottom: calc(50% - var(--grid-bottom-offset));
+  left: 0;
+}
+
+.verticalGuides span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #eceff2;
+  transform: translateX(-0.5px);
+}
+
+.horizontalGuides {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 286 / 266;
+  overflow: visible;
+  transform: translateY(-50%);
+}
+
+.horizontalGuides span {
+  position: absolute;
+  right: 1.922%;
+  left: 1.748%;
+  height: 1px;
+  background: #eceff2;
+  transform: translateY(-0.5px);
+}
+
+.logoReveal {
+  position: relative;
+  z-index: 1;
+}
+
+.companyLine {
+  position: absolute;
+  top: calc(50% + var(--grid-bottom-offset) + 34px);
+  right: 1.922%;
+  left: 1.748%;
+  z-index: 1;
+  margin: 0;
+  color: #121212;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 3.7vw, 56px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: companyLineReveal 0.55s cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--hero-reveal-duration) + 1.05s) forwards;
+}
+
+.companyLine span {
+  display: block;
+}
+
+@keyframes gridReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes blueprintMoveLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50vw + 50%));
+  }
+}
+
+@keyframes companyLineReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .blueprintGrid {
+    animation:
+      gridReveal 0.8s ease-out both,
+      blueprintMoveLeft 1.15s cubic-bezier(0.22, 1, 0.36, 1)
+        var(--hero-reveal-duration) forwards;
+  }
+}
+
+@media (max-width: 480px) {
+  .blueprintGrid {
+    --grid-bottom-offset: min(186.968px, calc(44.5161vw - 14.245px));
+
+    width: min(420px, calc(100vw - 32px));
+  }
+
+  .companyLine {
+    top: calc(50% + var(--grid-bottom-offset) + 26px);
+    padding-left: 2px;
+    font-size: clamp(38px, 11vw, 46px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blueprintGrid {
+    animation: none;
+  }
+
+  .companyLine {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

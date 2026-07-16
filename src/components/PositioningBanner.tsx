@@ -63,6 +63,7 @@ export default function PositioningBanner() {
 
   return (
     <section
+      id="solutions"
       ref={sectionRef}
       className="relative overflow-hidden bg-[#101114] bg-cover bg-center bg-no-repeat py-32"
       style={{ backgroundImage: `url(${backgroundImage})` }}

@@ -1,6 +1,7 @@
 import CreativeProjectsSection, {
   CreativeProjectsCursor,
 } from "@/components/CreativeProjectsSection";
+import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import HomePageExperience from "@/components/HomePageExperience";
 import PositioningBanner from "@/components/PositioningBanner";
@@ -10,6 +11,7 @@ import VideoSection from "@/components/VideoSection";
 export default function Home() {
   return (
     <>
+      <Header />
       <HomePageExperience>
         <main>
           <HeroSection />

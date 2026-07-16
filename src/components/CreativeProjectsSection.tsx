@@ -151,7 +151,7 @@ export function CreativeProjectsCursor() {
 export default function CreativeProjectsSection() {
 
   return (
-    <section className={`${styles.area} studio-project-area`}>
+    <section id="work" className={`${styles.area} studio-project-area`}>
         <div className={styles.container}>
           <ShowcaseSectionHeader
             subtitle={
