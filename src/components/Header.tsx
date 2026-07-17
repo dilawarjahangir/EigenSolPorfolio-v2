@@ -94,9 +94,17 @@ export default function Header() {
 
           <div className={styles.actions}>
             <Link href="/contact" className={styles.contactButton}>
-              <span>Let&apos;s Talk</span>
-              <span className={styles.contactIcon}>
-                <ArrowUpRight aria-hidden="true" />
+              <span className={styles.contactFilterBlur}>
+                <HeaderButtonBlurFilter />
+              </span>
+              <span
+                className={styles.contactFilter}
+                style={{ filter: "url(#headerContactFilter)" }}
+              >
+                <span className={styles.contactText}>Let&apos;s Talk</span>
+                <span className={styles.contactIcon}>
+                  <HeaderButtonArrow />
+                </span>
               </span>
             </Link>
 
@@ -164,5 +172,44 @@ export default function Header() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function HeaderButtonBlurFilter() {
+  return (
+    <svg width="0" height="0" aria-hidden="true">
+      <defs>
+        <filter id="headerContactFilter">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+          <feColorMatrix
+            in="blur"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+          />
+          <feComposite in="SourceGraphic" in2="headerContactFilter" operator="atop" />
+          <feBlend in="SourceGraphic" in2="headerContactFilter" />
+        </filter>
+      </defs>
+    </svg>
+  );
+}
+
+function HeaderButtonArrow() {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M1 9L9 1M9 1H1M9 1V9"
+        stroke="currentcolor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

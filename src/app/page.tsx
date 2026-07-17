@@ -2,6 +2,7 @@ import CreativeProjectsSection, {
   CreativeProjectsCursor,
 } from "@/components/CreativeProjectsSection";
 import CreativeTeamSection from "@/components/CreativeTeamSection";
+import ClientTestimonialsSection from "@/components/ClientTestimonialsSection";
 import FunFactsSection from "@/components/FunFactsSection";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -23,6 +24,7 @@ export default function Home() {
           <CreativeProjectsSection />
           <FunFactsSection />
           <CreativeTeamSection />
+          <ClientTestimonialsSection />
         </main>
       </HomePageExperience>
       <CreativeProjectsCursor />
