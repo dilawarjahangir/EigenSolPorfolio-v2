@@ -10,9 +10,9 @@ import styles from "./Header.module.css";
 
 const navigation = [
   { label: "Home", href: "/#home" },
-  { label: "Services", href: "/#services" },
+  { label: "Services", href: "/services" },
   { label: "Solutions", href: "/#solutions" },
-  { label: "Work", href: "/#work" },
+  { label: "Work", href: "/case-studies" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -21,8 +21,20 @@ export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(pathname === "/" ? "Home" : "");
+  const [homeActive, setHomeActive] = useState("Home");
   const { scrollY } = useScroll();
+  const routeActive =
+    pathname.startsWith("/services")
+      ? "Services"
+      : pathname.startsWith("/case-studies")
+        ? "Work"
+        : pathname === "/about"
+          ? "About"
+          : pathname === "/contact"
+            ? "Contact"
+            : pathname === "/"
+              ? homeActive
+              : "";
 
   useMotionValueEvent(scrollY, "change", (value) => setScrolled(value > 20));
 
@@ -56,7 +68,7 @@ export default function Header() {
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className={`${styles.nav} ${scrolled ? styles.navScrolled : styles.navTop}`}
         >
-          <Link href="/#home" className={styles.brand} onClick={() => setActive("Home")}>
+          <Link href="/#home" className={styles.brand} onClick={() => setHomeActive("Home")}>
             <Image
               src="/logo.webp"
               alt="EigenSol"
@@ -69,13 +81,15 @@ export default function Header() {
 
           <ul className={styles.desktopLinks}>
             {navigation.map((item) => {
-              const isActive = active === item.label;
+              const isActive = routeActive === item.label;
 
               return (
                 <li key={item.label} className={styles.navItem}>
                   <Link
                     href={item.href}
-                    onClick={() => setActive(item.label)}
+                    onClick={() => {
+                      setHomeActive(item.label);
+                    }}
                     className={`${styles.navLink} ${isActive ? styles.activeLink : ""}`}
                   >
                     {isActive && (
@@ -154,7 +168,7 @@ export default function Header() {
                     <Link
                       href={item.href}
                       onClick={() => {
-                        setActive(item.label);
+                        setHomeActive(item.label);
                         setOpen(false);
                       }}
                     >

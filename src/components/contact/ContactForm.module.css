@@ -1,0 +1,131 @@
+.form {
+  display: grid;
+  gap: 26px;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.form *,
+.form *::before,
+.form *::after {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.field {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  color: #141414;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgb(20 20 20 / 17%);
+  border-radius: 6px;
+  outline: 0;
+  color: #141414;
+  background: #fff;
+  font: inherit;
+  font-weight: 450;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field input,
+.field select {
+  height: 52px;
+  padding: 0 15px;
+}
+
+.field textarea {
+  min-height: 180px;
+  resize: vertical;
+  padding: 15px;
+  line-height: 1.6;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgb(20 20 20 / 42%);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #ff7744;
+  box-shadow: 0 0 0 3px rgb(255 119 68 / 13%);
+}
+
+.submit {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #ff7744;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  transition: background-color 0.2s ease;
+}
+
+.submit:hover,
+.submit:focus-visible {
+  background: #141414;
+}
+
+.submit svg {
+  width: 17px;
+  height: 17px;
+}
+
+.legal,
+.status {
+  margin: -8px 0 0;
+  color: rgb(20 20 20 / 57%);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.legal a {
+  color: #141414;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal a:hover,
+.legal a:focus-visible {
+  color: #ff7744;
+}
+
+.status {
+  min-height: 20px;
+  color: #26734d;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .submit {
+    width: 100%;
+  }
+}

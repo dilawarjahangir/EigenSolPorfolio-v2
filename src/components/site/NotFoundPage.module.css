@@ -1,0 +1,134 @@
+.page {
+  position: relative;
+  display: grid;
+  min-height: 720px;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 150px 30px 90px;
+  color: #fff;
+  background: #141414;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+.background {
+  z-index: -3;
+  object-fit: cover;
+}
+
+.scrim {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background: rgb(7 9 12 / 84%);
+}
+
+.grid {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 75%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 75%) 1px, transparent 1px);
+  background-size: 62px 62px;
+}
+
+.content {
+  width: min(760px, 100%);
+  text-align: center;
+}
+
+.code {
+  margin: 0;
+  color: #ff7744;
+  font-family: "ClashDisplay-Bold", "Space Grotesk", sans-serif;
+  font-size: 150px;
+  font-weight: 500;
+  line-height: 0.8;
+}
+
+.content h1 {
+  margin: 30px 0 0;
+  font-family: "ClashDisplay-Bold", "Space Grotesk", sans-serif;
+  font-size: 55px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.description {
+  max-width: 620px;
+  margin: 20px auto 0;
+  color: rgb(255 255 255 / 68%);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 999px;
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
+  cursor: pointer;
+  font: 600 14px/1 "Inter", Arial, sans-serif;
+}
+
+.primaryButton {
+  border-color: #ff7744;
+  background: #ff7744;
+}
+
+.primaryButton:hover,
+.primaryButton:focus-visible,
+.secondaryButton:hover,
+.secondaryButton:focus-visible {
+  border-color: #56ccf2;
+  background: #56ccf2;
+}
+
+.primaryButton svg,
+.secondaryButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 767px) {
+  .page {
+    min-height: 620px;
+    padding: 130px 20px 70px;
+  }
+
+  .code {
+    font-size: 105px;
+  }
+
+  .content h1 {
+    font-size: 42px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+}
