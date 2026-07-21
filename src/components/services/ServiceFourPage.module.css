@@ -1499,3 +1499,85 @@
     visibility: visible;
   }
 }
+
+:global(html[data-theme="dark"]) .page {
+  --service-black: #f6f6f9;
+  --service-body: #a9adb7;
+  --service-panel: #111215;
+  --service-border: rgba(255, 255, 255, 0.13);
+  color: var(--service-body);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .hero,
+:global(html[data-theme="dark"]) .solutions,
+:global(html[data-theme="dark"]) .engagements,
+:global(html[data-theme="dark"]) .process,
+:global(html[data-theme="dark"]) .partners {
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .heroTitle,
+:global(html[data-theme="dark"]) .solutionsTitle,
+:global(html[data-theme="dark"]) .solutionIcon svg,
+:global(html[data-theme="dark"]) .solutionCardContent h3,
+:global(html[data-theme="dark"]) .cardLink,
+:global(html[data-theme="dark"]) .engagementName,
+:global(html[data-theme="dark"]) .engagementHead h3,
+:global(html[data-theme="dark"]) .engagementHead h3 i,
+:global(html[data-theme="dark"]) .engagementFeatures li,
+:global(html[data-theme="dark"]) .processStep p,
+:global(html[data-theme="dark"]) .processStep > span {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .heroCopy p,
+:global(html[data-theme="dark"]) .breadcrumb a,
+:global(html[data-theme="dark"]) .solutionCardContent p,
+:global(html[data-theme="dark"]) .serviceRowSummary p,
+:global(html[data-theme="dark"]) .engagementHead p,
+:global(html[data-theme="dark"]) .processCopy {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .hero,
+:global(html[data-theme="dark"]) .pillLabel,
+:global(html[data-theme="dark"]) .solutionCard,
+:global(html[data-theme="dark"]) .engagementCard,
+:global(html[data-theme="dark"]) .engagementHead,
+:global(html[data-theme="dark"]) .engagementName,
+:global(html[data-theme="dark"]) .engagementFeatures li span,
+:global(html[data-theme="dark"]) .processStep > span,
+:global(html[data-theme="dark"]) .partnerItem {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .solutionCard,
+:global(html[data-theme="dark"]) .engagementGrid,
+:global(html[data-theme="dark"]) .engagementCard {
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .engagementCardActive,
+:global(html[data-theme="dark"]) .roundedSurface {
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .engagementButton {
+  border-color: var(--site-border);
+  color: var(--site-heading);
+  background: var(--site-surface-soft);
+}
+
+:global(html[data-theme="dark"]) .marqueeRowReverse {
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .processStep:not(:last-child) > span::after {
+  background: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .partnerLogo img {
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.82;
+}

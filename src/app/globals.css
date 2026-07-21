@@ -67,10 +67,51 @@
   --input: transparent;
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
+  --site-background: #ffffff;
+  --site-surface: #f6f6f9;
+  --site-surface-raised: #ffffff;
+  --site-surface-soft: #f0f2f4;
+  --site-surface-glass: rgba(255, 255, 255, 0.78);
+  --site-heading: #121212;
+  --site-text: #585858;
+  --site-muted: #7a7e85;
+  --site-border: rgba(18, 18, 18, 0.12);
+  --site-shadow: rgba(10, 10, 10, 0.18);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: #3b82f6;
   --radius: 0.625rem;
+}
+
+html[data-theme="dark"] {
+  --color-white: #f6f6f9;
+  --color-dark: #f6f6f9;
+  --color-body-text: #a9adb7;
+  --color-heading: #f6f6f9;
+  --background: #0b0c0e;
+  --foreground: #f6f6f9;
+  --card: #151619;
+  --card-foreground: #f6f6f9;
+  --popover: #151619;
+  --popover-foreground: #f6f6f9;
+  --secondary: #202126;
+  --secondary-foreground: #f6f6f9;
+  --muted: #202126;
+  --muted-foreground: #a9adb7;
+  --accent-foreground: #0b0c0e;
+  --border: rgba(255, 255, 255, 0.12);
+  --input-background: #18191d;
+  --switch-background: #34363c;
+  --site-background: #0b0c0e;
+  --site-surface: #111215;
+  --site-surface-raised: #18191d;
+  --site-surface-soft: #202126;
+  --site-surface-glass: rgba(18, 19, 22, 0.82);
+  --site-heading: #f6f6f9;
+  --site-text: #a9adb7;
+  --site-muted: #858a95;
+  --site-border: rgba(255, 255, 255, 0.13);
+  --site-shadow: rgba(0, 0, 0, 0.48);
 }
 
 @theme inline {
@@ -103,13 +144,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #121212;
-  }
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -128,6 +162,8 @@
     font-family: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
     width: 100%;
     overflow-x: hidden;
+    background: var(--site-background);
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   h1,
@@ -190,7 +226,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--site-surface);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -214,17 +250,17 @@
 }
 
 ::selection {
-  background-color: #3b82f6;
+  background-color: #ff7744;
   color: white;
 }
 
 ::-moz-selection {
-  background-color: #3b82f6;
+  background-color: #ff7744;
   color: white;
 }
 
 *:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #ff7744;
   outline-offset: 2px;
 }
 

@@ -217,3 +217,13 @@
     font-size: 40px;
   }
 }
+
+:global(html[data-theme="dark"]) .subtitle {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .cta {
+  background:
+    linear-gradient(var(--site-background), var(--site-background)) padding-box,
+    linear-gradient(90deg, #8d919f 0%, #56ccf2 99%) border-box;
+}

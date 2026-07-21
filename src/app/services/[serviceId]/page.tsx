@@ -33,7 +33,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${service.title} | EigenSol`,
       description: service.shortDescription,
-      images: ["/agntix-service-details/service-details-banner.jpg"],
+      images: [service.media?.banner ?? "/agntix-service-details/service-details-banner.jpg"],
     },
   };
 }

@@ -401,3 +401,38 @@
     width: 100%;
   }
 }
+
+:global(html[data-theme="dark"]) .serviceArea,
+:global(html[data-theme="dark"]) .serviceItem {
+  color: var(--site-text);
+  background-color: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .serviceItem,
+:global(html[data-theme="dark"]) .serviceItem:last-child {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+:global(html[data-theme="dark"]) .serviceNumber span,
+:global(html[data-theme="dark"]) .serviceTitle,
+:global(html[data-theme="dark"]) .serviceCategory span {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .textInvert > div {
+  background-image: linear-gradient(to right, #f6f6f9 50%, #50535b 50%);
+}
+
+:global(html[data-theme="dark"]) .serviceContent p {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .serviceCategory span {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .serviceCategory span:hover {
+  border-color: #2a2c31;
+  color: var(--site-heading);
+  background-color: #2a2c31;
+}

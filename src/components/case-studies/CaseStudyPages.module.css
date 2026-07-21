@@ -503,3 +503,59 @@
     padding: 28px 24px;
   }
 }
+
+:global(html[data-theme="dark"]) .page,
+:global(html[data-theme="dark"]) .section {
+  color: var(--site-heading);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .sectionMuted {
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .title,
+:global(html[data-theme="dark"]) .summaryItem strong,
+:global(html[data-theme="dark"]) .snapshotTitle,
+:global(html[data-theme="dark"]) .snapshot dd,
+:global(html[data-theme="dark"]) .textPanel h3,
+:global(html[data-theme="dark"]) .feature h3,
+:global(html[data-theme="dark"]) .relatedContent h3 {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .lead,
+:global(html[data-theme="dark"]) .paragraph,
+:global(html[data-theme="dark"]) .bulletList li,
+:global(html[data-theme="dark"]) .feature p,
+:global(html[data-theme="dark"]) .impact p {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .summaryGrid,
+:global(html[data-theme="dark"]) .snapshot,
+:global(html[data-theme="dark"]) .textPanel,
+:global(html[data-theme="dark"]) .featuresGrid,
+:global(html[data-theme="dark"]) .impactGrid,
+:global(html[data-theme="dark"]) .related,
+:global(html[data-theme="dark"]) .technologies span,
+:global(html[data-theme="dark"]) .snapshot dl div {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .summaryGrid,
+:global(html[data-theme="dark"]) .impactGrid {
+  background: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .summaryItem,
+:global(html[data-theme="dark"]) .snapshot,
+:global(html[data-theme="dark"]) .textPanel,
+:global(html[data-theme="dark"]) .technologies span,
+:global(html[data-theme="dark"]) .related {
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .technologies span {
+  color: var(--site-text);
+}

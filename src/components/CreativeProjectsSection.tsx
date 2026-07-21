@@ -4,35 +4,11 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
+import { featuredPortfolioProjects } from "@/data/projects";
 import styles from "./CreativeProjectsSection.module.css";
 import ShowcaseSectionHeader from "./ShowcaseSectionHeader";
 
-const projects = [
-  {
-    number: "01",
-    title: "Simple Logistics",
-    service: "Supply Chain Platform",
-    image: "/agntix-home/project/project-2.jpg",
-  },
-  {
-    number: "02",
-    title: "Made Logistics",
-    service: "Enterprise Solution",
-    image: "/agntix-home/project/project-3.jpg",
-  },
-  {
-    number: "03",
-    title: "UX Design System",
-    service: "Design Framework",
-    image: "/agntix-home/project/project-4.jpg",
-  },
-  {
-    number: "04",
-    title: "Mobile Banking App",
-    service: "Fintech Solution",
-    image: "/agntix-home/project/project-1.jpg",
-  },
-] as const;
+const projects = featuredPortfolioProjects.filter((project) => project.coverImage).slice(0, 4);
 
 function Arrow({ width, path }: { width: number; path: string }) {
   return (
@@ -165,33 +141,38 @@ export default function CreativeProjectsSection() {
           />
 
           <div className="studio-project-wrap">
-            {projects.map((project) => (
-              <article className={`${styles.projectItem} studio-project-item`} key={project.number}>
+            {projects.map((project, index) => (
+              <article className={`${styles.projectItem} studio-project-item`} key={project.id}>
                 <div className={styles.row}>
                   <div className={`${styles.column} ${styles.contentColumn}`}>
                     <div className={`${styles.contentWrap} studio-project-content-wrap`}>
                       <div className={`${styles.projectNumber} studio-project-number`}>
-                        <span>{project.number}</span>
+                        <span>{String(index + 1).padStart(2, "0")}</span>
                         <i>
                           <Arrow width={202} path="M198 8L201.5 4.5L198 1M1 4H201V5H1V4Z" />
                         </i>
                       </div>
                       <div className={`${styles.projectContent} studio-project-content`}>
                         <h4 className={`${styles.projectTitle} studio-project-title-sm`}>
-                          <Link href="/case-studies">{project.title}</Link>
+                          <Link href={`/case-studies/${project.id}`}>{project.title}</Link>
                         </h4>
-                        <span>{project.service}</span>
+                        <span>
+                          {[project.primaryCategory, ...project.tags.slice(0, 2)].join(" / ")}
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   <div className={`${styles.column} ${styles.imageColumn}`}>
                     <div className={`${styles.cursorZone} not-hide-cursor`} data-project-cursor>
-                      <Link className={`${styles.imageLink} cursor-hide`} href="/case-studies">
+                      <Link
+                        className={`${styles.imageLink} cursor-hide`}
+                        href={`/case-studies/${project.id}`}
+                      >
                         <div className={`${styles.projectThumb} studio-project-thumb`}>
                           <Image
                             className={styles.projectImage}
-                            src={project.image}
+                            src={project.coverImage!}
                             alt={project.title}
                             width={1092}
                             height={630}

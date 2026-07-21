@@ -787,3 +787,60 @@
     min-height: 380px;
   }
 }
+
+:global(html[data-theme="dark"]) .page,
+:global(html[data-theme="dark"]) .section,
+:global(html[data-theme="dark"]) .statsBand {
+  color: var(--site-heading);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .sectionMuted {
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .sectionTitle,
+:global(html[data-theme="dark"]) .teamName,
+:global(html[data-theme="dark"]) .teamSocial,
+:global(html[data-theme="dark"]) .serviceTitle,
+:global(html[data-theme="dark"]) .textLink,
+:global(html[data-theme="dark"]) .processItem h3,
+:global(html[data-theme="dark"]) .infoItem a,
+:global(html[data-theme="dark"]) .infoItem p,
+:global(html[data-theme="dark"]) .benefit h3,
+:global(html[data-theme="dark"]) .job h3,
+:global(html[data-theme="dark"]) .officeCopy h2 {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .sectionLead,
+:global(html[data-theme="dark"]) .statLabel,
+:global(html[data-theme="dark"]) .teamBio,
+:global(html[data-theme="dark"]) .serviceDescription,
+:global(html[data-theme="dark"]) .featureItem,
+:global(html[data-theme="dark"]) .processItem p,
+:global(html[data-theme="dark"]) .benefit p,
+:global(html[data-theme="dark"]) .officeCopy p {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .statsBand,
+:global(html[data-theme="dark"]) .stat,
+:global(html[data-theme="dark"]) .tag,
+:global(html[data-theme="dark"]) .processGrid,
+:global(html[data-theme="dark"]) .processItem,
+:global(html[data-theme="dark"]) .infoGrid,
+:global(html[data-theme="dark"]) .infoItem,
+:global(html[data-theme="dark"]) .benefitsGrid,
+:global(html[data-theme="dark"]) .benefit,
+:global(html[data-theme="dark"]) .jobList,
+:global(html[data-theme="dark"]) .job {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .tag,
+:global(html[data-theme="dark"]) .processItem,
+:global(html[data-theme="dark"]) .benefit {
+  color: var(--site-text);
+  background: var(--site-surface-raised);
+}

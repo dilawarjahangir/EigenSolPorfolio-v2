@@ -1,4 +1,9 @@
+"use client";
+
 import type { CSSProperties } from "react";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import BlueprintLogoReveal from "./BlueprintLogoReveal";
 import styles from "./HeroSection.module.css";
 
@@ -18,14 +23,60 @@ const horizontalGuides = [
 ];
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const revealDuration = 2;
   const heroStyle = {
     "--hero-reveal-duration": `${revealDuration}s`,
   } as CSSProperties;
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let observer: IntersectionObserver | null = null;
+
+    const updatePlayback = () => {
+      observer?.disconnect();
+      observer = null;
+
+      if (motionPreference.matches) {
+        video.pause();
+        video.currentTime = 0;
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            void video.play().catch(() => undefined);
+          } else {
+            video.pause();
+          }
+        },
+        { threshold: 0.15 },
+      );
+      observer.observe(video);
+    };
+
+    updatePlayback();
+    motionPreference.addEventListener("change", updatePlayback);
+
+    return () => {
+      observer?.disconnect();
+      motionPreference.removeEventListener("change", updatePlayback);
+      video.pause();
+    };
+  }, []);
+
   return (
-    <section id="home" aria-label="EigenSol introduction" className={styles.hero}>
-      <div className={styles.blueprintGrid} style={heroStyle}>
+    <section
+      id="home"
+      aria-label="EigenSol introduction"
+      className={styles.hero}
+      style={heroStyle}
+    >
+      <div className={styles.blueprintGrid}>
         <div className={styles.verticalGuides} aria-hidden="true">
           {verticalGuides.map((position) => (
             <span
@@ -55,6 +106,31 @@ export default function HeroSection() {
           <span>dimension</span>
           <span>of clarity</span>
         </p>
+      </div>
+
+      <div className={styles.heroMedia}>
+        <video
+          ref={videoRef}
+          className={styles.heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/eigensol-hero/eigensol-digital-technology-poster.webp"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
+          <source src="/eigensol-hero/eigensol-digital-technology.mp4" type="video/mp4" />
+        </video>
+
+        <div className={styles.mediaOverlay}>
+          <p className={styles.mediaCopy}>Engineering digital products that scale.</p>
+          <Link className={styles.mediaCta} href="/contact">
+            Let&apos;s talk
+            <ArrowUpRight aria-hidden="true" strokeWidth={1.8} />
+          </Link>
+        </div>
       </div>
     </section>
   );

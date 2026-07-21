@@ -9,7 +9,7 @@ type FunFactImage = {
 
 type FunFactPanel = {
   id: number;
-  tone: "orange" | "pink" | "yellow";
+  tone: "orange" | "pink" | "yellow" | "cyan";
   subtitle: string;
   title: readonly string[];
   images: readonly FunFactImage[];
@@ -24,8 +24,8 @@ const panels: readonly FunFactPanel[] = [
   {
     id: 1,
     tone: "orange",
-    subtitle: "( Nice! )",
-    title: ["projects", "completed", "in 24 countries"],
+    subtitle: "( Delivered )",
+    title: ["products and", "projects"],
     images: [
       { src: "/agntix-home/funfact/funfact-1.png", delay: 0.3 },
       { src: placeholder, delay: 0.5 },
@@ -43,13 +43,13 @@ const panels: readonly FunFactPanel[] = [
       { src: placeholder, delay: 1.7 },
     ],
     bigImage: { src: "/agntix-home/funfact/funfact-6.png", delay: 0.7 },
-    number: "106",
+    number: "150+",
   },
   {
     id: 2,
     tone: "pink",
-    subtitle: "( Ho Ho! )",
-    title: ["Clients", "satisfied and", "repeating"],
+    subtitle: "( Worldwide )",
+    title: ["global", "clients"],
     images: [
       { src: "/agntix-home/funfact/funfact-1.png", delay: 0.3 },
       { src: "/agntix-home/funfact/funfact-8.png", delay: 0.5 },
@@ -67,13 +67,13 @@ const panels: readonly FunFactPanel[] = [
       { src: "/agntix-home/funfact/funfact-5.png", delay: 1.7 },
     ],
     bigImage: { src: "/agntix-home/funfact/funfact-7.png", delay: 0.7 },
-    number: "96",
+    number: "50+",
   },
   {
     id: 3,
     tone: "yellow",
-    subtitle: "( Holy Moly! )",
-    title: ["Performing video"],
+    subtitle: "( Experience )",
+    title: ["years of", "delivery"],
     images: [
       { src: "/agntix-home/funfact/funfact-1.png" },
       { src: "/agntix-home/funfact/funfact-2.png" },
@@ -84,7 +84,24 @@ const panels: readonly FunFactPanel[] = [
       { src: placeholder },
       { src: placeholder },
     ],
-    number: "#1Top",
+    number: "12+",
+  },
+  {
+    id: 4,
+    tone: "cyan",
+    subtitle: "( Trusted )",
+    title: ["client", "satisfaction"],
+    images: [
+      { src: "/agntix-home/funfact/funfact-8.png", delay: 0.3 },
+      { src: placeholder, delay: 0.5 },
+      { src: "/agntix-home/funfact/funfact-9.png", delay: 0.7 },
+      { src: placeholder, delay: 0.9 },
+      { src: "/agntix-home/funfact/funfact-2.png", delay: 1 },
+      { src: placeholder, delay: 1.1 },
+      { src: "/agntix-home/funfact/funfact-4.png", delay: 1.2 },
+      { src: placeholder, delay: 1.3 },
+    ],
+    number: "98%",
   },
 ];
 
@@ -92,16 +109,18 @@ const toneClasses = {
   orange: "",
   pink: styles.pink,
   yellow: styles.yellow,
+  cyan: styles.cyan,
 } as const;
 
 const titleScales: Record<string, number> = {
-  projects: 0.90797,
-  completed: 0.91184,
-  "in 24 countries": 0.8928,
-  Clients: 0.89923,
-  "satisfied and": 0.89362,
-  repeating: 0.90159,
-  "Performing video": 0.90151,
+  "products and": 0.91,
+  projects: 0.91,
+  global: 0.91,
+  clients: 0.91,
+  "years of": 0.91,
+  delivery: 0.91,
+  client: 0.91,
+  satisfaction: 0.88,
 };
 
 function renderImage(image: FunFactImage, secondary = false) {

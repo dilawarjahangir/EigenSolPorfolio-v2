@@ -9,7 +9,7 @@
 
 .panelWrap {
   display: flex;
-  width: 300%;
+  width: 400%;
   height: 100%;
   flex-wrap: nowrap;
 }
@@ -166,6 +166,12 @@
   color: #ffb701;
 }
 
+.cyan .subtitle,
+.cyan .title,
+.cyan .number span {
+  color: #56ccf2;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -303,5 +309,26 @@
 
   .number > span {
     transform: translateY(0);
+  }
+}
+
+:global(html[data-theme="dark"]) .area {
+  color: var(--site-heading);
+  background-color: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .panelInner {
+  border-color: var(--site-background);
+  background-color: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .subtitle,
+:global(html[data-theme="dark"]) .title {
+  color: var(--site-heading);
+}
+
+@media (max-width: 1199px) {
+  :global(html[data-theme="dark"]) .panelInner {
+    border-bottom-color: var(--site-background);
   }
 }

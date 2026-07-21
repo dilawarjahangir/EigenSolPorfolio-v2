@@ -7,63 +7,61 @@ import ShowcaseSectionHeader from "./ShowcaseSectionHeader";
 const services = [
   {
     id: 1,
-    title: "Web Design",
-    image: "/agntix-home/service/service-1.jpg",
+    title: "Custom Software",
+    href: "/services/custom-software-development",
+    image: "/software-development.webp",
     description: [
-      "Whether you need stunning visuals for your website, captivating graphics",
-      "for your marketing materials, or innovative UI/UX designs for your app, our",
-      "team of experts is here to turn your vision into reality.",
+      "End-to-end software solutions tailored to your unique business",
+      "requirements, workflows, and long-term growth goals.",
     ],
-    categories: ["UX Design", "User Testing", "Motion Design", "Product Prototype"],
+    categories: [
+      "Enterprise Applications",
+      "Legacy Modernization",
+      "API Development",
+      "Database Design",
+    ],
     categoryBreakAfter: 2,
   },
   {
     id: 2,
-    title: "Product Design",
-    image: "/agntix-home/service/service-2.jpg",
+    title: "Web Applications",
+    href: "/services/web-application-development",
+    image: "/agntix-home/service/eigensol-responsive-web-applications.webp",
     description: [
-      "Our product design services focus on creating intuitive and aesthetically",
-      "pleasing products that resonate with your audience and stand out",
-      "in the market.",
+      "Modern, scalable web applications built with high-performance",
+      "frameworks, dependable architecture, and product thinking.",
     ],
     categories: [
-      "UX Design",
-      "User Testing",
-      "Product Prototype",
-      "Mobile UI",
-      "Software UI design",
-      "Web app design",
+      "React & Next.js",
+      "Progressive Web Apps",
+      "E-commerce",
+      "SaaS Platforms",
     ],
-    categoryBreakAfter: null,
+    categoryBreakAfter: 1,
   },
   {
     id: 3,
-    title: "Web Development",
-    image: "/agntix-home/service/service-3.jpg",
+    title: "Mobile Apps",
+    href: "/services/mobile-app-development",
+    image: "/agntix-home/service/eigensol-mobile-applications.webp",
     description: [
-      "From website development and e-commerce platforms to custom",
-      "software and mobile apps, our development team has the expertise to",
-      "bring your ideas to life.",
+      "Native and cross-platform mobile solutions for iOS and Android",
+      "designed for intuitive use, stability, and scale.",
     ],
-    categories: ["UX Design", "Frontend", "Backend", "E-commerce", "No Code / Low Code"],
-    categoryBreakAfter: 3,
+    categories: ["iOS", "Android", "React Native", "Flutter"],
+    categoryBreakAfter: 1,
   },
   {
     id: 4,
-    title: "Branding",
-    image: "/agntix-home/service/service-4.jpg",
+    title: "AI & Machine Learning",
+    href: "/services/ai-machine-learning",
+    image: "/agntix-home/service/eigensol-ai-chip.webp",
     description: [
-      "It's the core of your company's identity. It guides all business decisions,",
-      "ensuring a consistent and impactful presence in the market.",
+      "Practical AI automation and data-driven systems that improve",
+      "decisions, workflows, and customer experiences.",
     ],
-    categories: [
-      "Research & Insights",
-      "Unique Ways",
-      "Value Proposition",
-      "Naming",
-      "Verbal Identity",
-    ],
-    categoryBreakAfter: 2,
+    categories: ["Machine Learning", "Computer Vision", "NLP", "AI Automation"],
+    categoryBreakAfter: 1,
   },
 ] as const;
 
@@ -105,7 +103,7 @@ export default function ServicesSection() {
                       <h2 className={styles.serviceTitle}>
                         <Link
                           className={`${styles.textInvert} tp_text_invert`}
-                          href="/services"
+                          href={service.href}
                         >
                           {service.title}
                         </Link>
@@ -126,7 +124,7 @@ export default function ServicesSection() {
                       </p>
 
                       <div className={styles.serviceButton}>
-                        <Link className={styles.button} href="/services">
+                        <Link className={styles.button} href={service.href}>
                           <span className={styles.buttonFilterBlur}>
                             <ButtonBlurFilter filterId={filterId} />
                           </span>

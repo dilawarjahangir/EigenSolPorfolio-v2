@@ -5,12 +5,39 @@ import { useEffect, useRef } from "react";
 import styles from "./VideoSection.module.css";
 
 const videoImages = [
-  { src: "/agntix-home/video/video-1.jpg", width: 634, height: 440 },
-  { src: "/agntix-home/video/video-3.jpg", width: 1252, height: 880 },
-  { src: "/agntix-home/video/video-4.jpg", width: 1252, height: 880 },
-  { src: "/agntix-home/video/video-5.jpg", width: 1252, height: 880 },
-  { src: "/agntix-home/video/video-6.jpg", width: 1252, height: 880 },
+  {
+    src: "/agntix-home/video/eigensol-mobile-product-planning.webp",
+    alt: "Product team planning a mobile application",
+    width: 1252,
+    height: 880,
+  },
+  {
+    src: "/agntix-home/video/eigensol-cloud-network.webp",
+    alt: "Connected cloud network infrastructure",
+    width: 1252,
+    height: 880,
+  },
+  {
+    src: "/agntix-home/video/eigensol-cloud-city.webp",
+    alt: "Cloud computing technology over a cityscape",
+    width: 1252,
+    height: 880,
+  },
+  {
+    src: "/agntix-home/video/eigensol-digital-development.webp",
+    alt: "Laptop displaying digital development technology",
+    width: 1252,
+    height: 880,
+  },
+  {
+    src: "/agntix-home/video/eigensol-ai-solutions.webp",
+    alt: "Artificial intelligence technology solution",
+    width: 1252,
+    height: 880,
+  },
 ] as const;
+
+const videoPoster = "/agntix-home/video/eigensol-robotics-learning.webp";
 
 export default function VideoSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -73,12 +100,12 @@ export default function VideoSection() {
       <div className={styles.containerFluid}>
         <div className={`${styles.thumbWrap} tp-video-thumb-wrap`}>
           <div className={`${styles.thumb} ${styles.desktopOnly} tp-video-thumb`}>
-            <VideoImage image={videoImages[0]} alt="video thumbnail" />
+            <VideoImage image={videoImages[0]} />
           </div>
 
           <div className={`${styles.thumb} ${styles.marginBottom} tp-video-thumb`}>
-            <video ref={videoRef} playsInline loop muted>
-              <source src="https://html.aqlova.com/videos/liko/liko.mp4" type="video/mp4" />
+            <video ref={videoRef} playsInline loop muted preload="metadata" poster={videoPoster}>
+              <source src="/agntix-home/video/eigensol-futuristic-saas.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -86,21 +113,21 @@ export default function VideoSection() {
           <div
             className={`${styles.thumb} ${styles.desktopOnly} ${styles.marginBottom} tp-video-thumb`}
           >
-            <VideoImage image={videoImages[1]} alt="video thumbnail 1" />
+            <VideoImage image={videoImages[1]} />
           </div>
 
           <div
             className={`${styles.thumb} ${styles.desktopOnly} ${styles.marginBottom} tp-video-thumb`}
           >
-            <VideoImage image={videoImages[2]} alt="video thumbnail 2" />
+            <VideoImage image={videoImages[2]} />
           </div>
 
           <div className={`${styles.thumb} ${styles.desktopOnly} tp-video-thumb`}>
-            <VideoImage image={videoImages[3]} alt="video thumbnail 3" />
+            <VideoImage image={videoImages[3]} />
           </div>
 
           <div className={`${styles.thumb} ${styles.desktopOnly} tp-video-thumb`}>
-            <VideoImage image={videoImages[4]} alt="video thumbnail 4" />
+            <VideoImage image={videoImages[4]} />
           </div>
         </div>
       </div>
@@ -108,18 +135,12 @@ export default function VideoSection() {
   );
 }
 
-function VideoImage({
-  image,
-  alt,
-}: {
-  image: (typeof videoImages)[number];
-  alt: string;
-}) {
+function VideoImage({ image }: { image: (typeof videoImages)[number] }) {
   return (
     <Image
       className={styles.thumbImage}
       src={image.src}
-      alt={alt}
+      alt={image.alt}
       width={image.width}
       height={image.height}
       sizes="(min-width: 1200px) 32.5vw, 100vw"

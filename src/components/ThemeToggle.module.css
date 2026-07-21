@@ -1,0 +1,36 @@
+.toggle {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  padding: 0;
+  border: 1px solid var(--site-border);
+  border-radius: 50%;
+  place-items: center;
+  color: var(--site-heading);
+  background: var(--site-surface-glass);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.toggle:hover {
+  border-color: #ff7744;
+  color: #ff7744;
+  transform: rotate(8deg);
+}
+
+.toggle svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle {
+    transition: none;
+  }
+}

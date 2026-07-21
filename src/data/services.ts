@@ -39,6 +39,11 @@ export type ServiceOffering = {
     approachTitle: string;
     steps: readonly string[];
   };
+  media?: {
+    banner?: string;
+    overview?: string;
+    pair?: readonly [string, string];
+  };
   capabilities: readonly ServiceCapability[];
   process: {
     title: readonly [string, string];
@@ -73,6 +78,14 @@ export const serviceOfferings: readonly ServiceOffering[] = [
         "Architecture and product definition - shaping the system boundaries, data model, integrations, and delivery roadmap.",
         "Iterative engineering - building tested releases in visible milestones with regular stakeholder review.",
         "Launch and evolution - deploying safely, monitoring performance, and improving the product as needs change.",
+      ],
+    },
+    media: {
+      banner: "/agntix-service-details/custom-software/custom-software-banner.webp",
+      overview: "/agntix-service-details/custom-software/custom-software-overview.webp",
+      pair: [
+        "/agntix-service-details/custom-software/custom-software-ai-workflow.webp",
+        "/agntix-service-details/custom-software/custom-software-development-team.webp",
       ],
     },
     capabilities: [
@@ -143,6 +156,15 @@ export const serviceOfferings: readonly ServiceOffering[] = [
         "Performance and release - validating quality, security, analytics, and production behavior before launch.",
       ],
     },
+    media: {
+      banner: "/agntix-service-details/web-application/web-application-banner.webp",
+      overview:
+        "/agntix-service-details/web-application/web-application-responsive-overview.webp",
+      pair: [
+        "/agntix-service-details/web-application/web-application-development-team.webp",
+        "/agntix-service-details/web-application/web-application-dual-screen-coding.webp",
+      ],
+    },
     capabilities: [
       {
         title: "Product experience design",
@@ -210,6 +232,9 @@ export const serviceOfferings: readonly ServiceOffering[] = [
         "Application and API engineering - building the mobile client, backend services, and secure integrations.",
         "Store release and improvement - preparing submissions, monitoring production, and iterating from usage.",
       ],
+    },
+    media: {
+      overview: "/agntix-service-details/mobile-app/mobile-app-overview.webp",
     },
     capabilities: [
       {
@@ -414,6 +439,10 @@ export const serviceOfferings: readonly ServiceOffering[] = [
         "Product integration - connecting intelligence to user workflows, APIs, permissions, and operational controls.",
         "Production monitoring - tracking quality, cost, latency, failures, and feedback after release.",
       ],
+    },
+    media: {
+      overview:
+        "/agntix-service-details/ai-machine-learning/ai-machine-learning-overview.webp",
     },
     capabilities: [
       {

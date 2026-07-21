@@ -264,3 +264,18 @@
     height: calc(100vh - 20px);
   }
 }
+
+:global(html[data-theme="dark"]) .gallery {
+  border-color: var(--site-border);
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .stage {
+  background: var(--site-surface-soft);
+}
+
+:global(html[data-theme="dark"]) .thumbnail,
+:global(html[data-theme="dark"]) .thumbnailActive {
+  border-color: var(--site-border);
+  background: var(--site-surface-soft);
+}

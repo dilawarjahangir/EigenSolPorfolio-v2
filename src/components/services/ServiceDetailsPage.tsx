@@ -1,6 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Compass, Layers3, RefreshCw } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Code2,
+  Compass,
+  Layers3,
+  PencilRuler,
+  RefreshCw,
+  Rocket,
+  Search,
+} from "lucide-react";
 import type { ServiceOffering } from "@/data/services";
 import AnimatedCounter from "./AnimatedCounter";
 import styles from "./ServiceDetailsPage.module.css";
@@ -45,6 +55,18 @@ const engagementModels = [
 ] as const;
 
 const capabilityIcons = [Compass, Layers3, RefreshCw] as const;
+const processIcons = [Search, PencilRuler, Code2, Rocket] as const;
+const processPath =
+  "M186 -15L50.3294 90.0353C24.7048 109.874 24.4322 148.473 49.7742 168.672L152.943 250.9C178.058 270.917 178.058 309.083 152.943 329.1L49.0571 411.9C23.9423 431.917 23.9423 470.083 49.0572 490.1L152.943 572.9C178.058 592.917 178.058 631.083 152.943 651.1L0 773";
+
+const defaultServiceMedia = {
+  banner: "/agntix-service-details/service-details-banner.jpg",
+  overview: "/agntix-service-details/service-details-thumb-1.jpg",
+  pair: [
+    "/agntix-service-details/service-details-thumb-2.jpg",
+    "/agntix-service-details/service-details-thumb-3.jpg",
+  ],
+} as const;
 
 type ServiceDetailsPageProps = {
   service: ServiceOffering;
@@ -136,8 +158,8 @@ function ServiceDetailsBanner({ service }: ServiceDetailsPageProps) {
   return (
     <section className={styles.banner} aria-label={`${service.title} visual`}>
       <Image
-        src="/agntix-service-details/service-details-banner.jpg"
-        alt="Creative technology concept in the EigenSol service detail"
+        src={service.media?.banner ?? defaultServiceMedia.banner}
+        alt={`${service.title} technology concept`}
         fill
         priority
         sizes="100vw"
@@ -180,7 +202,7 @@ function ServiceOverview({ service }: ServiceDetailsPageProps) {
           <div className={styles.overviewMedia}>
             <div className={`${styles.imageReveal} tp_img_reveal`}>
               <Image
-                src="/agntix-service-details/service-details-thumb-1.jpg"
+                src={service.media?.overview ?? defaultServiceMedia.overview}
                 alt={`EigenSol team planning ${service.title.toLowerCase()}`}
                 width={510}
                 height={562}
@@ -239,7 +261,7 @@ function ServiceImagePair({ service }: ServiceDetailsPageProps) {
           <div className={styles.imagePairItem}>
             <div className={`${styles.imageReveal} tp_img_reveal`}>
               <Image
-                src="/agntix-service-details/service-details-thumb-2.jpg"
+                src={service.media?.pair?.[0] ?? defaultServiceMedia.pair[0]}
                 alt={`EigenSol specialists delivering ${service.title.toLowerCase()}`}
                 width={674}
                 height={450}
@@ -251,7 +273,7 @@ function ServiceImagePair({ service }: ServiceDetailsPageProps) {
           <div className={styles.imagePairItem}>
             <div className={`${styles.imageReveal} tp_img_reveal`}>
               <Image
-                src="/agntix-service-details/service-details-thumb-3.jpg"
+                src={service.media?.pair?.[1] ?? defaultServiceMedia.pair[1]}
                 alt={`Collaborative review for ${service.title.toLowerCase()}`}
                 width={674}
                 height={450}
@@ -268,7 +290,11 @@ function ServiceImagePair({ service }: ServiceDetailsPageProps) {
 
 function ServiceProcess({ service }: ServiceDetailsPageProps) {
   return (
-    <section className={styles.process} aria-labelledby="service-process-title">
+    <section
+      className={styles.process}
+      aria-labelledby="service-process-title"
+      data-service-process
+    >
       <div className={styles.container1350}>
         <div className={`${styles.processHeading} tp_fade_anim`} data-delay=".3">
           <span className={styles.processSubtitle}>
@@ -282,20 +308,103 @@ function ServiceProcess({ service }: ServiceDetailsPageProps) {
           </h2>
         </div>
 
-        <div className={`${styles.processBox} tp_fade_anim`} data-delay=".5">
-          <div className={styles.processGrid}>
-            {service.process.steps.map((step) => (
-              <article className={styles.processItem} key={step.number}>
-                <span className={styles.processNumber}>{step.number}</span>
-                <h3>
-                  {step.title[0]}
-                  <br />
-                  {step.title[1]}
-                </h3>
-                <p>{step.description}</p>
-              </article>
-            ))}
+        <div className={styles.processBox}>
+          <div className={`${styles.processRoute} ${styles.processRouteBase}`} aria-hidden="true">
+            <svg viewBox="0 0 202 744" fill="none">
+              <path
+                data-process-path
+                d={processPath}
+                stroke="currentColor"
+                strokeOpacity=".2"
+                strokeDasharray="10 8"
+              />
+            </svg>
           </div>
+
+          <div
+            className={`${styles.processRoute} ${styles.processRouteProgress}`}
+            data-process-progress
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 202 744" fill="none">
+              <path
+                d={processPath}
+                stroke="url(#service-process-gradient)"
+                strokeDasharray="10 8"
+              />
+              <defs>
+                <linearGradient
+                  id="service-process-gradient"
+                  x1="101"
+                  y1="-32"
+                  x2="101"
+                  y2="773"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset=".04" stopColor="#FF7744" stopOpacity="0" />
+                  <stop offset=".16" stopColor="#FF7744" />
+                  <stop offset=".58" stopColor="#FF7744" />
+                  <stop offset=".86" stopColor="#56CCF2" />
+                  <stop offset=".97" stopColor="#56CCF2" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <Image
+            className={styles.processRocket}
+            data-process-rocket
+            src="/plexify-process/rocket.png"
+            alt=""
+            width={37}
+            height={37}
+            sizes="37px"
+            aria-hidden="true"
+          />
+          <Image
+            className={styles.processBlast}
+            data-process-blast
+            src="/plexify-process/blast.gif"
+            alt=""
+            width={256}
+            height={256}
+            sizes="40px"
+            unoptimized
+            aria-hidden="true"
+          />
+
+          {service.process.steps.map((step, index) => {
+            const Icon = processIcons[index];
+
+            return (
+              <div
+                className={`${styles.processRow} ${
+                  index % 2 === 0 ? styles.processRowLeft : styles.processRowRight
+                }`}
+                data-process-row
+                data-active="false"
+                key={step.number}
+              >
+                <div className={styles.processCardWrap}>
+                  <article className={styles.processCard} data-number={step.number}>
+                    <span className={styles.processCardIcon} aria-hidden="true">
+                      <Icon strokeWidth={1.5} />
+                    </span>
+                    <div className={styles.processCardContent}>
+                      <h3>
+                        {step.title[0]} {step.title[1]}
+                      </h3>
+                      <p>{step.description}</p>
+                    </div>
+                  </article>
+                </div>
+
+                <span className={styles.processMarker} aria-hidden="true">
+                  {step.number}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         <div className={styles.processCta}>

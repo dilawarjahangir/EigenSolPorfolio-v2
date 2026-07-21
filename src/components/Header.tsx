@@ -11,9 +11,9 @@ import styles from "./Header.module.css";
 const navigation = [
   { label: "Home", href: "/#home" },
   { label: "Services", href: "/services" },
-  { label: "Solutions", href: "/#solutions" },
-  { label: "Work", href: "/case-studies" },
+  { label: "Projects", href: "/case-studies" },
   { label: "About", href: "/about" },
+  { label: "Blogs", href: "/blogs" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -27,14 +27,16 @@ export default function Header() {
     pathname.startsWith("/services")
       ? "Services"
       : pathname.startsWith("/case-studies")
-        ? "Work"
-        : pathname === "/about"
-          ? "About"
-          : pathname === "/contact"
-            ? "Contact"
-            : pathname === "/"
-              ? homeActive
-              : "";
+        ? "Projects"
+        : pathname.startsWith("/blogs")
+          ? "Blogs"
+          : pathname === "/about"
+            ? "About"
+            : pathname === "/contact"
+              ? "Contact"
+              : pathname === "/"
+                ? homeActive
+                : "";
 
   useMotionValueEvent(scrollY, "change", (value) => setScrolled(value > 20));
 

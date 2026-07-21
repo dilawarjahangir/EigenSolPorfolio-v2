@@ -286,3 +286,18 @@
     margin-bottom: 20px;
   }
 }
+
+:global(html[data-theme="dark"]) .area {
+  color: var(--site-heading);
+  background-color: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .projectNumber span,
+:global(html[data-theme="dark"]) .projectNumber i,
+:global(html[data-theme="dark"]) .projectTitle {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .projectContent > span {
+  color: var(--site-text);
+}

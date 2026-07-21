@@ -620,3 +620,47 @@
     transition: none;
   }
 }
+
+:global(html[data-theme="dark"]) .footer {
+  color: var(--site-heading);
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .socialRail,
+:global(html[data-theme="dark"]) .cornerMessage {
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .socialRail::after,
+:global(html[data-theme="dark"]) .socialRail::before,
+:global(html[data-theme="dark"]) .cornerMessage::after,
+:global(html[data-theme="dark"]) .cornerMessage::before {
+  box-shadow: 0 -18px 0 0 var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .cornerLink,
+:global(html[data-theme="dark"]) .headline,
+:global(html[data-theme="dark"]) .widgetTitle,
+:global(html[data-theme="dark"]) .contactLinks a,
+:global(html[data-theme="dark"]) .address,
+:global(html[data-theme="dark"]) .wordmark,
+:global(html[data-theme="dark"]) .copyrightText,
+:global(html[data-theme="dark"]) .legalColumn a {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .widgetTitle::before {
+  background: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .quickLink {
+  border-color: var(--site-border);
+  color: var(--site-heading);
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .socialLink:hover,
+:global(html[data-theme="dark"]) .socialLink:focus-visible {
+  color: #141414;
+  background: #ffffff;
+}

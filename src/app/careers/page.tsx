@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const values = [
-  ["Innovation First", "We encourage thoughtful experimentation and practical use of new technology."],
-  ["Ownership Culture", "Team members own outcomes from early decisions through production."],
-  ["Sustainable Pace", "We value focused delivery, realistic planning, and long-term performance."],
-  ["Diverse Perspectives", "Different disciplines and backgrounds improve the products we build."],
+  ["Innovation First", "We encourage experimentation and embrace new technologies."],
+  ["Ownership Culture", "Take full ownership of your projects from concept to deployment."],
+  ["Work-Life Balance", "We believe in a sustainable pace and avoiding burnout."],
+  ["Diverse & Inclusive", "We celebrate diversity and create an environment where everyone belongs."],
 ];
 
 const benefits = [
@@ -33,9 +33,9 @@ export default function CareersPage() {
     <SitePageShell>
       <div className={styles.page}>
         <PageHero
-          eyebrow="Join EigenSol"
-          title="Careers at EigenSol"
-          description="Work with a multidisciplinary team solving meaningful product, software, automation, and artificial intelligence challenges."
+          eyebrow="Join Our Team"
+          title="Build Your Career. Build the Future."
+          description="Join a team of talented, passionate people working on ambitious software, product, and artificial intelligence projects."
           image="/team/umernew.webp"
           imageAlt="EigenSol team member"
           imagePosition="center 18%"

@@ -5,58 +5,60 @@ import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./ClientTestimonialsSection.module.css";
 
-const quote =
-  "\u201cAgntix studio ability to create a high quality UI is stands out. It\u2019s something we placed a premium on. A studio with passionate, professional, fun and full creativity.\u201d";
-
 const testimonials = [
   {
     id: 1,
-    name: "Albert Juan",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "EigenSol transformed our entire digital infrastructure. Their team delivered a scalable platform that increased our operational efficiency by 300%.",
+    name: "Jennifer Martinez",
+    position: "Operations Lead",
     avatar: "/agntix-home/testimonial/avatars/avatar-1.png",
     tone: "white",
   },
   {
     id: 2,
-    name: "Koen Chegg",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "Working with EigenSol was a game-changer for our startup. They turned our vision into a high-performing product our users love.",
+    name: "Michael Chen",
+    position: "Startup Founder",
     avatar: "/agntix-home/testimonial/avatars/avatar-2.png",
     tone: "orange",
   },
   {
     id: 3,
-    name: "Warren Daniel",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "They don't just build software, they build solutions that drive real business value. Our customer satisfaction scores have never been higher.",
+    name: "Sarah Williams",
+    position: "Product Director",
     avatar: "/agntix-home/testimonial/avatars/avatar-3.jpg",
     tone: "black",
   },
   {
     id: 4,
-    name: "Elvin Bond",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "EigenSol delivered a secure platform that exceeded expectations. Their technical discipline gave us the confidence to scale quickly.",
+    name: "David Rodriguez",
+    position: "Technology Director",
     avatar: "/agntix-home/testimonial/avatars/avatar-4.jpg",
     tone: "white",
   },
   {
     id: 5,
-    name: "Abbas",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "Our e-commerce rebuild was a massive undertaking, but EigenSol made it seamless. They delivered on time and the results speak for themselves.",
+    name: "Emily Thompson",
+    position: "Growth Lead",
     avatar: "/agntix-home/testimonial/avatars/avatar-5.jpg",
     tone: "gray",
   },
   {
     id: 6,
-    name: "Jessamine Mumtaz",
-    position: "CEO & Founder, Archin Studio",
+    quote:
+      "The mobile app EigenSol built for us is intuitive, stable, and easy to maintain. Their UX thinking and engineering support were excellent.",
+    name: "James Wilson",
+    position: "Product Manager",
     avatar: "/agntix-home/testimonial/avatars/avatar-6.jpg",
     tone: "orange",
-  },
-  {
-    id: 7,
-    name: "Koen Chegg",
-    position: "CEO & Founder, Archin Studio",
-    avatar: "/agntix-home/testimonial/avatars/avatar-2.png",
-    tone: "black",
   },
 ] as const;
 
@@ -66,17 +68,6 @@ const toneClasses = {
   black: styles.blackCard,
   gray: styles.grayCard,
 } as const;
-
-function StarIcon() {
-  return (
-    <svg width="14" height="13" viewBox="0 0 14 13" fill="none" aria-hidden="true">
-      <path
-        d="M7 0L8.6458 4.73475L13.6574 4.83688L9.66296 7.86525L11.1145 12.6631L7 9.8L2.8855 12.6631L4.33704 7.86525L0.342604 4.83688L5.3542 4.73475L7 0Z"
-        fill="#EF2B10"
-      />
-    </svg>
-  );
-}
 
 export default function ClientTestimonialsSection() {
   return (
@@ -115,8 +106,8 @@ export default function ClientTestimonialsSection() {
               <div className={styles.ratingBox}>
                 <div className={styles.rating}>
                   <Image
-                    src="/agntix-home/testimonial/testi-logo.png"
-                    alt="Clutch"
+                    src="/only-logo.svg"
+                    alt="EigenSol"
                     width={34}
                     height={38}
                     loading="eager"
@@ -124,14 +115,9 @@ export default function ClientTestimonialsSection() {
                   />
                   <div className={styles.ratingInfo}>
                     <div className={styles.ratingLine}>
-                      <span>4.9/5</span>
-                      {Array.from({ length: 5 }, (_, index) => (
-                        <i key={`rating-star-${index}`}>
-                          <StarIcon />
-                        </i>
-                      ))}
+                      <span>Client feedback</span>
                     </div>
-                    <p>Based on 24 reviews on Clutch</p>
+                    <p>Six stories from EigenSol partners</p>
                   </div>
                 </div>
               </div>
@@ -163,7 +149,7 @@ export default function ClientTestimonialsSection() {
             <SwiperSlide key={testimonial.id}>
               <article className={`${styles.card} ${toneClasses[testimonial.tone]}`}>
                 <div className={styles.quote}>
-                  <p>{quote}</p>
+                  <p>&ldquo;{testimonial.quote}&rdquo;</p>
                 </div>
                 <div className={styles.author}>
                   <div className={styles.avatar}>

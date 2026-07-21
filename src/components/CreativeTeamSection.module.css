@@ -81,6 +81,10 @@
   z-index: 5;
 }
 
+.singleRow {
+  justify-content: center;
+}
+
 .thumbWrap {
   position: relative;
 }
@@ -136,6 +140,10 @@
   line-height: 0.95;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.memberContent .longName {
+  font-size: 25px;
 }
 
 .memberContent span {
@@ -221,6 +229,10 @@
     text-align: right;
   }
 
+  .centerWrap {
+    text-align: center;
+  }
+
   .title {
     font-size: 135px;
   }
@@ -257,6 +269,15 @@
   .title {
     font-size: 200px;
   }
+}
+
+:global(html[data-theme="dark"]) .area {
+  color: var(--site-heading);
+  background-color: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .titleBox p {
+  color: var(--site-text);
 }
 
 @media (max-width: 991px) {

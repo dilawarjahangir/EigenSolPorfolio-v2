@@ -5,67 +5,86 @@ const teamRows = [
   [
     {
       id: 1,
-      name: "Andrew",
-      position: "Developer",
-      image: "/agntix-home/team/team-1.jpg",
+      name: "Abdullah Ahmad",
+      position: "Founder & Software Engineer",
+      image: "/team/abdullahPhoto.webp",
       width: 340,
       height: 470,
       thumbClass: "",
       wrapClass: styles.leftWrap,
+      longName: false,
     },
     {
       id: 2,
-      name: "Sophia",
-      position: "Developer",
-      image: "/agntix-home/team/team-2.jpg",
+      name: "Muhammad Umer",
+      position: "Co-Founder & Marketing Expert",
+      image: "/team/umernew.webp",
       width: 340,
       height: 470,
       thumbClass: "",
       wrapClass: styles.rightWrap,
+      longName: false,
     },
   ],
   [
     {
       id: 3,
-      name: "Emma",
-      position: "Developer",
-      image: "/agntix-home/team/team-3.jpg",
+      name: "Dilawar Jahangir",
+      position: "Co-Founder & Full Stack Developer",
+      image: "/team/dilawarPhoto.webp",
       width: 340,
       height: 470,
       thumbClass: styles.thumbTwo,
       wrapClass: styles.leftWrap,
+      longName: false,
     },
     {
       id: 4,
-      name: "James",
-      position: "Developer",
-      image: "/agntix-home/team/team-4.jpg",
+      name: "Muhammad Saim",
+      position: "Co-Founder, AI Engineer & Researcher",
+      image: "/team/saimPhoto.webp",
       width: 340,
       height: 470,
       thumbClass: styles.thumbFour,
       wrapClass: styles.rightWrap,
+      longName: false,
     },
   ],
   [
     {
       id: 5,
-      name: "Oliver",
-      position: "Developer",
-      image: "/agntix-home/team/team-5.jpg",
+      name: "Abdullah Faisal",
+      position: "AI Engineer",
+      image: "/team/abdullahFaisalPhoto.webp",
       width: 340,
       height: 440,
       thumbClass: "",
       wrapClass: styles.leftWrap,
+      longName: false,
     },
     {
       id: 6,
-      name: "Charlotte",
-      position: "Developer",
-      image: "/agntix-home/team/team-6.jpg",
+      name: "Syed Abdul Muhaymin",
+      position: "Full-Stack JavaScript Engineer",
+      image: "/team/muhayminPhoto.webp",
       width: 340,
       height: 440,
       thumbClass: "",
       wrapClass: styles.rightWrap,
+      longName: true,
+    },
+  ],
+  [
+    {
+      id: 7,
+      name: "Manan Qasim",
+      position: "Financial Accountant",
+      image: "/team/mannanPhoto.webp",
+      width: 340,
+      height: 440,
+      thumbClass: "",
+      wrapClass: styles.centerWrap,
+      longName: false,
     },
   ],
 ] as const;
@@ -96,7 +115,10 @@ export default function CreativeTeamSection() {
 
         <div className={styles.teamWrap}>
           {teamRows.map((row, rowIndex) => (
-            <div className={styles.row} key={`team-row-${rowIndex}`}>
+            <div
+              className={`${styles.row} ${row.length === 1 ? styles.singleRow : ""}`}
+              key={`team-row-${rowIndex}`}
+            >
               {row.map((member) => (
                 <div className={`${styles.column} ${styles.teamColumn}`} key={member.id}>
                   <div className={`${styles.thumbWrap} ${member.wrapClass}`}>
@@ -111,7 +133,7 @@ export default function CreativeTeamSection() {
                         sizes="(max-width: 767px) calc(100vw - 30px), 340px"
                       />
                       <div className={styles.memberContent}>
-                        <h3>{member.name}</h3>
+                        <h3 className={member.longName ? styles.longName : ""}>{member.name}</h3>
                         <span>{member.position}</span>
                       </div>
                     </div>

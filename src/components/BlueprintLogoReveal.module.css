@@ -120,3 +120,17 @@
     stroke-dashoffset: 0;
   }
 }
+
+:global(html[data-theme="dark"]) .light {
+  background: var(--site-surface-raised);
+}
+
+:global(html[data-theme="dark"]) .outline,
+:global(html[data-theme="dark"]) .bottomOutline,
+:global(html[data-theme="dark"]) .topOutline {
+  stroke: #a3a8b0;
+}
+
+:global(html[data-theme="dark"]) .middleOutline {
+  stroke: #c4c8ce;
+}

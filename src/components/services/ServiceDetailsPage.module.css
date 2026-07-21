@@ -401,13 +401,15 @@
 }
 
 .process {
-  padding-top: 130px;
-  padding-bottom: 94px;
+  position: relative;
+  overflow: hidden;
+  padding-top: 148px;
+  padding-bottom: 110px;
   background: var(--detail-panel);
 }
 
 .processHeading {
-  padding-bottom: 100px;
+  padding-bottom: 50px;
   text-align: center;
 }
 
@@ -443,65 +445,201 @@
 .processBox {
   position: relative;
   z-index: 1;
-  padding-bottom: 40px;
+  min-height: 744px;
 }
 
-.processBox::before {
+.processRoute {
   position: absolute;
-  top: 20px;
-  right: 0;
-  left: 0;
-  z-index: -1;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.1);
-  content: "";
+  top: 0;
+  left: 50%;
+  z-index: 0;
+  width: 202px;
+  height: 744px;
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
-.processGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.processRoute svg {
+  display: block;
+  width: 202px;
+  height: 744px;
+  overflow: visible;
 }
 
-.processItem {
-  min-width: 0;
-  margin-bottom: 30px;
-  padding: 0 15px;
-  text-align: center;
+.processRoute path {
+  fill: none;
+  stroke-width: 1;
 }
 
-.processNumber {
-  display: inline-grid;
+.processRouteBase {
+  color: var(--detail-black);
+}
+
+.processRouteProgress {
+  height: 0;
+  overflow: hidden;
+  will-change: height;
+}
+
+.processRocket,
+.processBlast {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.processRocket {
+  z-index: 4;
+  width: 37px;
+  height: 37px;
+  filter: sepia(1) saturate(6) hue-rotate(330deg) brightness(1.08)
+    drop-shadow(0 0 10px rgba(255, 119, 68, 0.38));
+  transform: rotate(140deg);
+}
+
+.processBlast {
+  z-index: 5;
   width: 40px;
   height: 40px;
-  margin-bottom: 45px;
-  border-radius: 50%;
-  place-items: center;
-  color: #ffffff;
-  background: var(--detail-orange);
-  font-size: 16px;
-  font-weight: 600;
+  opacity: 0;
 }
 
-.processItem h3 {
-  margin-bottom: 20px;
+.processRow {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 160px;
+}
+
+.processCardWrap {
+  position: absolute;
+  top: 30%;
+  width: 40%;
+}
+
+.processRowLeft .processCardWrap {
+  left: 0;
+}
+
+.processRowRight .processCardWrap {
+  right: 0;
+}
+
+.processCard {
+  position: relative;
+  display: flex;
+  min-height: 132px;
+  align-items: center;
+  gap: 22px;
+  overflow: hidden;
+  padding: 28px 30px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(120deg, rgba(20, 20, 20, 0.1), rgba(86, 204, 242, 0.12))
+      border-box;
+  box-shadow: 0 18px 45px rgba(20, 20, 20, 0.06);
+  transition:
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.processCard::after {
+  position: absolute;
+  bottom: -4px;
+  left: 30px;
+  color: rgba(20, 20, 20, 0.035);
+  font-family: "Teko", "ClashDisplay-Bold", sans-serif;
+  font-size: 60px;
+  font-weight: 600;
+  line-height: 0.8;
+  content: attr(data-number);
+  pointer-events: none;
+}
+
+.processCard:hover {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(120deg, var(--detail-orange), #56ccf2) border-box;
+  box-shadow: 0 22px 55px rgba(255, 119, 68, 0.12);
+}
+
+.processCardIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  border: 1px solid rgba(255, 119, 68, 0.18);
+  border-radius: 50%;
+  color: var(--detail-orange);
+  background: linear-gradient(145deg, rgba(255, 119, 68, 0.1), rgba(86, 204, 242, 0.1));
+  place-items: center;
+}
+
+.processCardIcon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.processCardContent {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.processCard h3 {
+  margin-bottom: 4px;
   color: var(--detail-black);
   font-family: "Teko", "ClashDisplay-Bold", sans-serif;
-  font-size: 30px;
+  font-size: 29px;
   font-weight: 500;
-  line-height: 1.1;
+  line-height: 1;
 }
 
-.processItem p {
-  max-width: 280px;
-  margin-right: auto;
-  margin-left: auto;
+.processCard p {
   color: #77777b;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.4;
 }
 
+.processMarker {
+  position: absolute;
+  top: 60%;
+  left: 46%;
+  z-index: 3;
+  display: grid;
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  border-radius: 50%;
+  color: var(--detail-black);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.08);
+  font-size: 15px;
+  font-weight: 600;
+  place-items: center;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.processRow[data-active="true"] .processMarker {
+  border-color: var(--detail-orange);
+  color: #ffffff;
+  background: var(--detail-orange);
+  box-shadow: 0 10px 28px rgba(255, 119, 68, 0.28);
+}
+
 .processCta {
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -697,6 +835,18 @@
   .container1430 {
     max-width: 1140px;
   }
+
+  .processCardWrap {
+    width: 33.333333%;
+  }
+
+  .processRowLeft .processCardWrap {
+    left: 9%;
+  }
+
+  .processRowRight .processCardWrap {
+    right: 9%;
+  }
 }
 
 @media (min-width: 1400px) {
@@ -874,22 +1024,6 @@
     padding-top: 100px;
   }
 
-  .processBox::before {
-    content: none;
-  }
-
-  .processGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .processItem {
-    margin-bottom: 40px;
-  }
-
-  .processNumber {
-    margin-bottom: 30px;
-  }
-
   .engagements {
     padding-top: 100px;
     padding-bottom: 100px;
@@ -910,6 +1044,41 @@
 
   .engagementRow > strong {
     text-align: left;
+  }
+}
+
+@media (max-width: 990px) {
+  .processBox {
+    min-height: 0;
+  }
+
+  .processRoute,
+  .processRocket,
+  .processBlast,
+  .processMarker {
+    display: none;
+  }
+
+  .processRow {
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .processRow:last-child {
+    margin-bottom: 0;
+  }
+
+  .processCardWrap {
+    position: static;
+    width: 100%;
+  }
+
+  .processCard {
+    min-height: 150px;
+  }
+
+  .processCta {
+    margin-top: 50px;
   }
 }
 
@@ -962,8 +1131,13 @@
     font-size: 50px;
   }
 
-  .processGrid {
-    grid-template-columns: 1fr;
+  .process {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .processHeading {
+    padding-bottom: 40px;
   }
 
   .processCta > span {
@@ -1038,6 +1212,44 @@
     padding-bottom: 60px;
   }
 
+  .process {
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+
+  .processHeading {
+    padding-bottom: 30px;
+  }
+
+  .processTitle {
+    font-size: 44px;
+  }
+
+  .processCard {
+    min-height: 0;
+    gap: 15px;
+    padding: 24px 20px;
+  }
+
+  .processCardIcon {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+  .processCardIcon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .processCard h3 {
+    font-size: 26px;
+  }
+
+  .processCard p {
+    font-size: 14px;
+  }
+
   .processCta > span {
     border-radius: 16px;
   }
@@ -1065,9 +1277,80 @@
   }
 
   .capabilityIcon svg,
+  .processCard,
+  .processMarker,
   .processCta a,
   .processCta svg {
     animation: none;
     transition: none;
   }
+
+  .processRouteProgress {
+    height: 116%;
+  }
+
+  .processRocket,
+  .processBlast {
+    display: none;
+  }
+
+  .processMarker {
+    border-color: var(--detail-orange);
+    color: #ffffff;
+    background: var(--detail-orange);
+  }
+}
+
+:global(html[data-theme="dark"]) .page {
+  --detail-black: #f6f6f9;
+  --detail-copy: #a9adb7;
+  --detail-muted: #858a95;
+  --detail-panel: #111215;
+  color: var(--detail-copy);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .hero,
+:global(html[data-theme="dark"]) .overview,
+:global(html[data-theme="dark"]) .capabilities,
+:global(html[data-theme="dark"]) .imagePair,
+:global(html[data-theme="dark"]) .engagements {
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .metric,
+:global(html[data-theme="dark"]) .overviewHeading,
+:global(html[data-theme="dark"]) .capabilityCard,
+:global(html[data-theme="dark"]) .capabilityContent h3,
+:global(html[data-theme="dark"]) .engagementRow,
+:global(html[data-theme="dark"]) .engagementRow:last-child,
+:global(html[data-theme="dark"]) .processCta > span {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .processCard {
+  background:
+    linear-gradient(var(--site-surface-raised), var(--site-surface-raised)) padding-box,
+    linear-gradient(120deg, rgba(255, 255, 255, 0.13), rgba(86, 204, 242, 0.18)) border-box;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+:global(html[data-theme="dark"]) .processCard:hover {
+  background:
+    linear-gradient(var(--site-surface-raised), var(--site-surface-raised)) padding-box,
+    linear-gradient(120deg, var(--detail-orange), #56ccf2) border-box;
+}
+
+:global(html[data-theme="dark"]) .processCard::after {
+  color: rgba(255, 255, 255, 0.045);
+}
+
+:global(html[data-theme="dark"]) .processCard p {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .processMarker {
+  border-color: var(--site-border);
+  color: var(--site-heading);
+  background: var(--site-surface-raised);
 }

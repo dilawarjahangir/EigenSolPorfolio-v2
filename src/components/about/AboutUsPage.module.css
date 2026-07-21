@@ -1,0 +1,1287 @@
+.page {
+  width: 100%;
+  overflow: clip;
+  color: #141414;
+  background: #ffffff;
+  font-family: "Inter", sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  letter-spacing: 0;
+}
+
+.hero {
+  position: relative;
+  background-color: #ffffff;
+  background-image: url("/agntix-about-us/about-us-bg.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.heroContainer,
+.standardContainer,
+.selectedWorkContainer {
+  width: 100%;
+  max-width: 1230px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.heroInner {
+  padding: 195px 0 120px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  margin: 0 0 50px;
+  color: #111013;
+  font-family: "Inter", sans-serif;
+  font-size: 100px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.heroMeta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.eyebrow,
+.sectionEyebrow,
+.dotEyebrow {
+  position: relative;
+  display: inline-block;
+  color: #111013;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.sectionEyebrow {
+  padding-left: 20px;
+}
+
+.eyebrow::before,
+.sectionEyebrow::before {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff7744;
+  content: "";
+}
+
+.arrowLine {
+  flex: 0 0 auto;
+  margin: 3px 75px 0 15px;
+  color: #111013;
+}
+
+.heroMeta p {
+  width: 465px;
+  margin: -5px 0 0;
+  color: #111013;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.heroShape {
+  position: absolute;
+  top: 31%;
+  right: 10%;
+  width: 65px;
+  height: 65px;
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: aboutMarquee 50s linear infinite;
+  will-change: transform;
+}
+
+.marqueeTrack span {
+  flex: none;
+  margin-right: 30px;
+  color: #111013;
+  font-family: "Inter", sans-serif;
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 1.24;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes aboutMarquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  background: #f6f6f9;
+}
+
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: 120%;
+  margin-top: -10%;
+  object-fit: cover;
+}
+
+.intro {
+  padding: 100px 0;
+  background: #f6f6f9;
+}
+
+.introBox {
+  position: relative;
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 25% 75%;
+}
+
+.sectionEyebrow {
+  margin-bottom: 20px;
+}
+
+.introContent {
+  margin-left: 70px;
+}
+
+.introStatement {
+  max-width: 870px;
+  margin: 0 60px 80px 0;
+  color: #141414;
+  font-size: 50px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.introLower {
+  display: grid;
+  grid-template-columns: 44% 56%;
+}
+
+.introImageWrap {
+  position: relative;
+  width: 315px;
+  height: 415px;
+  margin-left: 100px;
+  overflow: hidden;
+}
+
+.introImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: -100px;
+  object-fit: cover;
+}
+
+.introFacts {
+  margin: 25px 0 0 60px;
+}
+
+.avatarInfo {
+  margin-bottom: 38px;
+  padding-bottom: 33px;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.12);
+}
+
+.avatarInfo img {
+  display: block;
+  width: 140px;
+  height: 54px;
+  margin-bottom: 18px;
+}
+
+.avatarInfo p {
+  max-width: 500px;
+  margin: 0;
+  color: #55565c;
+  font-size: 18px;
+  line-height: 1.44;
+}
+
+.counterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.counter strong {
+  display: block;
+  margin-bottom: 17px;
+  color: #141414;
+  font-size: 70px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.counter > span {
+  display: block;
+  max-width: 190px;
+  color: #55565c;
+  font-size: 16px;
+  line-height: 1.33;
+}
+
+.rotatingShape {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 144px;
+  height: 144px;
+  animation: rotateShape 5s linear infinite;
+}
+
+@keyframes rotateShape {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.services {
+  padding: 160px 0 65px;
+  background: #ffffff;
+}
+
+.wideContainer {
+  width: 100%;
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.servicesTop {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  margin: 0 -15px 80px;
+}
+
+.servicesTop > div {
+  padding: 0 15px;
+}
+
+.dotEyebrow {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  text-transform: none;
+}
+
+.dotEyebrow::before {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #141414;
+  content: "";
+}
+
+.servicesHeading {
+  margin: 0;
+  padding-left: 80px;
+  color: #111013;
+  font-family: "Inter", sans-serif;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.servicesSummary p {
+  margin: 0 0 20px;
+  color: #28282d;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.orangeButton {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.orangeButton > span:first-child {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  padding: 0 22px;
+  border-radius: 24px;
+  background: #ff7744;
+}
+
+.orangeButtonIcon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  margin-left: -4px;
+  place-items: center;
+  border-radius: 50%;
+  background: #ff7744;
+}
+
+.orangeButton:hover {
+  color: #ffffff;
+}
+
+.capabilityList {
+  width: 75%;
+  margin-left: 25%;
+}
+
+.capability {
+  display: flex;
+  min-height: 275px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 0 80px;
+  border-top: 1px solid #f0f0f2;
+}
+
+.capability:last-child {
+  border-bottom: 1px solid #f0f0f2;
+}
+
+.capabilityContent {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.capabilityNumber {
+  flex: 0 0 125px;
+  padding-top: 18px;
+  color: #111013;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.capabilityTitle {
+  margin: 0 0 20px;
+  color: #111013;
+  font-family: "Inter", sans-serif;
+  font-size: 120px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.capabilityTitle a {
+  color: transparent;
+  background: linear-gradient(#ff7744, #ff7744) left no-repeat, #111013;
+  background-size: 0 100%, 100% 100%;
+  background-clip: text;
+  text-decoration: none;
+  transition: background-size 500ms ease;
+}
+
+.capability:hover .capabilityTitle a,
+.capability:focus-within .capabilityTitle a {
+  background-size: 100% 100%, 100% 100%;
+}
+
+.capabilityCategories {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 9px;
+}
+
+.capabilityCategories span {
+  position: relative;
+  color: #111013;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.capabilityCategories span:not(:last-child) {
+  margin-right: 13px;
+  padding-right: 19px;
+}
+
+.capabilityCategories span:not(:last-child)::after {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #111013;
+  content: "";
+}
+
+.capabilityLink {
+  display: grid;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  margin-top: 20px;
+  place-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  color: #141414;
+  transition: color 250ms ease, background-color 250ms ease, border-color 250ms ease;
+}
+
+.capability:hover .capabilityLink,
+.capability:focus-within .capabilityLink {
+  border-color: #ff7744;
+  color: #ffffff;
+  background: #ff7744;
+}
+
+.process {
+  padding: 120px 0 133px;
+  background: #ffffff;
+}
+
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.process .standardContainer {
+  max-width: 1440px;
+}
+
+.processHeadingWrap {
+  align-self: start;
+}
+
+.processHeading {
+  max-width: 590px;
+  margin: 0;
+  color: #141414;
+  font-family: "Inter", sans-serif;
+  font-size: 112px;
+  font-weight: 700;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.processCards {
+  margin-left: 60px;
+}
+
+.processCard {
+  min-height: 330px;
+  margin-bottom: 15px;
+  padding: 45px 40px 45px 50px;
+  border: 4px solid #ffffff;
+  background: #f6f6f9;
+}
+
+.processNumber {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 45px;
+}
+
+.processNumber span {
+  display: block;
+  width: 60px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff7744 15%, #56ccf2 115%);
+  transform: rotate(30deg);
+}
+
+.processNumber i {
+  position: absolute;
+  top: 25px;
+  left: 12px;
+  color: #ffffff;
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.processCard h3 {
+  margin: 0 0 12px;
+  color: #141414;
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.processCard p {
+  margin: 0;
+  color: #141414;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.team {
+  position: relative;
+  min-height: 1140px;
+  padding: 125px 0 145px;
+  overflow: hidden;
+  background-color: #141414;
+  background-image: url("/agntix-about-us/noise.png");
+}
+
+.teamHeadingWrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 75px;
+  text-align: center;
+}
+
+.teamHeading {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 140px;
+  font-weight: 700;
+  line-height: 0.78;
+  text-transform: uppercase;
+}
+
+.teamSliderWrap {
+  width: calc(100% + 60px);
+  margin-left: -30px;
+}
+
+.teamSlider {
+  overflow: visible;
+}
+
+.teamSlider :global(.swiper-wrapper) {
+  align-items: stretch;
+  transition-timing-function: linear !important;
+}
+
+.teamSlider :global(.swiper-slide) {
+  height: auto;
+}
+
+.teamCard {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #28282d;
+}
+
+.teamImage {
+  object-fit: cover;
+  filter: saturate(0.9);
+  transition: transform 600ms ease;
+}
+
+.teamCard::after {
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(180deg, transparent, rgba(14, 15, 17, 0.92));
+  content: "";
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+
+.teamOverlay {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+  left: 20px;
+  z-index: 1;
+  color: #ffffff;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+.teamOverlay h3 {
+  margin: 0 0 6px;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.teamOverlay span {
+  display: block;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.teamCard:hover .teamImage,
+.teamCard:focus-within .teamImage {
+  transform: scale(1.04);
+}
+
+.teamCard:hover::after,
+.teamCard:focus-within::after,
+.teamCard:hover .teamOverlay,
+.teamCard:focus-within .teamOverlay {
+  opacity: 1;
+}
+
+.teamCard:hover .teamOverlay,
+.teamCard:focus-within .teamOverlay {
+  transform: translateY(0);
+}
+
+.selectedWork {
+  position: relative;
+  z-index: 2;
+  margin-top: -1px;
+  padding: 55px 0 116px;
+  border-radius: 0 0 50px 50px;
+  background-color: #141414;
+  background-image: url("/agntix-about-us/noise.png");
+}
+
+.selectedWorkLabel {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: #ff7744;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.selectedWorkList {
+  position: relative;
+}
+
+.selectedWorkRow {
+  position: relative;
+  display: grid;
+  min-height: 94px;
+  grid-template-columns: 170px minmax(0, 1fr) 300px 24px;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 0 30px;
+  overflow: visible;
+  color: #ffffff;
+  background: #242424;
+  text-decoration: none;
+}
+
+.selectedWorkRow::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  height: 0;
+  background: linear-gradient(90deg, #ff7744, #56ccf2);
+  content: "";
+  transition: height 300ms ease;
+}
+
+.selectedWorkRow:hover::after,
+.selectedWorkRow:focus-visible::after {
+  height: 100%;
+}
+
+.selectedWorkRow > :not(.selectedPreview) {
+  position: relative;
+  z-index: 1;
+}
+
+.selectedIndex {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.selectedWorkRow strong {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.selectedCategory {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  transition: color 200ms ease;
+}
+
+.selectedWorkRow:hover .selectedCategory,
+.selectedWorkRow:focus-visible .selectedCategory {
+  color: #ffffff;
+}
+
+.selectedArrow {
+  justify-self: end;
+}
+
+.selectedPreview {
+  position: absolute;
+  z-index: 5;
+  width: 210px;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.4);
+  transition: opacity 300ms ease, transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.selectedPreview img {
+  object-fit: cover;
+}
+
+.selectedWorkRow:hover .selectedPreview {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (max-width: 1399px) {
+  .wideContainer {
+    max-width: 1320px;
+  }
+
+  .capabilityTitle {
+    font-size: 105px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .heroContainer,
+  .standardContainer {
+    max-width: 960px;
+  }
+
+  .process .standardContainer {
+    max-width: 960px;
+  }
+
+  .heroTitle {
+    font-size: 84px;
+  }
+
+  .marqueeTrack span {
+    font-size: 145px;
+  }
+
+  .introContent {
+    margin-left: 0;
+  }
+
+  .introStatement {
+    font-size: 40px;
+  }
+
+  .introImageWrap {
+    margin-left: 0;
+  }
+
+  .introFacts {
+    margin-left: 30px;
+  }
+
+  .servicesHeading {
+    padding-left: 0;
+  }
+
+  .capabilityList {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .capabilityTitle {
+    font-size: 110px;
+  }
+
+  .processCards {
+    margin-left: 0;
+  }
+
+  .processHeading {
+    font-size: 90px;
+  }
+}
+
+@media (max-width: 991px) {
+  .heroContainer,
+  .standardContainer {
+    max-width: 720px;
+  }
+
+  .process .standardContainer {
+    max-width: 720px;
+  }
+
+  .heroInner {
+    padding-bottom: 40px;
+  }
+
+  .heroTitle {
+    font-size: 70px;
+  }
+
+  .heroMeta {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .heroMeta p {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .marqueeTrack span {
+    font-size: 90px;
+    line-height: 1.28;
+  }
+
+  .intro {
+    padding: 80px 0;
+  }
+
+  .introGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .introContent {
+    margin-top: 20px;
+  }
+
+  .introLower {
+    grid-template-columns: 42% 58%;
+  }
+
+  .introStatement {
+    margin-right: 0;
+    font-size: 38px;
+  }
+
+  .introImageWrap {
+    width: 100%;
+  }
+
+  .introFacts {
+    margin-left: 25px;
+  }
+
+  .rotatingShape {
+    display: none;
+  }
+
+  .services {
+    padding-top: 100px;
+  }
+
+  .wideContainer {
+    max-width: 960px;
+  }
+
+  .servicesTop {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .servicesSummary {
+    grid-column: 2;
+    margin-top: 30px;
+  }
+
+  .capability {
+    min-height: 250px;
+    padding-bottom: 40px;
+  }
+
+  .capabilityNumber {
+    flex-basis: 70px;
+  }
+
+  .capabilityTitle {
+    font-size: 80px;
+  }
+
+  .process {
+    padding: 80px 0;
+  }
+
+  .processGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .processHeadingWrap {
+    margin-bottom: 40px;
+  }
+
+  .processHeading {
+    max-width: 700px;
+    font-size: 90px;
+  }
+
+  .selectedWorkContainer {
+    max-width: 960px;
+  }
+
+  .selectedWorkRow {
+    grid-template-columns: 70px minmax(0, 1fr) 150px 24px;
+  }
+
+  .selectedPreview {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .heroInner {
+    padding: 150px 0 90px;
+  }
+
+  .heroTitle {
+    margin-bottom: 50px;
+    font-size: 54px;
+    line-height: 1.28;
+  }
+
+  .heroShape {
+    display: none;
+  }
+
+  .arrowLine {
+    margin-right: 0;
+  }
+
+  .heroMeta p {
+    font-size: 18px;
+  }
+
+  .marqueeTrack span {
+    font-size: 90px;
+    line-height: 1.28;
+  }
+
+  .banner {
+    height: 250px;
+    aspect-ratio: auto;
+  }
+
+  .bannerImage {
+    height: 100%;
+    margin-top: 0;
+    object-position: center;
+  }
+
+  .introStatement {
+    margin-bottom: 60px;
+    font-size: 30px;
+  }
+
+  .intro {
+    min-height: 1509px;
+  }
+
+  .introLower {
+    grid-template-columns: 1fr;
+  }
+
+  .introImageWrap {
+    height: 415px;
+    margin-bottom: 35px;
+  }
+
+  .introFacts {
+    margin: 0;
+  }
+
+  .counter strong {
+    font-size: 54px;
+  }
+
+  .servicesTop {
+    grid-template-columns: 1fr;
+    margin-bottom: 80px;
+  }
+
+  .services {
+    min-height: 1644px;
+  }
+
+  .servicesSummary {
+    grid-column: 1;
+    margin-top: 10px;
+  }
+
+  .servicesHeading {
+    margin: 15px 0 0;
+    font-size: 40px;
+  }
+
+  .servicesSummary p {
+    font-size: 18px;
+  }
+
+  .capability {
+    height: 342px;
+    min-height: 342px;
+    flex-wrap: wrap;
+    padding: 28px 0 26px;
+  }
+
+  .capabilityContent {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .capabilityNumber {
+    flex-basis: 100%;
+    margin-bottom: 20px;
+    padding-top: 0;
+  }
+
+  .capabilityTitle {
+    overflow-wrap: anywhere;
+    font-size: 58px;
+    line-height: 1.05;
+  }
+
+  .capabilityCategories span {
+    font-size: 15px;
+  }
+
+  .capabilityLink {
+    margin-top: 28px;
+  }
+
+  .processHeading {
+    font-size: 68px;
+    line-height: 0.94;
+  }
+
+  .processCard {
+    height: 345px;
+    min-height: 0;
+    padding: 45px 30px 45px 35px;
+  }
+
+  .processCard h3 {
+    font-size: 22px;
+  }
+
+  .process {
+    padding-bottom: 53px;
+  }
+
+  .team {
+    min-height: 1051px;
+    padding: 80px 0 100px;
+  }
+
+  .teamHeadingWrap {
+    margin-bottom: 55px;
+    padding: 0 15px;
+  }
+
+  .teamHeading {
+    font-size: 64px;
+    line-height: 0.9;
+  }
+
+  .teamSliderWrap {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 15px;
+  }
+
+  .teamCard {
+    height: 500px;
+  }
+
+  .teamCard::after,
+  .teamOverlay {
+    opacity: 1;
+  }
+
+  .teamOverlay {
+    transform: none;
+  }
+
+  .selectedWork {
+    padding: 70px 0 80px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .selectedWorkRow {
+    min-height: 143px;
+    grid-template-columns: minmax(0, 1fr) 20px;
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    padding: 22px 20px;
+  }
+
+  .selectedIndex {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .selectedWorkRow strong {
+    grid-column: 1;
+    grid-row: 2;
+    margin-bottom: 12px;
+    font-size: 17px;
+  }
+
+  .selectedCategory {
+    display: block;
+    grid-column: 1;
+    grid-row: 3;
+    font-size: 14px;
+  }
+
+  .selectedArrow {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 420px) {
+  .heroTitle {
+    font-size: 50px;
+  }
+
+  .eyebrow {
+    font-size: 15px;
+  }
+
+  .arrowLine {
+    width: 81px;
+  }
+
+  .counterGrid {
+    gap: 18px;
+  }
+
+  .counter > span {
+    font-size: 14px;
+  }
+
+  .capabilityTitle {
+    font-size: 58px;
+  }
+
+  .processHeading {
+    font-size: 61px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack,
+  .rotatingShape {
+    animation: none;
+  }
+
+  .capabilityTitle a {
+    background-size: 100% 100%, 100% 100%;
+  }
+}
+
+:global(html[data-theme="dark"]) .page,
+:global(html[data-theme="dark"]) .hero,
+:global(html[data-theme="dark"]) .marquee,
+:global(html[data-theme="dark"]) .services,
+:global(html[data-theme="dark"]) .process {
+  color: var(--site-text);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .banner,
+:global(html[data-theme="dark"]) .intro {
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .heroTitle,
+:global(html[data-theme="dark"]) .eyebrow,
+:global(html[data-theme="dark"]) .sectionEyebrow,
+:global(html[data-theme="dark"]) .dotEyebrow,
+:global(html[data-theme="dark"]) .arrowLine,
+:global(html[data-theme="dark"]) .heroMeta p,
+:global(html[data-theme="dark"]) .marqueeTrack span,
+:global(html[data-theme="dark"]) .introStatement,
+:global(html[data-theme="dark"]) .counter strong,
+:global(html[data-theme="dark"]) .servicesHeading,
+:global(html[data-theme="dark"]) .capabilityNumber,
+:global(html[data-theme="dark"]) .capabilityTitle,
+:global(html[data-theme="dark"]) .capabilityCategories span,
+:global(html[data-theme="dark"]) .processHeading,
+:global(html[data-theme="dark"]) .processCard h3,
+:global(html[data-theme="dark"]) .processCard p {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .avatarInfo,
+:global(html[data-theme="dark"]) .capability,
+:global(html[data-theme="dark"]) .capability:last-child {
+  border-color: var(--site-border);
+}
+
+:global(html[data-theme="dark"]) .avatarInfo p,
+:global(html[data-theme="dark"]) .counter > span,
+:global(html[data-theme="dark"]) .servicesSummary p {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .dotEyebrow::before,
+:global(html[data-theme="dark"]) .capabilityCategories span:not(:last-child)::after {
+  background: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .capabilityTitle a {
+  background: linear-gradient(#ff7744, #ff7744) left no-repeat, var(--site-heading);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+:global(html[data-theme="dark"]) .capabilityLink {
+  border-color: var(--site-border);
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .processCard {
+  border-color: var(--site-background);
+  background: var(--site-surface-raised);
+}

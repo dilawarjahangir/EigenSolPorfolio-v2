@@ -229,3 +229,31 @@
     transition: none;
   }
 }
+
+:global(html[data-theme="dark"]) .page {
+  color: var(--site-heading);
+  background: var(--site-background);
+}
+
+:global(html[data-theme="dark"]) .hero {
+  border-color: var(--site-border);
+  background: var(--site-surface);
+}
+
+:global(html[data-theme="dark"]) .backLink,
+:global(html[data-theme="dark"]) .eyebrow,
+:global(html[data-theme="dark"]) .section h2 {
+  color: var(--site-heading);
+}
+
+:global(html[data-theme="dark"]) .summary,
+:global(html[data-theme="dark"]) .updated,
+:global(html[data-theme="dark"]) .sectionContent p,
+:global(html[data-theme="dark"]) .sectionContent li {
+  color: var(--site-text);
+}
+
+:global(html[data-theme="dark"]) .section,
+:global(html[data-theme="dark"]) .section:last-child {
+  border-color: var(--site-border);
+}

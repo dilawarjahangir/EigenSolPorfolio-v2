@@ -1,6 +1,7 @@
 "use client";
 
 import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import imagesLoaded from "imagesloaded";
@@ -21,7 +22,7 @@ export default function ServiceFourExperience({ children }: ServiceFourExperienc
 
     if (!wrapper || !content) return;
 
-    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother, MotionPathPlugin);
     gsap.config({ nullTargetWarn: false });
 
     ScrollSmoother.get()?.kill();
@@ -40,6 +41,7 @@ export default function ServiceFourExperience({ children }: ServiceFourExperienc
         });
 
     let animationContext: gsap.Context | null = null;
+    let processMedia: ReturnType<typeof gsap.matchMedia> | null = null;
     let initialized = false;
 
     const initializeAnimations = () => {
@@ -53,6 +55,17 @@ export default function ServiceFourExperience({ children }: ServiceFourExperienc
           ),
           { clearProps: "all", autoAlpha: 1 },
         );
+
+        const processSection = content.querySelector<HTMLElement>("[data-service-process]");
+        const progressPath =
+          processSection?.querySelector<HTMLElement>("[data-process-progress]");
+        const processRows =
+          processSection?.querySelectorAll<HTMLElement>("[data-process-row]");
+
+        if (progressPath) progressPath.style.height = "116%";
+        processRows?.forEach((row) => {
+          row.dataset.active = "true";
+        });
         return;
       }
 
@@ -123,6 +136,93 @@ export default function ServiceFourExperience({ children }: ServiceFourExperienc
             "-=1.5",
           );
         });
+
+        processMedia = gsap.matchMedia();
+        processMedia.add("(min-width: 991px)", () => {
+          const processSection =
+            content.querySelector<HTMLElement>("[data-service-process]");
+          const rocket =
+            processSection?.querySelector<HTMLElement>("[data-process-rocket]");
+          const blast =
+            processSection?.querySelector<HTMLElement>("[data-process-blast]");
+          const path =
+            processSection?.querySelector<SVGPathElement>("[data-process-path]");
+          const progressPath =
+            processSection?.querySelector<HTMLElement>("[data-process-progress]");
+          const processRows = Array.from(
+            processSection?.querySelectorAll<HTMLElement>("[data-process-row]") ?? [],
+          );
+
+          if (!processSection || !rocket || !blast || !path || !progressPath) return;
+
+          const thresholds = [0.25, 0.45, 0.65, 0.85];
+
+          progressPath.style.height = "0%";
+          rocket.style.opacity = "1";
+          blast.style.opacity = "0";
+          processRows.forEach((row) => {
+            row.dataset.active = "false";
+          });
+
+          const rocketTween = gsap.to(rocket, {
+            scrollTrigger: {
+              trigger: processSection,
+              start: "top+=80% bottom",
+              end: "bottom+=50% bottom",
+              scrub: true,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                const progress = self.progress;
+                const isComplete = progress >= 0.99;
+
+                progressPath.style.height = `${progress * 116}%`;
+                rocket.style.opacity = isComplete ? "0" : "1";
+                blast.style.opacity = isComplete ? "1" : "0";
+
+                processRows.forEach((row, index) => {
+                  row.dataset.active = String(progress >= thresholds[index]);
+                });
+              },
+            },
+            motionPath: {
+              path,
+              align: path,
+              alignOrigin: [0.5, 0.5],
+              autoRotate: true,
+            },
+            ease: "none",
+          });
+
+          const blastTween = gsap.to(blast, {
+            scrollTrigger: {
+              trigger: processSection,
+              start: "top top",
+              end: "bottom+=50% bottom",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+            motionPath: {
+              path,
+              align: path,
+              alignOrigin: [0.5, 0.5],
+              autoRotate: false,
+            },
+            ease: "none",
+          });
+
+          return () => {
+            rocketTween.scrollTrigger?.kill();
+            rocketTween.kill();
+            blastTween.scrollTrigger?.kill();
+            blastTween.kill();
+            progressPath.style.removeProperty("height");
+            rocket.style.removeProperty("opacity");
+            blast.style.removeProperty("opacity");
+            processRows.forEach((row) => {
+              row.dataset.active = "false";
+            });
+          };
+        });
       }, content);
 
       ScrollTrigger.refresh();
@@ -137,6 +237,7 @@ export default function ServiceFourExperience({ children }: ServiceFourExperienc
     return () => {
       window.removeEventListener("load", refresh);
       imageLoader.off("always", initializeAnimations);
+      processMedia?.revert();
       animationContext?.revert();
       smoother?.kill();
     };

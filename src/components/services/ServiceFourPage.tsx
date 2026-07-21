@@ -167,16 +167,15 @@ function ServiceHero() {
             data-delay=".3"
           >
             <h1 id="service-page-title" className={styles.heroTitle}>
-              We Provide Smart
+              Full-Stack Software
               <br />
-              {" "}Software Solutions.
+              {" "}Development Expertise
             </h1>
           </div>
           <div className={`${styles.heroCopy} service4-fade`} data-delay=".5">
             <p>
-              We build dependable digital products that engage users, improve operations, and
-              support growth. From strategy and design to engineering and cloud, EigenSol provides
-              end-to-end expertise for ambitious teams.
+              From initial concept to final deployment, we provide end-to-end software development
+              services that transform your vision into reality.
             </p>
           </div>
         </div>
@@ -222,8 +221,8 @@ function SmartSolutions() {
           </div>
           <div className={`${styles.solutionsHeadingWrap} service4-fade`}>
             <h2 id="smart-solutions-title" className={styles.solutionsTitle}>
-              From product strategy to production, we provide the expertise startups need to
-              build and scale.
+              Tailored engineering across software, web, mobile, design, cloud, and artificial
+              intelligence.
             </h2>
           </div>
         </div>
@@ -288,7 +287,7 @@ function InteractiveServices() {
             Services
           </p>
           <h2 id="service-capabilities-title" className="service4-fade" data-delay=".5">
-            Growing products through exceptional{" "}
+            Building reliable products through exceptional{" "}
             <span>
               services
               <TitleUnderline />
@@ -440,15 +439,15 @@ function WorkingProcess() {
             Process
           </p>
           <h2 id="working-process-title" className="service4-fade" data-delay=".5">
-            We think beyond the obvious
+            A proven methodology
             <br />
-            {" "}and follow a clear{" "}
+            {" "}for a clear{" "}
             <span>
               working
               <TitleUnderline />
             </span>
             <br />
-            {" "}process
+            {" "}delivery process
           </h2>
         </div>
 
@@ -468,8 +467,8 @@ function WorkingProcess() {
 
           <div className={styles.processMedia}>
             <p className={styles.processCopy}>
-              We turn business context into clear product decisions, then design, build, validate,
-              and improve every release with one accountable team.
+              From discovery and strategy through design, development, testing, and launch, we
+              deliver incremental value and keep every decision connected to your goals.
             </p>
             <div className={styles.processImageFrame}>
               <div className="service4-image-reveal">
