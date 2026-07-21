@@ -6,6 +6,11 @@ import styles from "./ThemeToggle.module.css";
 
 type Theme = "light" | "dark";
 
+type ThemeToggleProps = {
+  inverse?: boolean;
+  className?: string;
+};
+
 const themeChangeEvent = "eigensol-theme-change";
 const themeStorageKey = "eigensol-theme";
 
@@ -37,6 +42,7 @@ function subscribeToTheme(onStoreChange: () => void) {
         : colorScheme.matches
           ? "dark"
           : "light";
+
     applyTheme(nextTheme);
     onStoreChange();
   };
@@ -52,11 +58,20 @@ function subscribeToTheme(onStoreChange: () => void) {
   };
 }
 
-export default function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, () => "light");
+export default function ThemeToggle({
+  inverse = false,
+  className = "",
+}: ThemeToggleProps) {
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    () => "light",
+  );
 
   const toggleTheme = () => {
-    const nextTheme: Theme = getThemeSnapshot() === "dark" ? "light" : "dark";
+    const nextTheme: Theme =
+      getThemeSnapshot() === "dark" ? "light" : "dark";
+
     applyTheme(nextTheme);
     localStorage.setItem(themeStorageKey, nextTheme);
     window.dispatchEvent(new Event(themeChangeEvent));
@@ -67,7 +82,7 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      className={styles.toggle}
+      className={`${styles.toggle} ${inverse ? styles.inverse : ""} ${className}`.trim()}
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}

@@ -5,8 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
 import styles from "./Header.module.css";
+import themeStyles from "./HeaderTheme.module.css";
+import ThemeToggle from "./ThemeToggle";
 
 const navigation = [
   { label: "Home", href: "/#home" },
@@ -23,20 +30,20 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [homeActive, setHomeActive] = useState("Home");
   const { scrollY } = useScroll();
-  const routeActive =
-    pathname.startsWith("/services")
-      ? "Services"
-      : pathname.startsWith("/case-studies")
-        ? "Projects"
-        : pathname.startsWith("/blogs")
-          ? "Blogs"
-          : pathname === "/about"
-            ? "About"
-            : pathname === "/contact"
-              ? "Contact"
-              : pathname === "/"
-                ? homeActive
-                : "";
+
+  const routeActive = pathname.startsWith("/services")
+    ? "Services"
+    : pathname.startsWith("/case-studies")
+      ? "Projects"
+      : pathname.startsWith("/blogs")
+        ? "Blogs"
+        : pathname === "/about"
+          ? "About"
+          : pathname === "/contact"
+            ? "Contact"
+            : pathname === "/"
+              ? homeActive
+              : "";
 
   useMotionValueEvent(scrollY, "change", (value) => setScrolled(value > 20));
 
@@ -63,14 +70,21 @@ export default function Header() {
       >
         <motion.nav
           aria-label="Primary navigation"
+          data-header-tone="theme"
           animate={{
             paddingTop: scrolled ? 8 : 10,
             paddingBottom: scrolled ? 8 : 10,
           }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className={`${styles.nav} ${scrolled ? styles.navScrolled : styles.navTop}`}
+          className={`${styles.nav} ${
+            scrolled ? styles.navScrolled : styles.navTop
+          } ${themeStyles.themeNav}`}
         >
-          <Link href="/#home" className={styles.brand} onClick={() => setHomeActive("Home")}>
+          <Link
+            href="/#home"
+            className={styles.brand}
+            onClick={() => setHomeActive("Home")}
+          >
             <Image
               src="/logo.webp"
               alt="EigenSol"
@@ -81,23 +95,32 @@ export default function Header() {
             />
           </Link>
 
-          <ul className={styles.desktopLinks}>
+          <ul className={styles.desktopLinks} data-header-links>
             {navigation.map((item) => {
               const isActive = routeActive === item.label;
 
               return (
-                <li key={item.label} className={styles.navItem}>
+                <li
+                  key={item.label}
+                  className={styles.navItem}
+                  data-header-item
+                >
                   <Link
                     href={item.href}
-                    onClick={() => {
-                      setHomeActive(item.label);
-                    }}
-                    className={`${styles.navLink} ${isActive ? styles.activeLink : ""}`}
+                    onClick={() => setHomeActive(item.label)}
+                    data-header-link
+                    className={`${styles.navLink} ${
+                      isActive ? styles.activeLink : ""
+                    }`}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="header-active-link"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
                         className={styles.activePill}
                       />
                     )}
@@ -109,6 +132,8 @@ export default function Header() {
           </ul>
 
           <div className={styles.actions}>
+            <ThemeToggle />
+
             <Link href="/contact" className={styles.contactButton}>
               <span className={styles.contactFilterBlur}>
                 <HeaderButtonBlurFilter />
@@ -129,6 +154,7 @@ export default function Header() {
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               className={styles.menuButton}
+              data-header-menu
               onClick={() => setOpen((value) => !value)}
             >
               {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
@@ -180,7 +206,11 @@ export default function Header() {
                   </motion.li>
                 ))}
               </ul>
-              <Link href="/contact" className={styles.mobileContact} onClick={() => setOpen(false)}>
+              <Link
+                href="/contact"
+                className={styles.mobileContact}
+                onClick={() => setOpen(false)}
+              >
                 Let&apos;s Talk <ArrowUpRight aria-hidden="true" />
               </Link>
             </motion.nav>
@@ -196,12 +226,20 @@ function HeaderButtonBlurFilter() {
     <svg width="0" height="0" aria-hidden="true">
       <defs>
         <filter id="headerContactFilter">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+          <feGaussianBlur
+            in="SourceGraphic"
+            stdDeviation="5"
+            result="blur"
+          />
           <feColorMatrix
             in="blur"
             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
           />
-          <feComposite in="SourceGraphic" in2="headerContactFilter" operator="atop" />
+          <feComposite
+            in="SourceGraphic"
+            in2="headerContactFilter"
+            operator="atop"
+          />
           <feBlend in="SourceGraphic" in2="headerContactFilter" />
         </filter>
       </defs>
