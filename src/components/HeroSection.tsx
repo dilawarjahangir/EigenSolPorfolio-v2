@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 
 import BlueprintLogoReveal from "./BlueprintLogoReveal";
 import styles from "./HeroSection.module.css";
@@ -76,6 +78,33 @@ export default function HeroSection() {
           <span>of clarity</span>
         </p>
       </div>
+
+      <div className={styles.heroContent}>
+        <p className={styles.eyebrow}>EigenSol product engineering</p>
+        <h1 className={styles.title}>
+          <span>Software that makes</span>
+          <span>complex work</span>
+          <span>feel clear.</span>
+        </h1>
+        <p className={styles.description}>
+          We design and build custom software, web platforms, mobile apps, AI
+          workflows, and cloud systems for teams that need dependable digital
+          products.
+        </p>
+        <div className={styles.actions}>
+          <Link className={styles.primaryAction} href="/contact">
+            Start a project
+            <ArrowUpRight aria-hidden="true" />
+          </Link>
+          <Link className={styles.secondaryAction} href="/case-studies">
+            View work
+          </Link>
+        </div>
+      </div>
+
+      <a className={styles.scrollCue} href="#solutions" aria-label="Scroll to approach">
+        <ArrowDown aria-hidden="true" />
+      </a>
     </section>
   );
 }
