@@ -1,0 +1,315 @@
+{
+  "meta": {
+    "name": "Nexus robot hero",
+    "source": "https://app.spline.design/file/1cb4e4ac-19c5-43b1-a4f6-c9fc4fa0cead",
+    "capturedAt": "2026-07-28",
+    "status": "working reconstruction spec",
+    "units": "Spline scene units",
+    "angleUnit": "degrees"
+  },
+  "scene": {
+    "responsive": true,
+    "autoZoom": true,
+    "screenUI": null,
+    "background": "#E3E3E3",
+    "ambientLight": false,
+    "shadowQuality": "Low (faster)",
+    "effects": false,
+    "fog": false,
+    "ambientShadows": false,
+    "physics": false,
+    "gravity": -10,
+    "gridPlane": "XZ",
+    "snapping": false
+  },
+  "camera": {
+    "name": "Camera 2",
+    "type": "PerspectiveCamera",
+    "fov": 45,
+    "near": 70,
+    "far": 100000,
+    "zoom": 2,
+    "collision": "Based on Visibility",
+    "base": {
+      "position": [0, 248.98, 360],
+      "rotation": [0.83, 0, 0],
+      "scale": [1, 1, 1]
+    },
+    "state": {
+      "position": [0, 146.98, 1000],
+      "rotation": [0.4, 0, 0],
+      "scale": [1, 1, 1]
+    },
+    "startTransition": {
+      "from": "Base State",
+      "to": "State",
+      "durationSeconds": 3,
+      "easing": "Custom Bezier",
+      "delaySeconds": 0,
+      "loop": false
+    }
+  },
+  "lights": [
+    {
+      "name": "Point Light",
+      "type": "PointLight",
+      "position": [-595, 579, -393],
+      "color": "#FFFFFF",
+      "intensity": 5,
+      "distance": 2000,
+      "decay": 1,
+      "castShadow": true,
+      "shadowResolution": "Large",
+      "radius": 98.88,
+      "collision": "Based on Visibility"
+    }
+  ],
+  "materials": {
+    "Text": [
+      {"type": "lighting", "amount": 100, "blend": "Overlay"},
+      {"type": "color", "value": "#FFFFFF", "amount": 100, "blend": "Normal"}
+    ],
+    "Head": [
+      {"type": "rainbow", "amount": 50, "blend": "Overlay"},
+      {"type": "matcap", "amount": 60, "blend": "Screen"},
+      {"type": "lighting", "amount": 100, "blend": "Overlay"},
+      {"type": "video", "amount": 100, "blend": "Normal"},
+      {"type": "color", "value": "#000000", "amount": 100, "blend": "Normal"}
+    ],
+    "Parts": [
+      {"type": "lighting", "amount": 50, "blend": "Normal"},
+      {"type": "image", "amount": 0, "blend": "Normal"},
+      {"type": "matcap", "amount": 100, "blend": "Screen"},
+      {"type": "rainbow", "amount": 100, "blend": "Overlay"},
+      {"type": "color", "value": "#030303", "amount": 100, "blend": "Normal"}
+    ],
+    "Body": [
+      {"type": "rainbow", "amount": 20, "blend": "Screen"},
+      {"type": "lighting", "amount": 100, "blend": "Overlay"},
+      {"type": "matcap", "amount": 40, "blend": "Screen"},
+      {"type": "image", "amount": 0, "blend": "Normal"},
+      {"type": "color", "value": "#4F4F4F", "amount": 100, "blend": "Normal"}
+    ]
+  },
+  "assets": {
+    "images": [
+      {"name": "Untitled Image", "size": [1024, 1024]},
+      {"name": "Untitled Image", "size": [256, 256]},
+      {"name": "Untitled Image", "size": [654, 330]}
+    ],
+    "video": {
+      "name": "Screen Recording 2024-05-08 at 10.55.22.mp4",
+      "target": "Bot/Top part/Head/Head2",
+      "autoplay": true,
+      "muted": true,
+      "loop": true,
+      "splineVolume": 5
+    }
+  },
+  "nodes": {
+    "logo": {
+      "position": [0, 146, -1000],
+      "rotation": [0, 0, 0],
+      "scale": [0.3, 0.3, 0.3],
+      "material": "Text",
+      "shapes": [
+        {"name": "Shape0", "position": [-1919, 250, -0.03], "size": [600, 500]},
+        {"name": "Shape1", "position": [696, 250, -0.02], "size": [600, 500]},
+        {"name": "Shape2", "position": [1319, 250, -0.01], "size": [600, 500]},
+        {"name": "Shape3", "position": [-1165, 250, 0], "size": [500, 100]},
+        {"name": "Shape4", "position": [-1265, 50, 0.01], "size": [600, 300]},
+        {"name": "Shape5", "position": [42, 250, 0.02], "size": [600, 500]},
+        {"name": "Shape6", "position": [-612, 250, 0.03], "size": [600, 500]}
+      ],
+      "shapeDefaults": {
+        "subdivision": 12,
+        "corner": 0,
+        "extrusion": 2,
+        "bevel": 1,
+        "bevelSides": 1
+      }
+    },
+    "Bot": {
+      "position": [-2.75, 25.68, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.8, 0.8, 0.8],
+      "children": {
+        "Top part": {
+          "position": [-0.18, 58.95, 2.04],
+          "rotation": [0, 0, 0],
+          "scale": [1, 1, 1],
+          "lookAt": {
+            "target": "Cursor",
+            "plane": "Aligned with camera",
+            "distance": 1000,
+            "damping": 50,
+            "direction": "Z",
+            "speed": 5,
+            "reset": false
+          },
+          "children": {
+            "Head": {
+              "position": [0.94, 100.62, 2.67],
+              "rotation": [0, 0, 0],
+              "scale": [1, 1, 1],
+              "lookAt": {
+                "target": "Cursor",
+                "plane": "Aligned with camera",
+                "distance": 300,
+                "damping": 10,
+                "direction": "Z",
+                "speed": 20,
+                "reset": false
+              },
+              "children": {
+                "Head2": {
+                  "position": [0, -10.96, 4],
+                  "rotation": [0, 0, 0],
+                  "scale": [1, 1, 1],
+                  "size": [82.77, 106.99, 95.16],
+                  "subdivision": 2,
+                  "material": "Head",
+                  "splineVisibilityLabel": "Hide (verify export semantics)"
+                }
+              }
+            },
+            "Neck": {
+              "position": [0.94, 106.84, -10.7],
+              "rotation": [0, 0, 0],
+              "scale": [1, 1, 1],
+              "radialCloner": {
+                "source": "Cube",
+                "count": 12,
+                "radius": 11,
+                "startDegrees": 0,
+                "endDegrees": 360,
+                "axis": "X",
+                "alignment": true,
+                "perCopyRotation": [0, 0, 8]
+              }
+            },
+            "Hand": {
+              "position": [112.74, 26.23, 1.71],
+              "rotation": [0, 0, 0],
+              "scale": [1, 1, 1]
+            },
+            "Hand Instance": {
+              "position": [-112.74, 26.23, 1.71],
+              "rotation": [0, 0, 0],
+              "scale": [-1, 1, 1],
+              "instanceOf": "Hand"
+            },
+            "Body": {
+              "position": [0.94, -194.79, -5.25],
+              "rotation": [0, 0, 0],
+              "scale": [1, 1, 1],
+              "size": [151.37, 191.97, 118.96],
+              "subdivision": 2,
+              "materials": ["Body", "Parts"],
+              "splineVisibilityLabel": "Hide (verify export semantics)"
+            }
+          }
+        },
+        "Bottom": {
+          "position": [1.37, 24.24, 4.71],
+          "rotation": [0, 0, 0],
+          "scale": [1, 1, 1],
+          "children": {
+            "Leg Left": {
+              "position": [49.1, 152.35, 6.96],
+              "rotation": [7.31, 17.5, 0],
+              "scale": [1, 1, 1]
+            },
+            "Leg Left Instance": {
+              "position": [-49.1, 152.35, 6.96],
+              "rotation": [7.31, -18.98, 0],
+              "scale": [-1, 1, 1],
+              "instanceOf": "Leg Left"
+            },
+            "Pelvic": {
+              "position": [-1.37, 163.07, -17.6],
+              "rotation": [0, 0, 0],
+              "scale": [1, 1, 1]
+            }
+          }
+        }
+      }
+    }
+  },
+  "animations": [
+    {
+      "target": "Bot/Top part/Hand/Hand LEFT",
+      "position": [-40.59, 98.31, -3.47],
+      "fromRotation": [0, 0, 4.93],
+      "toRotation": [0, 0, 24.47],
+      "durationSeconds": 2,
+      "delaySeconds": 5,
+      "easing": "Ease In Out",
+      "loop": "Infinite",
+      "cycle": "Ping Pong Reverse"
+    },
+    {
+      "target": "Bot/Top part/Hand/Hand LEFT/arm",
+      "position": [24.87, 7.43, 2.2],
+      "fromRotation": [0, 0, 0],
+      "toRotation": [-34.09, 0, 0],
+      "durationSeconds": 4,
+      "delaySeconds": 5,
+      "easing": "Ease In Out",
+      "loop": "Infinite",
+      "cycle": "Ping Pong Reverse"
+    },
+    {
+      "target": "Bot/Top part/Hand/Hand LEFT/arm/elbow",
+      "position": [12.89, 30.33, -1.57],
+      "fromRotation": [0, -8.14, 0],
+      "toRotation": [0, 20.5, 0],
+      "durationSeconds": 3,
+      "delaySeconds": 7,
+      "easing": "Ease In Out",
+      "loop": "Infinite",
+      "cycle": "Ping Pong Reverse"
+    },
+    {
+      "target": "Bot/Top part/Hand/Hand LEFT/arm/elbow/forearm",
+      "position": [0, 39.5, -18.25],
+      "fromRotation": [0, 0, 0],
+      "toRotation": [-51.03, 0, 0],
+      "durationSeconds": 2,
+      "delaySeconds": 4,
+      "easing": "Ease In Out",
+      "loop": "Infinite",
+      "cycle": "Ping Pong Reverse"
+    },
+    {
+      "target": "Bot/Top part/Hand/Hand LEFT/arm/elbow/forearm/Hand",
+      "position": [-9.43, -91.2, 36.55],
+      "scale": [-1.4, 1.4, 1.4],
+      "fromRotation": [34.62, 53.78, 141.83],
+      "toRotation": [149.96, 20.3, 35.58],
+      "durationSeconds": 1,
+      "delaySeconds": 5,
+      "easing": "Ease In Out",
+      "loop": "Infinite",
+      "cycle": "Ping Pong Reverse"
+    }
+  ],
+  "localSourceModel": {
+    "directory": "../../3-nextbot-3d-model",
+    "fileCount": 23,
+    "canonicalFile": "model_0.obj",
+    "allGeometryPayloadsIdentical": true,
+    "geometrySha256WithoutNamingLines": "18c71c96c3a09f558b4cac62b2452d00f5342a74674be78537c048e91a808bdc",
+    "totalBytes": 233138445,
+    "canonicalBytes": 10136453,
+    "vertices": 50046,
+    "normals": 50046,
+    "uvs": 0,
+    "triangles": 99940,
+    "materialAssignments": 0,
+    "bounds": {
+      "min": [-153.113464, -336.437714, -49.097466],
+      "max": [152.743408, 347.386871, 69.160034]
+    }
+  }
+}
