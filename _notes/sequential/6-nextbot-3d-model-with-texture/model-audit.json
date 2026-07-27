@@ -1,0 +1,64 @@
+{
+  "preferredFile": "3f0bc064969c41b4af3e9151468a50b7_Textured.gltf",
+  "preferredFileBytes": 3307698,
+  "plainFile": "3f0bc064969c41b4af3e9151468a50b7.gltf",
+  "plainFileBytes": 3318238,
+  "normalizedFilesIdentical": true,
+  "embeddedBufferUrisIdentical": true,
+  "assetVersion": "2.0",
+  "counts": {
+    "scenes": 1,
+    "nodes": 201,
+    "maximumNodeDepth": 11,
+    "meshes": 80,
+    "primitives": 80,
+    "embeddedBuffers": 372,
+    "embeddedBufferBytes": 2333576,
+    "positionEntries": 50046,
+    "indices": 99746,
+    "renderedTriangles": 79816,
+    "uniquePrimitiveGeometries": 34,
+    "duplicatePrimitiveInstances": 46,
+    "uniqueGeometryVertices": 27522,
+    "uniqueGeometryTriangles": 46284,
+    "uvMappedPrimitives": 66,
+    "tangentPrimitives": 66,
+    "materials": 0,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0,
+    "lights": 0
+  },
+  "blenderValidation": {
+    "version": "5.2.0 LTS",
+    "objects": 201,
+    "meshObjects": 80,
+    "empties": 121,
+    "verticesAfterImport": 49966,
+    "polygons": 79816,
+    "materials": 0,
+    "images": 0,
+    "animations": 0,
+    "armatures": 0
+  },
+  "worldBounds": {
+    "min": [-1.42865421122815, -2.7205478856576915, 15.876900126914668],
+    "max": [1.190597828365287, 2.755863529522709, 16.870579692116532],
+    "size": [2.619252039593437, 5.476411415180401, 0.9936795652018642]
+  },
+  "sourceHashes": {
+    "plainSha256": "7a7409acf2b3f3973e871415311417b192b0cdd87be4ef3772da0530046e9db9",
+    "texturedSha256": "aff705d6fbc0480f03dd6e5d4ea6db88be014efa6bf411899fad250288a58b8b",
+    "embeddedUriStreamSha256": "1a620125b89a61e595e0c2c94837c39e4d3e0fd6e824db085c3060e98ac19070",
+    "normalizedStructureWithoutBuffersSha256": "bd338c41ff94d8fa4ff7b156babed1d9112da593533822e45d3ee32979af9322"
+  },
+  "keyRisks": [
+    "The file named Textured contains no materials, textures, or images.",
+    "Head2 and 13 other primitives have no UV coordinates.",
+    "The hierarchy has no animation clips or skin; motion must target pivot nodes.",
+    "Mirrored nodes use negative scale and require normal/winding validation.",
+    "The imported robot is offset about 16 world units on Z and needs a wrapper recenter."
+  ]
+}

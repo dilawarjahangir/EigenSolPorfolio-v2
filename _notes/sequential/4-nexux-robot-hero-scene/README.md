@@ -19,6 +19,10 @@ migration.
   separate robot nodes.
 - The local OBJ source has no UV coordinates or material assignments and is
   about 100k triangles. It should be optimized and converted to GLB before use.
+- The later structured glTF export in `../6-nextbot-3d-model-with-texture/`
+  preserves the robot hierarchy and is now the preferred geometry source.
+- The three Spline image assets are identified in
+  [assets/spline-images/README.md](./assets/spline-images/README.md).
 
 ## Notes map
 
@@ -27,6 +31,7 @@ migration.
 - [scene/geometry-primitives.md](./scene/geometry-primitives.md) — captured primitive construction details
 - [scene/camera-lighting.md](./scene/camera-lighting.md) — global, camera, and light settings
 - [scene/materials-assets.md](./scene/materials-assets.md) — material stacks, logo, and media
+- [assets/spline-images/README.md](./assets/spline-images/README.md) — image inventory and file status
 - [scene/interactions.md](./scene/interactions.md) — camera, cursor, and robot animation
 - [threejs/implementation.md](./threejs/implementation.md) — migration approach
 - [threejs/model-audit.md](./threejs/model-audit.md) — local OBJ evidence
@@ -37,5 +42,7 @@ migration.
 Values in these notes were read from the Spline inspector. Positions and sizes
 are Spline scene units; rotations are the inspector's degree values. A few
 collapsed primitive children and the exact image-to-layer mapping remain to be
-verified during reconstruction. “Hide” labels seen on mesh inspectors should
+verified during reconstruction. The images themselves are visually identified,
+but their original blob files require a manual editor download. “Hide” labels
+seen on mesh inspectors should
 also be tested in an export before treating them as final runtime visibility.

@@ -33,11 +33,35 @@ The OBJ is one flattened robot, not an articulated source. Shipping all 23
 files would repeat the same roughly 100k-triangle mesh 23 times: 1,151,058
 vertices and 2,298,620 triangles before GPU-side duplication.
 
+## Structured glTF source
+
+The later export in `../6-nextbot-3d-model-with-texture/` supersedes the OBJ for
+implementation:
+
+| Metric | Value |
+|---|---:|
+| Nodes / maximum depth | 201 / 11 |
+| Mesh primitives | 80 |
+| Position entries / Blender vertices | 50,046 / 49,966 |
+| Rendered triangles | 79,816 |
+| Unique primitive geometries | 34 |
+| Triangles after geometry reuse | 46,284 |
+| UV + tangent primitives | 66 of 80 |
+| Materials / images / animations / skins | 0 / 0 / 0 / 0 |
+| Embedded binary payload | 2,333,576 bytes |
+| Textured-file size | 3,307,698 bytes |
+
+Despite its filename, `_Textured.gltf` does not contain textures or materials.
+It is normalized-JSON-identical to the other glTF; the files differ only in
+formatting whitespace.
+
 ## Practical assessment
 
 - **Reproduction difficulty:** moderate. Camera and motion are straightforward;
   material layering and preserving robot pivots are the substantive work.
-- **Current web readiness:** poor. The 222 MiB OBJ set is unsuitable as-is.
+- **Current web readiness:** partial. The structured 3.31 MB glTF is far better
+  than the 222 MiB OBJ set, but still needs materials, texture binding,
+  recentering, geometry reuse, and GLB compression.
 - **Recommended asset target:** one optimized GLB, Draco or Meshopt compressed,
   with KTX2 textures; keep separate named nodes only where animation needs them.
 - **Recommended geometry budget:** establish visually in the study environment.
@@ -47,4 +71,3 @@ vertices and 2,298,620 triangles before GPU-side duplication.
 
 No Spline export bundle was downloaded during this study, so the editor page's
 own network resources are not used as a payload estimate.
-

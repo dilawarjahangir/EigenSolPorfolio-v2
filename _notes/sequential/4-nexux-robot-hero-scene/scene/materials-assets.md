@@ -10,10 +10,14 @@ strength/opacity as shown in the inspector.
 | `Parts` | Lighting 50, Normal; Image 0, Normal; Matcap 100, Screen; Rainbow 100, Overlay; Color `#030303` 100, Normal |
 | `Body` | Rainbow 20, Screen; Lighting 100, Overlay; Matcap 40, Screen; Image 0, Normal; Color `#4F4F4F` 100, Normal |
 
-Three image assets are present, all named `Untitled Image`, at `1024×1024`,
-`256×256`, and `654×330`. Their exact layer mapping was not exposed by the
-collapsed material rows. Because the two image layers are set to 0, this is not
-a blocker for the first visual match.
+Three image assets are present, all named `Untitled Image`. Visual inspection
+identifies a 1024×1024 head/reflection image, a 256×256 purple circuit-board
+normal map, and a 654×330 monochrome dot mask. Their exact layer mapping was not
+exposed by the collapsed material rows. The two explicit Image layers currently
+show amount 0, but the assets must still be preserved as source evidence.
+
+See [the image manifest](../assets/spline-images/README.md) for acquisition
+status and intended filenames.
 
 ## Head video
 
@@ -45,4 +49,3 @@ subdivision 12, corner 0, extrusion 2, bevel 1, and bevel sides 1.
 The tiny Z offsets appear intended to avoid coplanar artifacts. Bake the seven
 paths into one optimized logo mesh for production unless independent control is
 needed.
-

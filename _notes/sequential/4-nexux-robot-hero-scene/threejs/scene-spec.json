@@ -93,9 +93,27 @@
   },
   "assets": {
     "images": [
-      {"name": "Untitled Image", "size": [1024, 1024]},
-      {"name": "Untitled Image", "size": [256, 256]},
-      {"name": "Untitled Image", "size": [654, 330]}
+      {
+        "name": "Untitled Image",
+        "studyFilename": "../assets/spline-images/image-01-1024x1024.png",
+        "size": [1024, 1024],
+        "description": "Black reflective head/front image with bright white side arcs",
+        "status": "manual editor download required"
+      },
+      {
+        "name": "Untitled Image",
+        "studyFilename": "../assets/spline-images/image-02-256x256.png",
+        "size": [256, 256],
+        "description": "Purple-blue circuit-board normal map",
+        "status": "manual editor download required"
+      },
+      {
+        "name": "Untitled Image",
+        "studyFilename": "../assets/spline-images/image-03-654x330.png",
+        "size": [654, 330],
+        "description": "Black background with rows of white and gray dots",
+        "status": "manual editor download required"
+      }
     ],
     "video": {
       "name": "Screen Recording 2024-05-08 at 10.55.22.mp4",
@@ -294,7 +312,7 @@
       "cycle": "Ping Pong Reverse"
     }
   ],
-  "localSourceModel": {
+  "legacyObjSourceModel": {
     "directory": "../../3-nextbot-3d-model",
     "fileCount": 23,
     "canonicalFile": "model_0.obj",
@@ -310,6 +328,33 @@
     "bounds": {
       "min": [-153.113464, -336.437714, -49.097466],
       "max": [152.743408, 347.386871, 69.160034]
+    }
+  },
+  "structuredSourceModel": {
+    "directory": "../../6-nextbot-3d-model-with-texture",
+    "file": "3f0bc064969c41b4af3e9151468a50b7_Textured.gltf",
+    "bytes": 3307698,
+    "nodes": 201,
+    "maximumNodeDepth": 11,
+    "meshPrimitives": 80,
+    "positionEntries": 50046,
+    "indices": 99746,
+    "triangles": 79816,
+    "uniquePrimitiveGeometries": 34,
+    "uniqueGeometryTriangles": 46284,
+    "uvMappedPrimitives": 66,
+    "tangentPrimitives": 66,
+    "materials": 0,
+    "textures": 0,
+    "images": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0,
+    "lights": 0,
+    "rootScale": [0.01, 0.01, 0.01],
+    "worldBounds": {
+      "min": [-1.42865421122815, -2.7205478856576915, 15.876900126914668],
+      "max": [1.190597828365287, 2.755863529522709, 16.870579692116532]
     }
   }
 }

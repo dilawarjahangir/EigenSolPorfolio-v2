@@ -2,16 +2,16 @@
 
 ## Asset pass
 
-1. Use one OBJ as the geometry reference; ignore the other 22 naming-only
-   duplicates.
-2. Import to Blender, repair/rebuild materials, and separate only the parts
-   needed for pivots: head/top, upper arm, elbow, forearm, hand, pelvis, femur,
-   shin, and foot.
-3. Reconstruct the Spline primitive details where the flattened OBJ is
-   insufficient, then mirror hands and legs with linked geometry.
-4. Decimate conservatively, merge static primitives, generate UVs only where
-   needed, and recalculate tangents/normals.
-5. Export a named-node GLB; apply Meshopt or Draco and KTX2. Keep one
+1. Use the structured export in `../../6-nextbot-3d-model-with-texture/` as the
+   geometry and pivot source. Keep one OBJ only as a comparison reference.
+2. Import the structured glTF to Blender and restore material assignments.
+3. Replace its 46 duplicate primitive payloads with linked geometry/instances;
+   preserve distinct animation pivots.
+4. Generate UVs for the 14 primitives that lack them where video/image mapping
+   needs UV space, especially `Head2`.
+5. Recenter the scene, resolve mirrored negative-scale transforms, decimate
+   conservatively, and recalculate tangents/normals.
+6. Export a named-node GLB; apply Meshopt or Draco and KTX2. Keep one
    uncompressed GLB for visual/debug comparison.
 
 ## Runtime graph
@@ -74,4 +74,3 @@ visually before introducing custom shaders.
 The numeric source for implementation is
 [scene-spec.json](./scene-spec.json). It is a working reconstruction spec, not
 an automated Spline export.
-
