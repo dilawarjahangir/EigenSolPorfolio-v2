@@ -13,3 +13,5 @@ I guess you have got the idea. start now and produce mds in this dir.
 let me know when done.
 
 ---
+
+I want you to produce a study report after conducting study.
