@@ -32,3 +32,26 @@ so that we get ready for our task. and then we shall continue.
 looks like a great plan. continue. let me know when everything completes.
 
 ---
+
+Well that's great !
+
+regarding details:
+- i guess you missed image assets
+- there is download button, we need to download those texture images as well
+- we cannot create our sequential #4 with some missing data.
+
+There's a development:
+- the model that i shared eralier lacks proper structure and texture
+- i re-exported at `_notes/sequential/6-nextbot-3d-model-with-texture/` with better structured model with texture
+- i want you to study it for nodes etc.
+- and just understand how things will be when we use this model
+
+after that, build an understand on how we can use our studies for this model.
+
+we shall have all info after this.
+but what if someone new comes to party (another LLM). and they want to know what's going on with tthese stats that we have gathered.
+i want you to write a report at `_notes/reports/1-scene-study-report/` that has info.
+
+let me know when these things are also completed.
+
+---
