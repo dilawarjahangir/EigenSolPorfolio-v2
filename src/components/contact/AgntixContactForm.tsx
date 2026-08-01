@@ -1,6 +1,11 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import {
+  projectBudgets,
+  projectServices,
+  submitWebsiteForm,
+} from "@/lib/form-submission";
 import styles from "./AgntixContactPage.module.css";
 
 type AgntixContactFormProps = {
@@ -17,24 +22,10 @@ type ContactValues = {
   message: string;
 };
 
-const services = [
-  "Custom Software Development",
-  "Web Application Development",
-  "Mobile App Development",
-  "UI/UX Design Systems",
-  "Cloud & DevOps",
-  "AI & Machine Learning",
-  "Consulting",
-  "Other",
-] as const;
-
-const budgetOptions = [
-  "Less than $25,000",
-  "$25,000 - $50,000",
-  "$50,000 - $100,000",
-  "$100,000 - $250,000",
-  "$250,000+",
-] as const;
+type SubmissionStatus = {
+  state: "idle" | "submitting" | "success" | "error";
+  message: string;
+};
 
 export default function AgntixContactForm({
   defaultMessage = "",
@@ -48,40 +39,67 @@ export default function AgntixContactForm({
     budget: "",
     message: defaultMessage,
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmissionStatus>({ state: "idle", message: "" });
 
   const updateValue = (field: keyof ContactValues, value: string) => {
-    setSubmitted(false);
+    setStatus({ state: "idle", message: "" });
     setValues((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
 
-    const subject = encodeURIComponent(`Project inquiry from ${values.name}`);
-    const body = encodeURIComponent(
-      [
-        `Name: ${values.name}`,
-        `Email: ${values.email}`,
-        `Company: ${values.company || "Not provided"}`,
-        `Phone: ${values.phone || "Not provided"}`,
-        `Service: ${values.service}`,
-        `Budget: ${values.budget || "Not provided"}`,
-        "",
-        "How EigenSol can help:",
-        values.message,
-      ].join("\n"),
-    );
+    const formData = new FormData(form);
+    setStatus({ state: "submitting", message: "Sending your message…" });
 
-    setSubmitted(true);
-    window.location.href = `mailto:info@eigensol.com?subject=${subject}&body=${body}`;
+    try {
+      await submitWebsiteForm({
+        kind: "project-inquiry",
+        ...values,
+        companyUrl: String(formData.get("companyUrl") || ""),
+      });
+      setValues({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        service: "",
+        budget: "",
+        message: "",
+      });
+      form.reset();
+      setStatus({
+        state: "success",
+        message: "Thanks — your project inquiry has been sent. We'll be in touch shortly.",
+      });
+    } catch (error) {
+      setStatus({
+        state: "error",
+        message: error instanceof Error ? error.message : "We couldn't send your message.",
+      });
+    }
   };
 
   return (
-    <form className={styles.contactForm} onSubmit={handleSubmit}>
+    <form
+      className={styles.contactForm}
+      method="post"
+      onSubmit={handleSubmit}
+      aria-busy={status.state === "submitting"}
+    >
+      <label className={styles.formTrap} htmlFor="contact-company-url" aria-hidden="true">
+        <span>Leave this field empty</span>
+        <input
+          id="contact-company-url"
+          name="companyUrl"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </label>
       <div className={styles.formGrid}>
         <label className={styles.formField} htmlFor="contact-name">
           <span>Full name*</span>
@@ -91,6 +109,8 @@ export default function AgntixContactForm({
             type="text"
             autoComplete="name"
             required
+            minLength={2}
+            maxLength={100}
             value={values.name}
             onChange={(event) => updateValue("name", event.target.value)}
           />
@@ -104,6 +124,7 @@ export default function AgntixContactForm({
             type="email"
             autoComplete="email"
             required
+            maxLength={254}
             value={values.email}
             onChange={(event) => updateValue("email", event.target.value)}
           />
@@ -119,6 +140,7 @@ export default function AgntixContactForm({
             name="company"
             type="text"
             autoComplete="organization"
+            maxLength={160}
             value={values.company}
             onChange={(event) => updateValue("company", event.target.value)}
           />
@@ -131,6 +153,7 @@ export default function AgntixContactForm({
             name="phone"
             type="tel"
             autoComplete="tel"
+            maxLength={50}
             value={values.phone}
             onChange={(event) => updateValue("phone", event.target.value)}
           />
@@ -148,7 +171,7 @@ export default function AgntixContactForm({
             <option value="" disabled>
               Select a service
             </option>
-            {services.map((service) => (
+            {projectServices.map((service) => (
               <option value={service} key={service}>
                 {service}
               </option>
@@ -168,7 +191,7 @@ export default function AgntixContactForm({
             onChange={(event) => updateValue("budget", event.target.value)}
           >
             <option value="">Select budget range</option>
-            {budgetOptions.map((budget) => (
+            {projectBudgets.map((budget) => (
               <option value={budget} key={budget}>
                 {budget}
               </option>
@@ -185,20 +208,28 @@ export default function AgntixContactForm({
             id="contact-message"
             name="message"
             required
+            minLength={20}
+            maxLength={5000}
             value={values.message}
             onChange={(event) => updateValue("message", event.target.value)}
           />
         </label>
       </div>
 
-      <button className={styles.submitButton} type="submit">
+      <button
+        className={styles.submitButton}
+        type="submit"
+        disabled={status.state === "submitting"}
+      >
         <span>
-          <span>Send Message</span>
-          <span aria-hidden="true">Send Message</span>
+          <span>{status.state === "submitting" ? "Sending…" : "Send Message"}</span>
+          <span aria-hidden="true">
+            {status.state === "submitting" ? "Sending…" : "Send Message"}
+          </span>
         </span>
       </button>
-      <p className={styles.formStatus} aria-live="polite">
-        {submitted ? "Opening your email application with the project details included." : ""}
+      <p className={styles.formStatus} data-state={status.state} aria-live="polite">
+        {status.message}
       </p>
     </form>
   );

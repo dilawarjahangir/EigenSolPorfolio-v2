@@ -47,3 +47,31 @@ NEXT_PUBLIC_BING_SITE_VERIFICATION=your-bing-token
 ```
 
 Do not commit real verification tokens. After deployment, submit `https://eigensol.com/sitemap.xml` to Google Search Console and Bing Webmaster Tools.
+
+## Forms and blog-comment moderation
+
+Project inquiries are delivered through Zoho SMTP. Blog comments are first stored in PostgreSQL as pending, then an email containing a private, single-use moderation link is sent to the site administrator. Only approved comments are rendered publicly.
+
+The server requires these environment variables:
+
+```bash
+ZOHO_SMTP_HOST=smtp.zoho.com
+ZOHO_SMTP_PORT=465
+ZOHO_SMTP_USER=your-mailbox
+ZOHO_SMTP_PASS=your-app-password
+CONTACT_FROM_EMAIL=your-mailbox
+CONTACT_TO_EMAIL=your-moderation-mailbox
+DATABASE_URL=postgresql://least-privilege-role:password@host:5432/database
+DATABASE_SSL=true
+COMMENT_RATE_LIMIT_SECRET=a-random-secret-at-least-32-characters-long
+```
+
+Keep real values in an ignored `.env` file or the hosting platform's secret store. The runtime database role should have only `CONNECT`, schema `USAGE`, and the required `SELECT`, `INSERT`, `UPDATE`, and `DELETE` privileges; never use the PostgreSQL superuser in `DATABASE_URL`. Set `DATABASE_SSL=false` only for a trusted loopback connection such as `127.0.0.1` on the same server.
+
+Apply database migrations with an administrative PostgreSQL account before deploying the application:
+
+```bash
+psql "$ADMIN_DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/001_blog_comments.sql
+```
+
+The moderation page is intentionally `noindex` and receives the raw token only through the URL fragment. Moderation is performed by an explicit POST request; visiting or previewing the email link cannot approve a comment.

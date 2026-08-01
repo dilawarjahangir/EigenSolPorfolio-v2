@@ -388,14 +388,31 @@
   transition: transform 0.3s ease;
 }
 
-.submitButton:hover > span > span,
+.submitButton:not(:disabled):hover > span > span,
 .submitButton:focus-visible > span > span {
   transform: translateY(-20px);
 }
 
-.submitButton:hover,
+.submitButton:not(:disabled):hover,
 .submitButton:focus-visible {
   background: var(--contact-dark);
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.formTrap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .formStatus {
@@ -404,6 +421,14 @@
   color: rgba(20, 20, 20, 0.6);
   font-size: 12px;
   line-height: 1.5;
+}
+
+.formStatus[data-state="success"] {
+  color: #26734d;
+}
+
+.formStatus[data-state="error"] {
+  color: #b42318;
 }
 
 .supportSection {

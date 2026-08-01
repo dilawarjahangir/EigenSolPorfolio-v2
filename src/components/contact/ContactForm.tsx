@@ -3,6 +3,11 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { Send } from "lucide-react";
+import {
+  projectBudgets,
+  projectServices,
+  submitWebsiteForm,
+} from "@/lib/form-submission";
 import styles from "./ContactForm.module.css";
 
 type ContactFormProps = {
@@ -19,24 +24,10 @@ type FormValues = {
   message: string;
 };
 
-const services = [
-  "Custom Software Development",
-  "Web Application Development",
-  "Mobile App Development",
-  "UI/UX Design",
-  "Cloud & DevOps",
-  "AI & Machine Learning",
-  "Consulting",
-  "Other",
-];
-
-const budgets = [
-  ["<25k", "Less than $25,000"],
-  ["25k-50k", "$25,000 - $50,000"],
-  ["50k-100k", "$50,000 - $100,000"],
-  ["100k-250k", "$100,000 - $250,000"],
-  ["250k+", "$250,000+"],
-];
+type SubmissionStatus = {
+  state: "idle" | "submitting" | "success" | "error";
+  message: string;
+};
 
 export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
   const [values, setValues] = useState<FormValues>({
@@ -48,39 +39,67 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
     budget: "",
     message: defaultMessage,
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmissionStatus>({ state: "idle", message: "" });
 
   const updateValue = (field: keyof FormValues, value: string) => {
-    setSubmitted(false);
+    setStatus({ state: "idle", message: "" });
     setValues((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
 
-    const lines = [
-      `Name: ${values.name}`,
-      `Email: ${values.email}`,
-      `Company: ${values.company || "Not provided"}`,
-      `Phone: ${values.phone || "Not provided"}`,
-      `Service: ${values.service}`,
-      `Budget: ${values.budget || "Not specified"}`,
-      "",
-      "Project details:",
-      values.message,
-    ];
+    const formData = new FormData(form);
+    setStatus({ state: "submitting", message: "Sending your message…" });
 
-    const subject = encodeURIComponent(`Project inquiry from ${values.name}`);
-    const body = encodeURIComponent(lines.join("\n"));
-    setSubmitted(true);
-    window.location.href = `mailto:info@eigensol.com?subject=${subject}&body=${body}`;
+    try {
+      await submitWebsiteForm({
+        kind: "project-inquiry",
+        ...values,
+        companyUrl: String(formData.get("companyUrl") || ""),
+      });
+      setValues({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        service: "",
+        budget: "",
+        message: "",
+      });
+      form.reset();
+      setStatus({
+        state: "success",
+        message: "Thanks — your project inquiry has been sent. We'll be in touch shortly.",
+      });
+    } catch (error) {
+      setStatus({
+        state: "error",
+        message: error instanceof Error ? error.message : "We couldn't send your message.",
+      });
+    }
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form
+      className={styles.form}
+      method="post"
+      onSubmit={handleSubmit}
+      aria-busy={status.state === "submitting"}
+    >
+      <label className={styles.formTrap} htmlFor="legacy-contact-company-url" aria-hidden="true">
+        <span>Leave this field empty</span>
+        <input
+          id="legacy-contact-company-url"
+          name="companyUrl"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </label>
       <div className={styles.grid}>
         <Field label="Full Name" required>
           <input
@@ -88,6 +107,8 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             name="name"
             autoComplete="name"
             required
+            minLength={2}
+            maxLength={100}
             value={values.name}
             onChange={(event) => updateValue("name", event.target.value)}
             placeholder="John Doe"
@@ -99,6 +120,7 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             name="email"
             autoComplete="email"
             required
+            maxLength={254}
             value={values.email}
             onChange={(event) => updateValue("email", event.target.value)}
             placeholder="john@company.com"
@@ -109,6 +131,7 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             type="text"
             name="company"
             autoComplete="organization"
+            maxLength={160}
             value={values.company}
             onChange={(event) => updateValue("company", event.target.value)}
             placeholder="Your company"
@@ -119,6 +142,7 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             type="tel"
             name="phone"
             autoComplete="tel"
+            maxLength={50}
             value={values.phone}
             onChange={(event) => updateValue("phone", event.target.value)}
             placeholder="+92 300 0000000"
@@ -134,7 +158,7 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             <option value="" disabled>
               Select a service
             </option>
-            {services.map((service) => (
+            {projectServices.map((service) => (
               <option value={service} key={service}>
                 {service}
               </option>
@@ -148,9 +172,9 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
             onChange={(event) => updateValue("budget", event.target.value)}
           >
             <option value="">Select budget range</option>
-            {budgets.map(([value, label]) => (
-              <option value={value} key={value}>
-                {label}
+            {projectBudgets.map((budget) => (
+              <option value={budget} key={budget}>
+                {budget}
               </option>
             ))}
           </select>
@@ -162,22 +186,24 @@ export default function ContactForm({ defaultMessage = "" }: ContactFormProps) {
           name="message"
           rows={7}
           required
+          minLength={20}
+          maxLength={5000}
           value={values.message}
           onChange={(event) => updateValue("message", event.target.value)}
           placeholder="Tell us about your project, timeline, and requirements."
         />
       </Field>
 
-      <button className={styles.submit} type="submit">
-        Send Message
+      <button className={styles.submit} type="submit" disabled={status.state === "submitting"}>
+        {status.state === "submitting" ? "Sending…" : "Send Message"}
         <Send aria-hidden="true" />
       </button>
       <p className={styles.legal}>
         By submitting, you agree to our <Link href="/privacy-policy">privacy policy</Link> and{" "}
         <Link href="/terms-and-conditions">terms and conditions</Link>.
       </p>
-      <p className={styles.status} aria-live="polite">
-        {submitted ? "Your email application is opening with the project details included." : ""}
+      <p className={styles.status} data-state={status.state} aria-live="polite">
+        {status.message}
       </p>
     </form>
   );

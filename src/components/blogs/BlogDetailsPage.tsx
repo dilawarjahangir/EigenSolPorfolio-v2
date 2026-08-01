@@ -8,6 +8,7 @@ import {
   Tag,
 } from "lucide-react";
 import type { SVGProps } from "react";
+import type { ApprovedBlogComment } from "@/contracts/blog-comments";
 import type { BlogPost } from "@/data/blogs";
 import BlogComments from "./BlogComments";
 import BlogReplyForm from "./BlogReplyForm";
@@ -16,6 +17,7 @@ import styles from "./BlogPages.module.css";
 type BlogDetailsPageProps = {
   post: BlogPost;
   nextPost: BlogPost;
+  comments: readonly ApprovedBlogComment[];
 };
 
 const socialLinks = [
@@ -41,7 +43,9 @@ const socialLinks = [
   },
 ] as const;
 
-export default function BlogDetailsPage({ post, nextPost }: BlogDetailsPageProps) {
+export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetailsPageProps) {
+  const commentCountLabel = `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`;
+
   return (
     <article className={styles.detailsPage}>
       <header className={styles.detailsHero}>
@@ -65,7 +69,8 @@ export default function BlogDetailsPage({ post, nextPost }: BlogDetailsPageProps
                 {post.date}
               </time>
               <span>
-                <MessageCircle aria-hidden="true" />3 comments
+                <MessageCircle aria-hidden="true" />
+                {commentCountLabel}
               </span>
             </div>
           </div>
@@ -282,14 +287,17 @@ export default function BlogDetailsPage({ post, nextPost }: BlogDetailsPageProps
         <div className={styles.container1330}>
           <div className={styles.commentsWrap}>
             <section className={styles.commentsSection}>
-              <h2>Comments (03)</h2>
-              <BlogComments />
+              <h2>Comments ({comments.length})</h2>
+              <BlogComments comments={comments} />
             </section>
 
             <section className={styles.replySection}>
-              <h2>Leave a Reply</h2>
-              <p>Your email address will not be published. Required fields are marked *</p>
-              <BlogReplyForm />
+              <h2>Leave a Comment</h2>
+              <p>
+                Your email address will not be published. Comments are reviewed before appearing.
+                Required fields are marked *
+              </p>
+              <BlogReplyForm postSlug={post.slug} />
             </section>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import BlogDetailsPage from "@/components/blogs/BlogDetailsPage";
 import CreativeStudioFooter from "@/components/CreativeStudioFooter";
 import Header from "@/components/Header";
@@ -7,12 +8,14 @@ import AgntixInnerPageExperience from "@/components/site/AgntixInnerPageExperien
 import JsonLd from "@/components/seo/JsonLd";
 import { blogPosts, getBlogPostBySlug, getNextBlogPost } from "@/data/blogs";
 import { articleJsonLd, breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
+import { getApprovedBlogComments } from "@/services/blog-comments/BlogCommentService";
 
 type BlogDetailsRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
 export const dynamicParams = false;
+export const runtime = "nodejs";
 
 export const generateStaticParams = () => {
   const params: Array<{ slug: string }> = [];
@@ -54,6 +57,9 @@ export default async function BlogDetailsRoute({ params }: BlogDetailsRouteProps
 
   if (!post) notFound();
 
+  await connection();
+  const comments = await getApprovedBlogComments(post.slug);
+
   return (
     <>
       <JsonLd
@@ -69,7 +75,11 @@ export default async function BlogDetailsRoute({ params }: BlogDetailsRouteProps
       <Header />
       <AgntixInnerPageExperience>
         <main>
-          <BlogDetailsPage post={post} nextPost={getNextBlogPost(post.slug)} />
+          <BlogDetailsPage
+            post={post}
+            nextPost={getNextBlogPost(post.slug)}
+            comments={comments}
+          />
         </main>
         <CreativeStudioFooter />
       </AgntixInnerPageExperience>

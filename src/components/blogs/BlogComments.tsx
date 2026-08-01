@@ -1,52 +1,96 @@
-import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import type { ApprovedBlogComment } from "@/contracts/blog-comments";
 import styles from "./BlogPages.module.css";
 
-const comments = [
-  {
-    author: "Farhan Firoz",
-    date: "July 17, 2026",
-    avatar: "/agntix-blog/blog-details-sm-2.jpg",
-    text: "The focus on measurable outcomes is useful. It gives teams a practical way to discuss architecture without turning the conversation into a list of tools.",
-    child: false,
-  },
-  {
-    author: "Harun Rashid",
-    date: "July 18, 2026",
-    avatar: "/agntix-blog/blog-details-sm-1.jpg",
-    text: "Making operational constraints visible early has saved our team a lot of rework. The same principle applies to product scope and design systems.",
-    child: true,
-  },
-  {
-    author: "James Taylor",
-    date: "July 19, 2026",
-    avatar: "/agntix-blog/blog-details-sm-2.jpg",
-    text: "A strong reminder that reliable delivery depends as much on feedback loops and ownership as it does on the implementation itself.",
-    child: false,
-  },
-];
+type BlogCommentsProps = {
+  comments: readonly ApprovedBlogComment[];
+};
 
-export default function BlogComments() {
+const commentDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function commentDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return { dateTime: undefined, label: "Date unavailable" };
+  }
+
+  return {
+    dateTime: date.toISOString(),
+    label: commentDateFormatter.format(date),
+  };
+}
+
+function commentInitial(authorName: string) {
+  return Array.from(authorName.trim())[0]?.toLocaleUpperCase("en-US") ?? "?";
+}
+
+function safeWebsiteUrl(value: string | null) {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return null;
+    }
+
+    if (url.username || url.password) return null;
+
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+export default function BlogComments({ comments }: BlogCommentsProps) {
+  if (comments.length === 0) {
+    return (
+      <p className={styles.commentsEmpty}>
+        No approved comments yet. Share your perspective using the form below.
+      </p>
+    );
+  }
+
   return (
     <ul className={styles.commentsList}>
-      {comments.map((comment) => (
-        <li className={comment.child ? styles.childComment : ""} key={comment.author}>
-          <article className={styles.comment}>
-            <Image src={comment.avatar} alt="" width={76} height={76} />
-            <div className={styles.commentBody}>
-              <div className={styles.commentMeta}>
-                <h3>By {comment.author}</h3>
-                <time>{comment.date}</time>
+      {comments.map((comment) => {
+        const websiteUrl = safeWebsiteUrl(comment.websiteUrl);
+        const createdAt = commentDate(comment.createdAt);
+
+        return (
+          <li key={comment.id}>
+            <article className={styles.comment}>
+              <span className={styles.commentAvatar} aria-hidden="true">
+                {commentInitial(comment.authorName)}
+              </span>
+              <div className={styles.commentBody}>
+                <div className={styles.commentMeta}>
+                  <h3>
+                    {websiteUrl ? (
+                      <a
+                        className={styles.commentAuthorLink}
+                        href={websiteUrl}
+                        target="_blank"
+                        rel="ugc nofollow noreferrer noopener"
+                        aria-label={`Visit ${comment.authorName}'s website (opens in a new tab)`}
+                      >
+                        By {comment.authorName}
+                      </a>
+                    ) : (
+                      <>By {comment.authorName}</>
+                    )}
+                  </h3>
+                  <time dateTime={createdAt.dateTime}>{createdAt.label}</time>
+                </div>
+                <p>{comment.body}</p>
               </div>
-              <p>{comment.text}</p>
-              <a href="#reply-form">
-                Reply
-                <ArrowUpRight aria-hidden="true" />
-              </a>
-            </div>
-          </article>
-        </li>
-      ))}
+            </article>
+          </li>
+        );
+      })}
     </ul>
   );
 }
