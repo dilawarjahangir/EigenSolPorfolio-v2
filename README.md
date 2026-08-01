@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## SEO deployment
+
+The site uses `https://eigensol.com` as its canonical origin. Configure the hosting platform to permanently redirect all `https://www.eigensol.com/*` requests to the matching non-www URL. Keep the path and query string intact.
+
+Search-engine ownership verification is optional and environment-driven:
+
+```bash
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-token
+NEXT_PUBLIC_BING_SITE_VERIFICATION=your-bing-token
+```
+
+Do not commit real verification tokens. After deployment, submit `https://eigensol.com/sitemap.xml` to Google Search Console and Bing Webmaster Tools.

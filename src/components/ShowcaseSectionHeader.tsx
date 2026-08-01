@@ -20,12 +20,12 @@ export default function ShowcaseSectionHeader({
       <div className={styles.row}>
         <div className={`${styles.column} ${styles.subtitleColumn}`}>
           <div className="studio-project-subtitle-box">
-            <h3 className={`${styles.subtitle} tp-section-subtitle-clash`}>
+            <p className={`${styles.subtitle} tp-section-subtitle-clash`}>
               {subtitle}
               <i>
                 <HeaderArrow />
               </i>
-            </h3>
+            </p>
           </div>
         </div>
 
@@ -34,7 +34,7 @@ export default function ShowcaseSectionHeader({
             <div className={`${styles.row} ${styles.titleRow}`}>
               <div className={`${styles.column} ${styles.titleColumn}`}>
                 <div className={`${styles.titleBox} studio-project-title-box`}>
-                  <h3 className={`${styles.title} tp-section-title-clash`}>{title}</h3>
+                  <h2 className={`${styles.title} tp-section-title-clash`}>{title}</h2>
                 </div>
               </div>
               <div className={`${styles.column} ${styles.buttonColumn}`}>

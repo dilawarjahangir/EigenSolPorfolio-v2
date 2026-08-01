@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProjectDetailPage from "@/components/case-studies/ProjectDetailPage";
+import JsonLd from "@/components/seo/JsonLd";
 import { getPortfolioProjectById, portfolioProjects } from "@/data/projects";
+import { breadcrumbJsonLd, buildPageMetadata, creativeWorkJsonLd } from "@/lib/seo";
 
 type ProjectPageProps = {
   params: Promise<{ projectId: string }>;
@@ -24,30 +26,15 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     };
   }
 
-  const canonicalPath = `/case-studies/${project.id}`;
   const socialImage = project.coverImage ?? project.galleryImages[0] ?? "/logo.webp";
   const socialTitle = `${project.title} Case Study | EigenSol`;
 
-  return {
+  return buildPageMetadata({
     title: socialTitle,
     description: project.description,
-    keywords: [project.primaryCategory, project.clientName, ...project.tags],
-    alternates: { canonical: canonicalPath },
-    openGraph: {
-      title: socialTitle,
-      description: project.description,
-      type: "article",
-      url: canonicalPath,
-      siteName: "EigenSol",
-      images: [{ url: socialImage, alt: `${project.title} project by EigenSol` }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: socialTitle,
-      description: project.description,
-      images: [socialImage],
-    },
-  };
+    path: `/case-studies/${project.id}`,
+    image: socialImage,
+  });
 }
 
 export default async function ProjectDetailRoute({ params }: ProjectPageProps) {
@@ -67,12 +54,24 @@ export default async function ProjectDetailRoute({ params }: ProjectPageProps) {
     .slice(0, 2);
 
   return (
-    <ProjectDetailPage
-      project={project}
-      projectPosition={projectIndex + 1}
-      projectTotal={portfolioProjects.length}
-      relatedProjects={relatedProjects}
-      nextProject={nextProject}
-    />
+    <>
+      <JsonLd
+        data={[
+          creativeWorkJsonLd(project),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Case Studies", path: "/case-studies" },
+            { name: project.title, path: `/case-studies/${project.id}` },
+          ]),
+        ]}
+      />
+      <ProjectDetailPage
+        project={project}
+        projectPosition={projectIndex + 1}
+        projectTotal={portfolioProjects.length}
+        relatedProjects={relatedProjects}
+        nextProject={nextProject}
+      />
+    </>
   );
 }

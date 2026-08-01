@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, buildPageMetadata, webPageJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms and Conditions | EigenSol",
-  description: "Terms governing the use of EigenSol's website and professional services.",
-};
+const title = "Terms and Conditions | EigenSol";
+const description = "Terms governing the use of EigenSol's website and professional services.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title,
+  description,
+  path: "/terms-and-conditions",
+});
 
 const sections: LegalSection[] = [
   {
@@ -80,11 +86,22 @@ const sections: LegalSection[] = [
 
 export default function TermsAndConditionsPage() {
   return (
-    <LegalPage
-      title="Terms and Conditions"
-      summary="These terms explain the rules that apply when you use the EigenSol website or engage with our professional services."
-      updatedAt="July 18, 2026"
-      sections={sections}
-    />
+    <>
+      <JsonLd
+        data={[
+          webPageJsonLd("WebPage", title, description, "/terms-and-conditions"),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Terms and Conditions", path: "/terms-and-conditions" },
+          ]),
+        ]}
+      />
+      <LegalPage
+        title="Terms and Conditions"
+        summary="These terms explain the rules that apply when you use the EigenSol website or engage with our professional services."
+        updatedAt="July 18, 2026"
+        sections={sections}
+      />
+    </>
   );
 }

@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import HistoryBackButton from "@/components/site/HistoryBackButton";
 import styles from "@/components/site/NotFoundPage.module.css";
 import SitePageShell from "@/components/site/SitePageShell";
+
+export const metadata: Metadata = {
+  title: { absolute: "Page Not Found | EigenSol" },
+  description: "The requested page could not be found.",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (

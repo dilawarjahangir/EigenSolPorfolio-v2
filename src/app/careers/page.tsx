@@ -4,13 +4,15 @@ import { ArrowUpRight, Clock, MapPin } from "lucide-react";
 import PageCta from "@/components/site/PageCta";
 import PageHero from "@/components/site/PageHero";
 import SitePageShell from "@/components/site/SitePageShell";
+import JsonLd from "@/components/seo/JsonLd";
 import styles from "@/components/site/InnerPages.module.css";
+import { breadcrumbJsonLd, buildPageMetadata, webPageJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Careers at EigenSol",
-  description:
-    "Explore careers at EigenSol, our engineering culture, employee benefits, and current open positions.",
-};
+const title = "Careers at EigenSol";
+const description =
+  "Explore careers at EigenSol, our engineering culture, employee benefits, and current open positions.";
+
+export const metadata: Metadata = buildPageMetadata({ title, description, path: "/careers" });
 
 const values = [
   ["Innovation First", "We encourage experimentation and embrace new technologies."],
@@ -30,7 +32,17 @@ const benefits = [
 
 export default function CareersPage() {
   return (
-    <SitePageShell>
+    <>
+      <JsonLd
+        data={[
+          webPageJsonLd("WebPage", title, description, "/careers"),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Careers", path: "/careers" },
+          ]),
+        ]}
+      />
+      <SitePageShell>
       <div className={styles.page}>
         <PageHero
           eyebrow="Join Our Team"
@@ -134,6 +146,7 @@ export default function CareersPage() {
           href="/contact"
         />
       </div>
-    </SitePageShell>
+      </SitePageShell>
+    </>
   );
 }

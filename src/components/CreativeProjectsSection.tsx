@@ -153,9 +153,9 @@ export default function CreativeProjectsSection() {
                         </i>
                       </div>
                       <div className={`${styles.projectContent} studio-project-content`}>
-                        <h4 className={`${styles.projectTitle} studio-project-title-sm`}>
+                        <h3 className={`${styles.projectTitle} studio-project-title-sm`}>
                           <Link href={`/case-studies/${project.id}`}>{project.title}</Link>
-                        </h4>
+                        </h3>
                         <span>
                           {[project.primaryCategory, ...project.tags.slice(0, 2)].join(" / ")}
                         </span>

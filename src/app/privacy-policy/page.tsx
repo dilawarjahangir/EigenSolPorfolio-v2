@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, buildPageMetadata, webPageJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | EigenSol",
-  description: "How EigenSol collects, uses, protects, and manages personal information.",
-};
+const title = "Privacy Policy | EigenSol";
+const description = "How EigenSol collects, uses, protects, and manages personal information.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title,
+  description,
+  path: "/privacy-policy",
+});
 
 const sections: LegalSection[] = [
   {
@@ -79,11 +85,22 @@ const sections: LegalSection[] = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage
-      title="Privacy Policy"
-      summary="This policy explains what information EigenSol collects, why we use it, and the choices available to you."
-      updatedAt="July 18, 2026"
-      sections={sections}
-    />
+    <>
+      <JsonLd
+        data={[
+          webPageJsonLd("WebPage", title, description, "/privacy-policy"),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Privacy Policy", path: "/privacy-policy" },
+          ]),
+        ]}
+      />
+      <LegalPage
+        title="Privacy Policy"
+        summary="This policy explains what information EigenSol collects, why we use it, and the choices available to you."
+        updatedAt="July 18, 2026"
+        sections={sections}
+      />
+    </>
   );
 }
