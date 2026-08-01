@@ -1,19 +1,34 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import styles from "./ProjectGallery.module.css";
 
 type ProjectGalleryProps = {
   title: string;
   images: string[];
+  aspectRatio?: string;
+  initialOrientation?: "landscape" | "portrait";
 };
 
-export default function ProjectGallery({ title, images }: ProjectGalleryProps) {
+export default function ProjectGallery({
+  title,
+  images,
+  aspectRatio = "16 / 10",
+  initialOrientation = "landscape",
+}: ProjectGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [open, setOpen] = useState(false);
-  const activeImage = images[activeIndex];
+  const [imageOrientations, setImageOrientations] = useState<
+    Record<string, "landscape" | "portrait">
+  >({});
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const activeImage = images[activeIndex] ?? images[0];
+  const activeOrientation = imageOrientations[activeImage] ?? initialOrientation;
+  const galleryStyle = { "--gallery-aspect-ratio": aspectRatio } as CSSProperties;
 
   const previous = useCallback(() => {
     setActiveIndex((current) => (current - 1 + images.length) % images.length);
@@ -24,11 +39,18 @@ export default function ProjectGallery({ title, images }: ProjectGalleryProps) {
   }, [images.length]);
 
   useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+  }, [open]);
+
+  useEffect(() => {
     if (!open) return;
 
     const previousOverflow = document.body.style.overflow;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
       if (event.key === "ArrowLeft" && images.length > 1) previous();
       if (event.key === "ArrowRight" && images.length > 1) next();
     };
@@ -42,23 +64,25 @@ export default function ProjectGallery({ title, images }: ProjectGalleryProps) {
     };
   }, [open, images.length, next, previous]);
 
-  if (!images.length) {
+  if (!images.length || !activeImage) {
     return (
       <div className={styles.empty}>
-        <span>No public screenshots</span>
+        <span>Private visual archive</span>
         <strong>{title}</strong>
-        <p>The project detail and engineering case study remain available below.</p>
+        <p>Public screenshots are unavailable for this delivery.</p>
       </div>
     );
   }
 
   return (
     <>
-      <div className={styles.gallery}>
+      <div className={`${styles.gallery} tp_fade_anim`} style={galleryStyle}>
         <div className={styles.stage}>
           <button
+            ref={triggerRef}
             type="button"
             className={styles.imageButton}
+            data-orientation={activeOrientation}
             onClick={() => setOpen(true)}
             aria-label={`Expand ${title} screenshot ${activeIndex + 1}`}
           >
@@ -66,20 +90,34 @@ export default function ProjectGallery({ title, images }: ProjectGalleryProps) {
               src={activeImage}
               alt={`${title} screenshot ${activeIndex + 1}`}
               fill
-              sizes="(max-width: 1360px) 100vw, 1360px"
+              sizes="(max-width: 767px) 100vw, (max-width: 1540px) 94vw, 1460px"
+              onLoad={(event) => {
+                const orientation =
+                  event.currentTarget.naturalHeight > event.currentTarget.naturalWidth
+                    ? "portrait"
+                    : "landscape";
+
+                setImageOrientations((current) =>
+                  current[activeImage] === orientation
+                    ? current
+                    : { ...current, [activeImage]: orientation },
+                );
+              }}
             />
             <span className={styles.expand}>
               <Expand aria-hidden="true" />
-              Expand
+              Open full screen
             </span>
           </button>
-          {images.length > 1 && (
-            <GalleryControls previous={previous} next={next} />
-          )}
+          {images.length > 1 && <GalleryControls previous={previous} next={next} />}
         </div>
 
         {images.length > 1 && (
-          <div className={styles.thumbnails}>
+          <div
+            className={styles.thumbnailRail}
+            role="group"
+            aria-label={`${title} gallery thumbnails`}
+          >
             {images.map((image, index) => (
               <button
                 type="button"
@@ -87,54 +125,61 @@ export default function ProjectGallery({ title, images }: ProjectGalleryProps) {
                 onClick={() => setActiveIndex(index)}
                 aria-label={`Show ${title} screenshot ${index + 1}`}
                 aria-pressed={index === activeIndex}
-                key={image}
+                key={`${image}-${index}`}
               >
                 <Image
                   src={image}
                   alt=""
                   fill
-                  sizes="(max-width: 767px) 45vw, 220px"
+                  sizes="(max-width: 767px) 42vw, (max-width: 1540px) 22vw, 320px"
                 />
+                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
               </button>
             ))}
           </div>
         )}
       </div>
 
-      {open && (
-        <div className={styles.modal} role="dialog" aria-modal="true" aria-label={`${title} gallery`}>
+      <dialog
+        ref={dialogRef}
+        className={styles.modal}
+        aria-label={`${title} image gallery`}
+        onCancel={(event) => {
+          event.preventDefault();
+          setOpen(false);
+        }}
+        onClose={() => {
+          setOpen(false);
+          triggerRef.current?.focus();
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setOpen(false);
+        }}
+      >
+        <div className={styles.modalContent}>
           <button
             type="button"
-            className={styles.backdrop}
+            className={styles.close}
             onClick={() => setOpen(false)}
             aria-label="Close gallery"
-          />
-          <div className={styles.modalContent}>
-            <button
-              type="button"
-              className={styles.close}
-              onClick={() => setOpen(false)}
-              aria-label="Close gallery"
-              autoFocus
-            >
-              <X aria-hidden="true" />
-            </button>
-            <div className={styles.modalImage}>
-              <Image
-                src={activeImage}
-                alt={`${title} enlarged screenshot ${activeIndex + 1}`}
-                fill
-                sizes="95vw"
-                priority
-              />
-            </div>
-            {images.length > 1 && <GalleryControls previous={previous} next={next} />}
-            <span className={styles.counter}>
-              {activeIndex + 1} / {images.length}
-            </span>
+            autoFocus
+          >
+            <X aria-hidden="true" />
+          </button>
+          <div className={styles.modalImage}>
+            <Image
+              src={activeImage}
+              alt={`${title} enlarged screenshot ${activeIndex + 1}`}
+              fill
+              sizes="96vw"
+            />
           </div>
+          {images.length > 1 && <GalleryControls previous={previous} next={next} />}
+          <span className={styles.counter} role="status" aria-live="polite">
+            {String(activeIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+          </span>
         </div>
-      )}
+      </dialog>
     </>
   );
 }

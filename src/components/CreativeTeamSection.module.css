@@ -121,10 +121,10 @@
 .memberContent {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 56px;
   left: 0;
   z-index: 22;
-  margin: 30px;
+  margin: 0 24px;
   text-align: center;
   opacity: 0;
   visibility: hidden;
@@ -135,11 +135,12 @@
   margin: 0;
   color: #f9f4e8;
   font-family: "ClashDisplay-Semibold", serif;
-  font-size: 34px;
+  font-size: clamp(27px, 2.2vw, 34px);
   font-weight: 500;
-  line-height: 0.95;
+  line-height: 1.05;
   letter-spacing: 0;
   text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 
 .memberContent .longName {
@@ -147,10 +148,12 @@
 }
 
 .memberContent span {
+  display: block;
+  margin-top: 8px;
   color: #f9f4e8;
   font-family: "ClashDisplay-Semibold", serif;
   font-size: 14px;
-  line-height: 1;
+  line-height: 1.3;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -305,6 +308,11 @@
   .thumb img {
     width: 100%;
     height: auto;
+  }
+
+  .memberContent {
+    bottom: 48px;
+    margin: 0 20px;
   }
 }
 

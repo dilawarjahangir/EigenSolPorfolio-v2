@@ -30,7 +30,7 @@ const teamRows = [
     {
       id: 3,
       name: "Dilawar Jahangir",
-      position: "Co-Founder & Full Stack Developer",
+      position: "Co-Founder",
       image: "/team/dilawarPhoto.webp",
       width: 340,
       height: 470,

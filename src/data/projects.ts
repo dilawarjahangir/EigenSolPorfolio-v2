@@ -5,6 +5,7 @@ export type PortfolioProject = {
   id: string;
   title: string;
   primaryCategory: ProjectCategory;
+  productType: string;
   description: string;
   tags: string[];
   coreTechnologies?: string[];
@@ -86,6 +87,7 @@ const allProjects: PortfolioProject[] = [
     id: 'htask',
     title: 'HTask',
     primaryCategory: 'AI/ML',
+    productType: 'AI Hotel Operations Platform',
     description:
       'Voice assistants used to manage and track hotel reception workflows such as bookings, check-ins, room service, food ordering, and complaint handling.',
     tags: deriveTags([
@@ -119,6 +121,7 @@ const allProjects: PortfolioProject[] = [
     id: 'hmc-holding',
     title: 'HMC Holding',
     primaryCategory: 'Web',
+    productType: 'Business Advisory Platform',
     description:
       'Multi-page React/Vite website for a UAE-focused consulting group, combining structured service discovery, inquiry funnels, calculators, gated live Dubai projects map access, blog content, SEO tooling, and a standalone mail backend.',
     tags: deriveTags([
@@ -233,6 +236,7 @@ const allProjects: PortfolioProject[] = [
     id: 'eigenmc',
     title: 'EigenMC',
     primaryCategory: 'Web',
+    productType: 'Motor-Carrier Intelligence SaaS',
     description:
       'Full-stack FMCSA motor-carrier intelligence SaaS with a public product site, authenticated React dashboard, FastAPI backend, PostgreSQL data model, admin controls, lead workflows, CSV exports, usage limits, and a resilient TypeScript scraping pipeline.',
     tags: deriveTags([
@@ -366,6 +370,7 @@ const allProjects: PortfolioProject[] = [
     id: 'a2prop',
     title: 'A2 Properties',
     primaryCategory: 'Web',
+    productType: 'Real-Estate Discovery Platform',
     description:
       'Full-stack real-estate discovery and lead-generation platform for a Dubai-focused property business, combining premium brand presentation, live inventory, multilingual content, and CRM-connected conversion workflows.',
     tags: deriveTags([
@@ -473,6 +478,7 @@ const allProjects: PortfolioProject[] = [
     id: 'sleep-tracking',
     title: 'Sleep Tracking (ExceedSleep)',
     primaryCategory: 'Mobile',
+    productType: 'AI Sleep-Wellness Platform',
     description:
       'Mobile-first sleep wellness platform with Expo React Native, sleep-event detection, Node/Express API, React admin panel, analytics, audio storage, and subscription support.',
     tags: deriveTags([
@@ -611,6 +617,7 @@ const allProjects: PortfolioProject[] = [
     id: '1016-visualizer',
     title: '1016 Visualizer',
     primaryCategory: 'Web',
+    productType: 'Automotive Parts Visualizer',
     description:
       'Laravel-based automotive parts visualizer and dealer ordering platform with canvas vehicle previews, SVG part highlights, material/version switching, order summaries, CSV invoices, and mail delivery.',
     tags: deriveTags(['Laravel', 'PHP', 'MySQL', 'JavaScript', 'Blade', 'Bootstrap']),
@@ -717,6 +724,7 @@ const allProjects: PortfolioProject[] = [
     id: 'iqmetric',
     title: 'IQMetric',
     primaryCategory: 'Web',
+    productType: 'Online IQ-Testing SaaS',
     description:
       'Online IQ tests and games SaaS with admin and user panels, payment integration, and analytics.',
     tags: deriveTags(['Laravel', 'HTML', 'CSS', 'JavaScript', 'MySQL']),
@@ -736,6 +744,7 @@ const allProjects: PortfolioProject[] = [
     id: 'zainather',
     title: 'zainather.com',
     primaryCategory: 'Web',
+    productType: 'Medical Consultation Website',
     description:
       'Professional medical website for Dr. Zain Ather with patient consultation flows, recruiter-facing CV access, practical care tools, SEO metadata, restrained motion, and GitHub Pages deployment.',
     tags: deriveTags(['JavaScript', 'GSAP', 'HTML', 'CSS', 'SEO', 'GitHub Pages']),
@@ -833,6 +842,7 @@ const allProjects: PortfolioProject[] = [
     id: 'objecttracker',
     title: 'Object Following Drone',
     primaryCategory: 'AI/ML',
+    productType: 'Computer-Vision Drone System',
     description:
       'Computer-vision drone tracking system for DJI Tello, webcam, and Three.js simulation with real-time target tracking, grid-based navigation, smooth velocity control, and PyQt6/OpenCV interfaces.',
     tags: deriveTags([

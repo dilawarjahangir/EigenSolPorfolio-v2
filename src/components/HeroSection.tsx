@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 import BlueprintLogoReveal from "./BlueprintLogoReveal";
 import styles from "./HeroSection.module.css";
@@ -101,10 +101,6 @@ export default function HeroSection() {
           </Link>
         </div>
       </div>
-
-      <a className={styles.scrollCue} href="#solutions" aria-label="Scroll to approach">
-        <ArrowDown aria-hidden="true" />
-      </a>
     </section>
   );
 }

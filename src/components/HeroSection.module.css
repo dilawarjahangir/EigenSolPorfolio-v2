@@ -241,43 +241,6 @@
   color: #ff7744;
 }
 
-.scrollCue {
-  position: absolute;
-  right: clamp(1.5rem, 3vw, 3rem);
-  bottom: clamp(1.5rem, 3vw, 3rem);
-  z-index: 2;
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--hero-border);
-  border-radius: 50%;
-  place-items: center;
-  color: var(--hero-heading);
-  background: var(--hero-surface);
-  opacity: 0;
-  text-decoration: none;
-  transform: translateY(10px);
-  animation: companyLineReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--hero-reveal-duration) + 0.85s) forwards;
-  backdrop-filter: blur(12px);
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.scrollCue svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-.scrollCue:hover,
-.scrollCue:focus-visible {
-  border-color: #ff7744;
-  color: #ff7744;
-  transform: translateY(3px);
-}
-
 @keyframes gridReveal {
   from {
     opacity: 0;
@@ -397,10 +360,6 @@
     width: min(100%, 22rem);
   }
 
-  .scrollCue {
-    right: 1rem;
-    bottom: 1rem;
-  }
 }
 
 @media (max-width: 420px) {
@@ -433,8 +392,7 @@
 @media (prefers-reduced-motion: reduce) {
   .blueprintGrid,
   .companyLine,
-  .heroContent,
-  .scrollCue {
+  .heroContent {
     opacity: 1;
     transform: none;
     animation: none;
@@ -442,15 +400,35 @@
 
   .primaryAction,
   .primaryAction svg,
-  .secondaryAction,
-  .scrollCue {
+  .secondaryAction {
     transition: none;
   }
 }
 
 :global(html[data-theme="dark"]) .hero {
+  --hero-background: var(--site-background);
+  --hero-heading: var(--site-heading);
+  --hero-text: var(--site-text);
+  --hero-muted: var(--site-muted);
+  --hero-line: rgba(255, 255, 255, 0.09);
+  --hero-border: var(--site-border);
+  --hero-surface: var(--site-surface-glass);
+
   background:
-    linear-gradient(90deg, transparent 0 49.95%, rgba(18, 18, 18, 0.045) 49.95% 50.05%, transparent 50.05%),
-    radial-gradient(circle at 76% 42%, rgba(86, 204, 242, 0.12), transparent 30%),
+    linear-gradient(90deg, transparent 0 49.95%, rgba(255, 255, 255, 0.055) 49.95% 50.05%, transparent 50.05%),
+    radial-gradient(circle at 76% 42%, rgba(86, 204, 242, 0.1), transparent 30%),
     var(--hero-background);
+}
+
+:global(html[data-theme="dark"]) .blueprintGrid::before {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(86, 204, 242, 0.08), transparent 62%);
+}
+
+@media (max-width: 767px) {
+  :global(html[data-theme="dark"]) .hero {
+    background:
+      radial-gradient(circle at 82% 32%, rgba(86, 204, 242, 0.1), transparent 36%),
+      var(--hero-background);
+  }
 }

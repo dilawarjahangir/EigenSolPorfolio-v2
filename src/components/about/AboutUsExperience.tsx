@@ -61,12 +61,10 @@ export default function AboutUsExperience({ children }: AboutUsExperienceProps) 
       animationContext = gsap.context(() => {
         media = gsap.matchMedia();
 
-        media.add("(min-width: 1200px)", () => {
-          const panelWrap = content.querySelector<HTMLElement>(".tp-funfact-panel-wrap");
-          const panels = gsap.utils.toArray<HTMLElement>(".tp-funfact-panel", content);
+        const panelWrap = content.querySelector<HTMLElement>(".tp-funfact-panel-wrap");
+        const panels = gsap.utils.toArray<HTMLElement>(".tp-funfact-panel", content);
 
-          if (!panelWrap || panels.length === 0) return;
-
+        if (panelWrap && panels.length > 0) {
           gsap.to(panels, {
             xPercent: -100 * (panels.length - 1),
             ease: "none",
@@ -78,7 +76,7 @@ export default function AboutUsExperience({ children }: AboutUsExperienceProps) 
               end: () => `+=${panelWrap.clientWidth}`,
             },
           });
-        });
+        }
 
         media.add("(min-width: 1199px)", () => {
           const pinAreas = gsap.utils.toArray<HTMLElement>(".about-panel-pin-area", content);

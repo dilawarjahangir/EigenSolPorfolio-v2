@@ -87,13 +87,13 @@
 
 .socialLink svg {
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
 .socialLink:first-child svg {
-  width: 12px;
+  width: 17px;
 }
 
 .cornerMessage {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ComponentType } from "react";
-import BackToTopLink from "./BackToTopLink";
+import FooterBackToTopTarget from "./FooterBackToTopTarget";
 import styles from "./CreativeStudioFooter.module.css";
 
 type SocialLink = {
@@ -55,7 +55,7 @@ export default function CreativeStudioFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={`${styles.footer} creative-footer-style`}>
+    <footer id="site-footer" className={`${styles.footer} creative-footer-style`}>
       <div className={styles.socialRail} aria-label="EigenSol social links">
         {socialLinks.map(({ label, href, delay, icon: Icon, external }) => (
           <div
@@ -78,11 +78,10 @@ export default function CreativeStudioFooter() {
         ))}
       </div>
 
-      <div className={styles.cornerMessage}>
-        <BackToTopLink className={styles.cornerLink}>
-          {"EigenSol I\u2019ve gone too far, send me back up \uD83D\uDC46"}
-        </BackToTopLink>
-      </div>
+      <FooterBackToTopTarget
+        className={styles.cornerMessage}
+        linkClassName={styles.cornerLink}
+      />
 
       <div className={styles.footerArea}>
         <div className={styles.container}>

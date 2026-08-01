@@ -8,10 +8,12 @@ import { useLayoutEffect, useRef, type ReactNode } from "react";
 
 type AgntixInnerPageExperienceProps = {
   children: ReactNode;
+  waitForImages?: boolean;
 };
 
 export default function AgntixInnerPageExperience({
   children,
+  waitForImages = true,
 }: AgntixInnerPageExperienceProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -90,18 +92,24 @@ export default function AgntixInnerPageExperience({
     };
 
     const imageLoader = imagesLoaded(wrapper, { background: true });
-    imageLoader.on("always", initializeAnimations);
+    const handleImagesReady = () => {
+      initializeAnimations();
+      ScrollTrigger.refresh();
+    };
+
+    imageLoader.on("always", handleImagesReady);
+    if (!waitForImages) initializeAnimations();
 
     const refreshScrollTriggers = () => ScrollTrigger.refresh();
     window.addEventListener("load", refreshScrollTriggers);
 
     return () => {
       window.removeEventListener("load", refreshScrollTriggers);
-      imageLoader.off("always", initializeAnimations);
+      imageLoader.off("always", handleImagesReady);
       animationContext?.revert();
       smoother?.kill();
     };
-  }, []);
+  }, [waitForImages]);
 
   return (
     <div id="inner-smooth-wrapper" ref={wrapperRef}>

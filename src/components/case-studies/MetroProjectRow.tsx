@@ -38,8 +38,8 @@ export default function MetroProjectRow({ project, index }: MetroProjectRowProps
                   src={project.coverImage}
                   alt={`${project.title} project by EigenSol`}
                   fill
-                  sizes="(min-width: 1400px) 960px, (min-width: 1200px) 665px, calc(100vw - 60px)"
-                  priority={index === 0}
+                  sizes="(min-width: 1400px) 700px, (min-width: 1200px) 650px, (min-width: 992px) 510px, (min-width: 768px) 680px, calc(100vw - 40px)"
+                  preload={index === 0}
                 />
               ) : (
                 <div className={styles.noMediaPanel}>
@@ -64,7 +64,7 @@ export default function MetroProjectRow({ project, index }: MetroProjectRowProps
               </Link>
             </h2>
             <p className={`${styles.projectTags} metro-reveal`}>
-              {project.tags.slice(0, 3).join(", ")}
+              {project.productType}
             </p>
             <Link className={styles.projectButton} href={detailHref}>
               View project
