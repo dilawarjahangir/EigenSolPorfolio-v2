@@ -712,8 +712,8 @@ async function changePostStatus(input: Readonly<{
       `
         UPDATE content.blog_posts
         SET
-          status = $2,
-          archived_at = CASE WHEN $2 = 'archived' THEN now() ELSE NULL END,
+          status = $2::varchar(16),
+          archived_at = CASE WHEN $2::varchar(16) = 'archived' THEN now() ELSE NULL END,
           version = version + 1,
           updated_at = now(),
           updated_by = $3
@@ -808,9 +808,9 @@ async function restoreArchivedBlogPostRecord(input: Readonly<{
       `
         UPDATE content.blog_posts
         SET
-          status = $2,
+          status = $2::varchar(16),
           archived_at = NULL,
-          last_published_at = CASE WHEN $2 = 'published' THEN now() ELSE last_published_at END,
+          last_published_at = CASE WHEN $2::varchar(16) = 'published' THEN now() ELSE last_published_at END,
           version = version + 1,
           updated_at = now(),
           updated_by = $3

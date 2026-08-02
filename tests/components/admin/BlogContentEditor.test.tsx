@@ -118,6 +118,14 @@ function Harness() {
 describe("BlogContentEditor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockReturnValue({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }),
+    });
     vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(
       JSON.stringify({ ok: true, asset: uploadedAsset, duplicate: false }),
       { status: 201, headers: { "content-type": "application/json" } },

@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useRef, useState, type Ref } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type Ref } from "react";
 import type { BlogMediaAsset } from "@/contracts/blog-cms";
 import { blogContentExtensions } from "@/lib/blog-content-extensions";
 import { AdminSelect, type AdminSelectOption } from "./AdminSelect";
@@ -69,6 +69,13 @@ type ToolbarButtonProps = Readonly<{
   children: React.ReactNode;
 }>;
 
+type ToolbarDock = Readonly<{
+  fixed: boolean;
+  left: number;
+  top: number;
+  height: number;
+}>;
+
 function ToolbarButton({
   label,
   active,
@@ -105,8 +112,16 @@ export function BlogContentEditor({
   onMediaUploaded,
   onSaveShortcut,
 }: BlogContentEditorProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const mediaButtonRef = useRef<HTMLButtonElement>(null);
   const mediaPanelRef = useRef<HTMLFieldSetElement>(null);
+  const [toolbarDock, setToolbarDock] = useState<ToolbarDock>({
+    fixed: false,
+    left: 0,
+    top: 0,
+    height: 0,
+  });
   const [selectedAssetId, setSelectedAssetId] = useState(media[0]?.id ?? "");
   const [imageAlt, setImageAlt] = useState("");
   const [imageCaption, setImageCaption] = useState("");
@@ -144,6 +159,64 @@ export function BlogContentEditor({
   });
 
   const closeLinkDialog = useCallback(() => setLinkDialogOpen(false), []);
+
+  useEffect(() => {
+    let frame = 0;
+    const mobileQuery = window.matchMedia("(max-width: 48rem)");
+
+    const updateDock = () => {
+      frame = 0;
+      const root = rootRef.current;
+      const toolbar = toolbarRef.current;
+
+      if (!root || !toolbar || mobileQuery.matches) {
+        setToolbarDock((current) => (
+          current.fixed ? { fixed: false, left: 0, top: 0, height: 0 } : current
+        ));
+        return;
+      }
+
+      const rootBounds = root.getBoundingClientRect();
+      const computedTop = Number.parseFloat(window.getComputedStyle(toolbar).top);
+      const top = Number.isFinite(computedTop) ? computedTop : 156;
+      const viewportHeight = Math.max(0, window.innerHeight - top - 22);
+      const editorVisibleHeight = Math.max(0, rootBounds.bottom - top);
+      const height = Math.min(viewportHeight, editorVisibleHeight);
+      const fixed = rootBounds.top <= top && height > 44;
+      const nextDock = {
+        fixed,
+        left: rootBounds.left,
+        top,
+        height,
+      } satisfies ToolbarDock;
+
+      setToolbarDock((current) => (
+        current.fixed === nextDock.fixed &&
+        Math.abs(current.left - nextDock.left) < 0.5 &&
+        Math.abs(current.top - nextDock.top) < 0.5 &&
+        Math.abs(current.height - nextDock.height) < 0.5
+          ? current
+          : nextDock
+      ));
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateDock);
+    };
+
+    updateDock();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    mobileQuery.addEventListener("change", scheduleUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      mobileQuery.removeEventListener("change", scheduleUpdate);
+    };
+  }, []);
 
   if (!editor) {
     return <div className={styles.loading} role="status">Loading editor…</div>;
@@ -250,10 +323,22 @@ export function BlogContentEditor({
       description: `${asset.width} × ${asset.height}`,
     });
   }
+  const toolbarStyle = {
+    "--editor-toolbar-left": `${toolbarDock.left}px`,
+    "--editor-toolbar-top": `${toolbarDock.top}px`,
+    "--editor-toolbar-height": `${toolbarDock.height}px`,
+  } as CSSProperties;
 
   return (
-    <div className={styles.root}>
-      <div className={styles.toolbar} role="toolbar" aria-label="Article formatting">
+    <div className={styles.root} ref={rootRef}>
+      <div
+        className={styles.toolbar}
+        data-fixed={toolbarDock.fixed ? "true" : undefined}
+        ref={toolbarRef}
+        role="toolbar"
+        aria-label="Article formatting"
+        style={toolbarStyle}
+      >
           <div className={styles.toolbarGroup} data-label="Block" role="group" aria-label="Block style">
             <ToolbarButton label="Paragraph" active={editor.isActive("paragraph")} onClick={() => editor.chain().focus().setParagraph().run()}>
               <Pilcrow aria-hidden="true" />
