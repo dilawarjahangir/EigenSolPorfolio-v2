@@ -59,12 +59,20 @@ export async function seedLegacyBlogPostRecords(
         [post.postId, post.slug],
       );
       if (existing.rowCount !== 0) {
-        const row = existing.rows[0];
-        if (row.id !== post.postId || row.slug !== post.slug) {
-          throw new Error("A legacy blog seed identifier conflicts with an existing post");
+        const matchingId = existing.rows.find((row) => row.id === post.postId);
+        const matchingSlug = existing.rows.find((row) => row.slug === post.slug);
+
+        // A seeded post may later be edited through the CMS, including a slug
+        // change. Its stable post ID still identifies the existing seed record.
+        if (matchingId) {
+          if (matchingSlug && matchingSlug.id !== post.postId) {
+            throw new Error("A legacy blog seed identifier conflicts with an existing post");
+          }
+          existingPosts += 1;
+          continue;
         }
-        existingPosts += 1;
-        continue;
+
+        throw new Error("A legacy blog seed identifier conflicts with an existing post");
       }
 
       await client.query(

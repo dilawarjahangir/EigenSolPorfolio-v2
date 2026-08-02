@@ -64,6 +64,10 @@ export async function pruneBlogPostRevisionRecords(input: Readonly<{
       `DELETE FROM content.blog_revision_media WHERE revision_id = ANY($1::uuid[])`,
       [candidateIds],
     );
+    await client.query(
+      `DELETE FROM content.blog_post_audit_events WHERE revision_id = ANY($1::uuid[])`,
+      [candidateIds],
+    );
     const deleted = await client.query<RevisionRetentionCandidate>(
       `
         DELETE FROM content.blog_post_revisions AS revision

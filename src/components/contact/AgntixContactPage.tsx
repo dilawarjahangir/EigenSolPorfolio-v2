@@ -1,58 +1,68 @@
 import Image from "next/image";
+
 import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
+
 import AgntixContactForm from "./AgntixContactForm";
 import styles from "./AgntixContactPage.module.css";
+
 
 type AgntixContactPageProps = {
   defaultMessage?: string;
 };
 
+
 type ContactCard = {
   title: string;
   image: string;
+  address: string;
   email: string;
   phone: string;
-  href: string;
-  label: string;
+  phoneHref: string;
+  mapHref: string;
   speed: string;
   offset?: boolean;
   featured?: boolean;
 };
 
-const officeMap =
-  "https://www.google.com/maps/search/?api=1&query=EigenSol%2C%20Khayaban-e-Amin%2C%20Lahore";
 
 const contactCards: ContactCard[] = [
   {
-    title: "Lahore Headquarters",
+    title: "Lahore Office",
     image: "/agntix-contact/contact-us-thumb-1.jpg",
+    address: "3570, N2, Khayaban-e-Amin, Lahore, Pakistan",
     email: "info@eigensol.com",
     phone: "+92 326 0335144",
-    href: officeMap,
-    label: "View Location",
+    phoneHref: "tel:+923260335144",
+    mapHref:
+      "https://www.google.com/maps/search/?api=1&query=3570%20N2%20Khayaban-e-Amin%20Lahore%20Pakistan",
     speed: "1.2",
   },
   {
-    title: "Project Inquiries",
+    title: "London Office",
     image: "/agntix-contact/contact-location-2.jpg",
+    address: "106 Queens Road, London, United Kingdom",
     email: "info@eigensol.com",
-    phone: "+92 326 0335144",
-    href: "mailto:info@eigensol.com?subject=New%20project%20inquiry",
-    label: "Start a Project",
+    phone: "+44 7832 344661",
+    phoneHref: "tel:+447832344661",
+    mapHref:
+      "https://www.google.com/maps/search/?api=1&query=106%20Queens%20Road%20London%20United%20Kingdom",
     speed: ".9",
     offset: true,
     featured: true,
   },
   {
-    title: "Delivery Partnerships",
+    title: "Doha Office",
     image: "/agntix-contact/contact-location-3.jpg",
+    address: "Jabal Al Ajfa, Street 665, Villa 38, Doha, Qatar",
     email: "info@eigensol.com",
-    phone: "+92 326 0335144",
-    href: "mailto:info@eigensol.com?subject=Delivery%20partnership",
-    label: "Plan a Partnership",
+    phone: "+974 7098 3298",
+    phoneHref: "tel:+97470983298",
+    mapHref:
+      "https://www.google.com/maps/search/?api=1&query=Jabal%20Al%20Ajfa%20Street%20665%20Villa%2038%20Doha%20Qatar",
     speed: "1.2",
   },
 ];
+
 
 export default function AgntixContactPage({
   defaultMessage,
@@ -99,7 +109,7 @@ export default function AgntixContactPage({
               <ArrowDown aria-hidden="true" />
               Scroll to explore
             </a>
-            <p>See our Lahore office on the map</p>
+            <p>Visit our offices in Lahore, London, or Doha</p>
           </div>
         </div>
       </section>
@@ -110,7 +120,7 @@ export default function AgntixContactPage({
             <div className={styles.map}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3406.8902921037225!2d74.2763329!3d31.362006499999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919ab00298824f1%3A0x4f7d01845bc268f9!2sEigenSol!5e0!3m2!1sen!2s!4v1773829226419!5m2!1sen!2s"
-                title="EigenSol office location"
+                title="EigenSol Lahore office location"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -138,14 +148,14 @@ export default function AgntixContactPage({
         <div className={styles.supportContainer}>
           <div className={styles.supportBanner}>
             <p className="tp_fade_anim">
-              Or contact our team directly below. Business hours are Monday to Friday, 9am to 6pm
-              PKT, and we aim to respond within 24 hours.
+              Or contact our team directly below. We aim to respond to every inquiry within
+              24 hours.
             </p>
           </div>
         </div>
       </section>
 
-      <section className={styles.contactCardsSection} aria-label="EigenSol contact options">
+      <section className={styles.contactCardsSection} aria-label="EigenSol office locations">
         <div className={styles.container1230}>
           <div className={styles.contactCards}>
             {contactCards.map((card) => (
@@ -162,23 +172,26 @@ export default function AgntixContactPage({
                     sizes="(min-width: 992px) 370px, (min-width: 768px) 50vw, 100vw"
                   />
                 </div>
+
                 <div className={styles.cardBody}>
                   <div className={styles.cardDetails}>
                     <h2>{card.title}</h2>
+                    <address className={styles.cardAddress}>{card.address}</address>
                     <a href={`mailto:${card.email}`}>{card.email}</a>
-                    <a href="tel:+923260335144">{card.phone}</a>
+                    <a href={card.phoneHref}>{card.phone}</a>
                   </div>
+
                   <a
                     className={`${styles.cardButton} ${
                       card.featured ? styles.cardButtonFeatured : ""
                     }`}
-                    href={card.href}
-                    target={card.href === officeMap ? "_blank" : undefined}
-                    rel={card.href === officeMap ? "noreferrer noopener" : undefined}
+                    href={card.mapHref}
+                    target="_blank"
+                    rel="noreferrer noopener"
                   >
                     <span>
-                      <span>{card.label}</span>
-                      <span aria-hidden="true">{card.label}</span>
+                      <span>View Location</span>
+                      <span aria-hidden="true">View Location</span>
                     </span>
                     <ArrowUpRight aria-hidden="true" />
                   </a>

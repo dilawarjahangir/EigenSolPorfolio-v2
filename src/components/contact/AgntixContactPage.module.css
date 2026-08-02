@@ -517,6 +517,17 @@
   line-height: 1.2;
 }
 
+.cardAddress {
+  min-height: 50px;
+  margin: 0 auto 15px;
+  color: rgba(20, 20, 20, 0.7);
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: center;
+}
+
 .cardDetails a {
   display: block;
   width: fit-content;
@@ -792,6 +803,7 @@
 :global(html[data-theme="dark"]) .heroBottom p,
 :global(html[data-theme="dark"]) .exploreLink,
 :global(html[data-theme="dark"]) .formStatus,
+:global(html[data-theme="dark"]) .cardAddress,
 :global(html[data-theme="dark"]) .cardDetails a {
   color: var(--site-text);
 }
