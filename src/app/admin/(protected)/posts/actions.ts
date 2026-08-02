@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import type { AdminPostActionState } from "@/contracts/admin-actions";
+import type { AdminActionFieldError, AdminPostActionState } from "@/contracts/admin-actions";
 import type {
   AdminPostInput,
   BlogEditorDocument,
@@ -36,20 +36,27 @@ const postFormSchema = z.object({
   postId: z.string().trim().optional(),
   expectedVersion: z.coerce.number().int().min(0),
   intent: z.enum(["save", "publish", "schedule"]),
-  title: z.string().trim().min(3, "Enter a descriptive article title.").max(200),
+  title: z.string().trim().min(1, "Enter an article title before saving.").max(200),
   slug: z
     .string()
     .trim()
     .min(1, "Enter a slug.")
     .max(160)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and single hyphens in the slug."),
-  excerpt: z.string().trim().min(20, "Write an excerpt of at least 20 characters.").max(500),
-  category: z.string().trim().min(1, "Enter a category.").max(100),
+  excerpt: z.string().trim().max(500),
+  category: z.string().trim().max(100),
   tags: z.string().max(600),
-  author: z.string().trim().min(1, "Enter the author name.").max(100),
-  authorRole: z.string().trim().min(1, "Enter the author role.").max(100),
+  author: z.string().trim().max(100),
+  authorRole: z.string().trim().max(100),
   authorBio: z.string().trim().max(1000),
-  videoId: z.string().trim().max(32),
+  videoId: z
+    .string()
+    .trim()
+    .max(32)
+    .refine(
+      (value) => !value || /^[A-Za-z0-9_-]{6,32}$/.test(value),
+      "Use a valid YouTube video ID.",
+    ),
   seoTitle: z.string().trim().max(200),
   seoDescription: z.string().trim().max(320),
   contentDocument: z.string().min(1).max(250_000),
@@ -75,6 +82,24 @@ function validationState(message: string, field = "form"): AdminPostActionState 
     message: "Review the highlighted content and try again.",
     fieldErrors: [{ field, message }],
   };
+}
+
+function publishFieldErrors(parsed: z.infer<typeof postFormSchema>) {
+  if (parsed.intent === "save") return [];
+  const errors: AdminActionFieldError[] = [];
+  if (parsed.title.length < 3) {
+    errors.push({ field: "title", message: "Use a descriptive title of at least 3 characters before publishing." });
+  }
+  if (parsed.excerpt.length < 20) {
+    errors.push({ field: "excerpt", message: "Write an excerpt of at least 20 characters before publishing." });
+  }
+  if (!parsed.category) errors.push({ field: "category", message: "Choose a category before publishing." });
+  if (!parsed.author) errors.push({ field: "author", message: "Enter the author name before publishing." });
+  if (!parsed.authorRole) errors.push({ field: "authorRole", message: "Enter the author role before publishing." });
+  if (parsed.intent === "schedule" && !parsed.scheduleAt) {
+    errors.push({ field: "scheduleAt", message: "Choose a publication date and time." });
+  }
+  return errors;
 }
 
 function parseEditorDocument(serialized: string): BlogEditorDocument {
@@ -234,13 +259,30 @@ export async function saveBlogPostAction(
     };
   }
 
+  const publishingErrors = publishFieldErrors(parsed.data);
+  if (publishingErrors.length) {
+    return {
+      status: "validation",
+      message: "Complete the publishing details and try again.",
+      fieldErrors: publishingErrors,
+    };
+  }
+
+  let scheduleExecuteAt: string | null = null;
+  if (parsed.data.intent === "schedule") {
+    try {
+      scheduleExecuteAt = pakistanScheduleToUtc(parsed.data.scheduleAt);
+    } catch (error) {
+      if (error instanceof BlogCmsValidationError) {
+        return validationState(error.message, "scheduleAt");
+      }
+      throw error;
+    }
+  }
+
   try {
     const actor = { id: owner.userId };
     const revision = revisionFromForm(formData, parsed.data);
-    const scheduleExecuteAt =
-      parsed.data.intent === "schedule"
-        ? pakistanScheduleToUtc(parsed.data.scheduleAt)
-        : null;
     if (parsed.data.intent === "publish" || parsed.data.intent === "schedule") {
       assertBlogRevisionPublishable(revision);
     }

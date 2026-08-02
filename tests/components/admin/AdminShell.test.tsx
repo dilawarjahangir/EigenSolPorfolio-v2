@@ -37,6 +37,7 @@ describe("admin shell", () => {
 
     const menu = screen.getByRole("button", { name: "Open admin navigation" });
     await user.click(menu);
+    expect(document.body).toHaveStyle({ overflow: "hidden" });
     expect(screen.getByRole("link", { name: "Posts" })).toHaveAttribute(
       "aria-current",
       "page",
@@ -52,5 +53,6 @@ describe("admin shell", () => {
     await user.keyboard("{Escape}");
     expect(menu).toHaveFocus();
     expect(menu).toHaveAttribute("aria-expanded", "false");
+    expect(document.body).not.toHaveStyle({ overflow: "hidden" });
   });
 });

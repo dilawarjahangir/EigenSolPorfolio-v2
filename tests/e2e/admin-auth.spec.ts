@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test("admin sign-in is private, non-indexable, and keyboard reachable", async ({ page }) => {
@@ -12,6 +13,9 @@ test("admin sign-in is private, non-indexable, and keyboard reachable", async ({
   expect(response?.headers()["x-frame-options"]).toBe("DENY");
 
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+  ).toBe(true);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",
     /noindex/,
@@ -28,6 +32,9 @@ test("admin sign-in is private, non-indexable, and keyboard reachable", async ({
   await expect(password).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "Continue securely" })).toBeFocused();
+
+  const accessibility = await new AxeBuilder({ page }).include("main").analyze();
+  expect(accessibility.violations).toEqual([]);
 });
 
 test("email-link moderation is private and cannot be framed", async ({ page }) => {

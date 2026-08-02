@@ -1,14 +1,14 @@
 .form {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  align-items: end;
+  align-items: center;
   gap: 1rem;
-  padding: clamp(1rem, 2.5vw, 1.5rem);
-  margin-block-end: 2rem;
-  background: color-mix(in srgb, var(--site-surface-raised) 94%, transparent);
-  border: 1px solid var(--site-border);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 1rem 3rem color-mix(in srgb, var(--site-shadow) 18%, transparent);
+  padding: clamp(1rem, 2.5vw, 1.4rem);
+  margin-block-end: 1.5rem;
+  background: color-mix(in srgb, var(--admin-panel) 96%, transparent);
+  border: 1px solid var(--admin-border);
+  border-radius: 1rem;
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .copy h2,
@@ -17,46 +17,94 @@
 }
 
 .copy h2 {
-  color: var(--site-heading);
-  font-size: 1.05rem;
+  color: var(--admin-heading);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 650;
 }
 
 .copy p {
   margin-block-start: 0.4rem;
-  color: var(--site-muted);
-  font-size: 0.8rem;
+  color: var(--admin-muted);
+  font-size: 0.74rem;
   line-height: 1.6;
 }
 
 .fileField {
+  position: relative;
   display: grid;
-  gap: 0.45rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 4.6rem;
+  padding: 0.8rem 1rem;
+  background: var(--admin-panel-soft);
+  border: 1px dashed var(--admin-border-strong);
+  border-radius: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.fileField:hover,
+.fileField:has(.fileInput:focus-visible) {
+  background: var(--admin-accent-softer);
+  border-color: var(--admin-accent);
+}
+
+.fileField:has(.fileInput:focus-visible) {
+  outline: 3px solid var(--admin-focus);
+  outline-offset: 2px;
+}
+
+.fileIcon {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  color: var(--admin-accent);
+  background: var(--admin-accent-soft);
+  border-radius: 0.7rem;
+  place-items: center;
+}
+
+.fileIcon svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.fileCopy,
+.fileCopy strong,
+.fileCopy small {
+  display: block;
   min-width: 0;
 }
 
-.fileField span {
-  color: var(--site-heading);
-  font-size: 0.75rem;
-  font-weight: 800;
+.fileCopy strong {
+  overflow: hidden;
+  color: var(--admin-heading);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.fileField input {
-  min-width: 0;
-  padding: 0.65rem;
-  color: var(--site-text);
-  background: var(--site-surface);
-  border: 1px solid var(--site-border);
-  border-radius: var(--radius-md);
+.fileCopy small {
+  margin-block-start: 0.2rem;
+  color: var(--admin-muted);
+  font-size: 0.65rem;
 }
 
-.fileField input:focus-visible {
-  outline: 0.15rem solid var(--color-orange);
-  outline-offset: 0.15rem;
-}
-
-.fileField small {
-  color: var(--site-muted);
-  font-size: 0.72rem;
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .success,
@@ -64,23 +112,27 @@
   grid-column: 1 / -1;
   padding: 0.75rem 0.9rem;
   margin: 0;
-  color: var(--site-text);
-  background: var(--site-surface);
-  border: 1px solid var(--site-border);
+  color: var(--admin-text);
+  font-size: 0.75rem;
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-border);
   border-inline-start-width: 0.25rem;
-  border-radius: var(--radius-md);
+  border-radius: 0.75rem;
 }
 
 .success {
-  border-inline-start-color: var(--color-lime);
+  background: var(--admin-success-soft);
+  border-inline-start-color: var(--admin-success);
 }
 
 .error {
-  border-inline-start-color: var(--destructive);
+  color: var(--admin-danger);
+  background: var(--admin-danger-soft);
+  border-inline-start-color: var(--admin-danger);
 }
 
-@media (min-width: 56rem) {
+@media (min-width: 62rem) {
   .form {
-    grid-template-columns: minmax(14rem, 0.75fr) minmax(18rem, 1fr) auto;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(20rem, 1fr) auto;
   }
 }

@@ -1,0 +1,113 @@
+.root {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.55rem;
+  padding-inline: 0.85rem;
+  color: var(--admin-heading);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-border-strong);
+  border-radius: 0.7rem;
+  box-shadow: var(--admin-shadow-sm);
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--admin-accent);
+  border-color: color-mix(in srgb, var(--admin-accent) 42%, var(--admin-border));
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--admin-focus);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.button svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.button :global(.lucide-loader-circle) {
+  animation: upload-spin 850ms linear infinite;
+}
+
+.status {
+  color: var(--admin-success);
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.status[data-tone="error"] {
+  color: var(--admin-danger);
+}
+
+.root[data-compact="true"] {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.root[data-compact="true"] .status {
+  min-width: 0;
+}
+
+@keyframes upload-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 32rem) {
+  .root,
+  .root[data-compact="true"] {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button :global(.lucide-loader-circle) {
+    animation: none;
+  }
+}

@@ -132,7 +132,7 @@ export function AdminTwoFactorSetup() {
 
   if (!enrollment) {
     return (
-      <form className={styles.form} onSubmit={beginEnrollment}>
+      <form className={`${styles.form} ${styles.settingsCard}`} onSubmit={beginEnrollment}>
         <p className={styles.notice}>
           An authenticator app is mandatory for this account. Confirm your password to create
           the one-time setup secret and recovery codes.
@@ -167,7 +167,7 @@ export function AdminTwoFactorSetup() {
   }
 
   return (
-    <form className={`${styles.form} ${styles.setup}`} onSubmit={completeEnrollment}>
+    <form className={`${styles.form} ${styles.setup} ${styles.settingsCard}`} onSubmit={completeEnrollment}>
       <p className={styles.notice}>
         Scan this QR code in your authenticator app, then save every recovery code offline before
         verifying setup.
@@ -175,7 +175,13 @@ export function AdminTwoFactorSetup() {
       {qrCode ? (
         // The URI is intentionally held only in client memory and encoded into this data URL.
         // eslint-disable-next-line @next/next/no-img-element
-        <img className={styles.qr} src={qrCode} alt="QR code for EigenSol Admin authenticator setup" />
+        <img
+          className={styles.qr}
+          src={qrCode}
+          alt="QR code for EigenSol Admin authenticator setup"
+          width={320}
+          height={320}
+        />
       ) : (
         <p className={styles.status} role="status">
           Generating QR code…

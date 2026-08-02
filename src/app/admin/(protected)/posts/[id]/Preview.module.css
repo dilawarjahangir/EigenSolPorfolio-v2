@@ -1,8 +1,9 @@
 .root {
   overflow: hidden;
   background: var(--site-background);
-  border: 1px solid var(--site-border);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--admin-border);
+  border-radius: 1rem;
+  box-shadow: var(--admin-shadow-md);
 }
 
 .previewBar {
@@ -14,9 +15,9 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1rem;
-  color: var(--site-heading);
-  background: color-mix(in srgb, var(--site-surface-raised) 95%, transparent);
-  border-block-end: 1px solid var(--site-border);
+  color: var(--admin-heading);
+  background: color-mix(in srgb, var(--admin-panel) 95%, transparent);
+  border-block-end: 1px solid var(--admin-border);
   backdrop-filter: blur(1rem);
 }
 

@@ -500,7 +500,9 @@ export function assertBlogRevisionPublishable(
   if (!revision.excerpt || !revision.category || !revision.author || !revision.authorRole) {
     invalid("Published posts require excerpt, category, author, and author role.");
   }
-  if (!revision.content.doc.content?.length) invalid("Published posts require article content.");
+  if (documentWordCount(revision.content) === 0) {
+    invalid("Published posts require meaningful article content.");
+  }
   const covers = revision.media.filter((reference) => reference.role === "cover");
   if (covers.length !== 1) invalid("Published posts require exactly one cover image.");
 }

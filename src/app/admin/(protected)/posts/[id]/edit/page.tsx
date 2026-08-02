@@ -1,4 +1,4 @@
-import { Archive, CalendarX2, Eye, Globe2, RotateCcw, Undo2 } from "lucide-react";
+import { Archive, CalendarX2, Globe2, RotateCcw, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminConfirmButton } from "@/components/admin/AdminConfirmButton";
@@ -53,24 +53,20 @@ export default async function EditAdminPostPage({ params, searchParams }: EditPo
         <header className={ui.pageHeader}>
           <div className={ui.pageHeaderCopy}>
             <p className={ui.eyebrow}>Post editor</p>
-            <h1 className={ui.title}>{post.currentRevision.title}</h1>
+            <h1 className={ui.title}>Edit blog post</h1>
             <p className={ui.description}>
-              Version {post.version} · revision {post.currentRevision.revisionNumber} · working /{post.currentRevision.slug}
+              {post.currentRevision.title} · version {post.version} · revision {post.currentRevision.revisionNumber} · working /{post.currentRevision.slug}
               {post.currentRevision.slug !== post.slug ? ` · live /${post.slug}` : ""}
             </p>
           </div>
-          <div className={ui.actions}>
-            <Link className={ui.buttonSecondary} href={`/admin/posts/${post.id}/preview`}>
-              <Eye aria-hidden="true" />
-              Preview
-            </Link>
-            {post.status === "published" ? (
+          {post.status === "published" ? (
+            <div className={ui.actions}>
               <Link className={ui.buttonGhost} href={`/blogs/${post.slug}`} target="_blank" rel="noreferrer">
                 <Globe2 aria-hidden="true" />
                 View live
               </Link>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </header>
 
         {notice ? <div className={ui.successNotice}>Post workflow updated.</div> : null}
@@ -122,7 +118,7 @@ export default async function EditAdminPostPage({ params, searchParams }: EditPo
             </form>
           </section>
         ) : (
-          <BlogPostEditorForm post={post} media={media.assets} />
+          <BlogPostEditorForm key={post.currentRevisionId} post={post} media={media.assets} />
         )}
 
         <section className={ui.panel} aria-labelledby="revision-history-heading">
@@ -170,7 +166,7 @@ export default async function EditAdminPostPage({ params, searchParams }: EditPo
         </section>
 
         {post.status !== "archived" ? (
-          <section className={ui.panel} aria-labelledby="post-danger-heading">
+          <section className={`${ui.panel} ${ui.dangerPanel}`} aria-labelledby="post-danger-heading">
             <h2 id="post-danger-heading">Post state</h2>
             <div className={ui.inlineActions}>
               {post.status === "published" ? (

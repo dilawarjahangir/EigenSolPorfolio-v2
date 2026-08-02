@@ -2,6 +2,7 @@ import { Node } from "@tiptap/core";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
+import { isAllowedBlogEditorLink } from "@/lib/blog-editor-utils";
 
 export const ManagedBlogImage = Image.extend({
   addAttributes() {
@@ -100,6 +101,8 @@ export const blogContentExtensions = [
     openOnClick: false,
     autolink: true,
     defaultProtocol: "https",
+    isAllowedUri: (url) => isAllowedBlogEditorLink(url),
+    shouldAutoLink: (url) => isAllowedBlogEditorLink(url),
     HTMLAttributes: {
       rel: "noopener noreferrer",
     },

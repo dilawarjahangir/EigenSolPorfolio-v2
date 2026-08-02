@@ -1,73 +1,267 @@
 .screen {
-  min-height: 100vh;
+  position: relative;
   display: grid;
-  place-items: center;
+  min-height: 100svh;
   padding: clamp(1rem, 4vw, 3rem);
-  color: var(--site-heading);
+  overflow: hidden;
+  color: var(--admin-heading);
   background:
-    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--color-orange) 14%, transparent), transparent 25rem),
-    var(--site-background);
+    radial-gradient(circle at 12% 8%, var(--admin-accent-soft), transparent 28rem),
+    radial-gradient(circle at 90% 92%, var(--admin-info-soft), transparent 24rem),
+    var(--admin-background);
+  place-items: center;
 }
 
-.card {
-  width: min(100%, 31rem);
-  padding: clamp(1.5rem, 5vw, 2.5rem);
-  background: var(--site-surface-raised);
-  border: 1px solid var(--site-border);
-  border-radius: 1.25rem;
-  box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--site-shadow) 55%, transparent);
+.screen::before,
+.screen::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+  border: 1px solid var(--admin-border);
+  border-radius: 50%;
 }
 
-.brand {
+.screen::before {
+  inset-block-start: -10rem;
+  inset-inline-start: -8rem;
+  width: 28rem;
+  height: 28rem;
+}
+
+.screen::after {
+  inset-inline-end: -8rem;
+  inset-block-end: -12rem;
+  width: 32rem;
+  height: 32rem;
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.82fr) minmax(28rem, 1fr);
+  width: min(100%, 68rem);
+  min-height: min(44rem, calc(100svh - 3rem));
+  overflow: hidden;
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--admin-shadow-lg);
+}
+
+.intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(2rem, 4vw, 3.25rem);
+  overflow: hidden;
+  color: #f8f7f6;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255, 149, 108, 0.2), transparent 16rem),
+    linear-gradient(145deg, #241c19, #121316 72%);
+  isolation: isolate;
+}
+
+.intro::before {
+  position: absolute;
+  z-index: -1;
+  inset-inline-end: -8rem;
+  inset-block-end: -8rem;
+  width: 24rem;
+  height: 24rem;
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3rem rgba(255, 255, 255, 0.025),
+    0 0 0 6rem rgba(255, 255, 255, 0.018);
+}
+
+.introBrand,
+.cardBrand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-block-end: 2rem;
-  color: var(--site-heading);
-  font-weight: 700;
+  gap: 0.75rem;
+  width: fit-content;
+  color: inherit;
   text-decoration: none;
 }
 
 .brandMark {
   display: grid;
-  width: 2.25rem;
-  height: 2.25rem;
-  color: #fff;
-  background: var(--color-orange);
-  border-radius: 0.65rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  color: var(--admin-on-accent);
+  background: linear-gradient(145deg, var(--admin-accent), var(--admin-accent-strong));
+  border-radius: 0.8rem;
+  box-shadow: 0 0.55rem 1.2rem rgba(0, 0, 0, 0.18);
   place-items: center;
 }
 
 .brandMark svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.introBrand strong,
+.introBrand small {
+  display: block;
+}
+
+.introBrand strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+}
+
+.introBrand small {
+  margin-block-start: 0.12rem;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.68rem;
+}
+
+.introCopy {
+  max-width: 26rem;
+  margin-block: auto;
+  padding-block: 3rem;
+}
+
+.introCopy p {
+  margin: 0 0 0.75rem;
+  color: #ffad8e;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.introCopy h2 {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.introCopy > span {
+  display: block;
+  margin-block-start: 1.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.trustList {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.trustList li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.7rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.85rem;
+}
+
+.trustList svg {
+  width: 1rem;
+  height: 1rem;
+  margin-block-start: 0.1rem;
+  color: #ffad8e;
+}
+
+.trustList span,
+.trustList strong {
+  display: block;
+}
+
+.trustList span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.67rem;
+  line-height: 1.5;
+}
+
+.trustList strong {
+  margin-block-end: 0.1rem;
+  color: #ffffff;
+  font-size: 0.72rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--admin-panel);
+}
+
+.cardBrand {
+  display: none;
+  margin-block-end: 2rem;
+  font-weight: 800;
+}
+
+.securityLabel {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  margin-block-end: 1.35rem;
+  color: var(--admin-success);
+  font-size: 0.64rem;
+  font-weight: 800;
+  background: var(--admin-success-soft);
+  border: 1px solid color-mix(in srgb, var(--admin-success) 22%, transparent);
+  border-radius: 999rem;
+}
+
+.securityLabel svg {
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .eyebrow {
-  margin: 0 0 0.65rem;
-  color: var(--color-orange);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  margin: 0 0 0.55rem;
+  color: var(--admin-accent);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
 .title {
   margin: 0;
+  color: var(--admin-heading);
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1.8rem, 5vw, 2.4rem);
-  line-height: 1.08;
+  font-size: clamp(2rem, 5vw, 2.7rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
 }
 
 .description {
-  margin: 0.9rem 0 1.75rem;
-  color: var(--site-text);
-  line-height: 1.65;
+  max-width: 34rem;
+  margin: 0.85rem 0 1.65rem;
+  color: var(--admin-muted);
+  font-size: 0.84rem;
+  line-height: 1.7;
 }
 
 .form {
   display: grid;
-  gap: 1.15rem;
+  gap: 1.05rem;
 }
 
 .field {
@@ -76,75 +270,96 @@
 }
 
 .label {
-  color: var(--site-heading);
-  font-size: 0.9rem;
-  font-weight: 650;
+  color: var(--admin-heading);
+  font-size: 0.76rem;
+  font-weight: 800;
 }
 
 .input {
   width: 100%;
   min-height: 3rem;
   padding: 0.72rem 0.85rem;
-  color: var(--site-heading);
-  background: var(--site-surface);
-  border: 1px solid var(--site-border);
-  border-radius: 0.65rem;
+  color: var(--admin-heading);
   font: inherit;
+  font-size: 0.86rem;
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.75rem;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--admin-panel) 74%, transparent);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
-.input:focus-visible,
-.button:focus-visible,
-.secondaryButton:focus-visible,
-.textButton:focus-visible,
-.brand:focus-visible,
-.footer a:focus-visible,
-.manualCode summary:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-orange) 55%, transparent);
-  outline-offset: 3px;
+.input:hover {
+  border-color: var(--admin-border-strong);
+}
+
+.input:focus-visible {
+  background: var(--admin-panel);
+  border-color: var(--admin-accent);
+  outline: 0;
+  box-shadow: 0 0 0 0.22rem var(--admin-focus);
 }
 
 .codeInput {
   font-family: "JetBrains Mono", monospace;
-  font-size: 1.15rem;
-  letter-spacing: 0.15em;
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
 }
 
 .button,
 .secondaryButton,
 .textButton {
   min-height: 3rem;
-  border-radius: 0.65rem;
   font: inherit;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border-radius: 0.75rem;
   cursor: pointer;
 }
 
 .button {
   padding: 0.75rem 1rem;
-  color: #fff;
-  background: var(--color-orange);
-  border: 1px solid var(--color-orange);
+  color: var(--admin-on-accent);
+  background: linear-gradient(145deg, var(--admin-accent), var(--admin-accent-strong));
+  border: 1px solid var(--admin-accent);
+  box-shadow: 0 0.6rem 1.4rem color-mix(in srgb, var(--admin-accent) 20%, transparent);
 }
 
 .secondaryButton {
   padding: 0.75rem 1rem;
-  color: var(--site-heading);
-  background: var(--site-surface);
-  border: 1px solid var(--site-border);
+  color: var(--admin-heading);
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
 }
 
 .textButton {
+  justify-self: start;
   min-height: auto;
-  padding: 0;
-  color: var(--color-orange);
+  padding: 0.2rem 0;
+  color: var(--admin-accent);
   background: transparent;
   border: 0;
   text-align: start;
 }
 
+.button:focus-visible,
+.secondaryButton:focus-visible,
+.textButton:focus-visible,
+.introBrand:focus-visible,
+.cardBrand:focus-visible,
+.footer a:focus-visible,
+.manualCode summary:focus-visible {
+  outline: 3px solid var(--admin-focus);
+  outline-offset: 3px;
+}
+
 .button:disabled,
 .secondaryButton:disabled,
-.textButton:disabled {
+.textButton:disabled,
+.input:disabled {
   cursor: not-allowed;
   opacity: 0.62;
 }
@@ -154,22 +369,22 @@
 .notice {
   margin: 0;
   padding: 0.85rem 1rem;
-  border-radius: 0.65rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  border-radius: 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 .status,
 .notice {
-  color: var(--site-heading);
-  background: color-mix(in srgb, var(--color-blue) 11%, var(--site-surface));
-  border: 1px solid color-mix(in srgb, var(--color-blue) 35%, var(--site-border));
+  color: var(--admin-text);
+  background: var(--admin-info-soft);
+  border: 1px solid color-mix(in srgb, var(--admin-info) 28%, var(--admin-border));
 }
 
 .error {
-  color: #a51d34;
-  background: color-mix(in srgb, #d4183d 10%, var(--site-surface));
-  border: 1px solid color-mix(in srgb, #d4183d 35%, var(--site-border));
+  color: var(--admin-danger);
+  background: var(--admin-danger-soft);
+  border: 1px solid color-mix(in srgb, var(--admin-danger) 28%, var(--admin-border));
 }
 
 .footer {
@@ -179,21 +394,33 @@
   gap: 0.75rem 1rem;
   margin-block-start: 1.5rem;
   padding-block-start: 1.25rem;
-  color: var(--site-muted);
-  border-block-start: 1px solid var(--site-border);
-  font-size: 0.88rem;
+  color: var(--admin-muted);
+  border-block-start: 1px solid var(--admin-border);
+  font-size: 0.75rem;
 }
 
 .footer a {
-  color: var(--site-heading);
-  font-weight: 650;
+  color: var(--admin-heading);
+  font-weight: 750;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
+}
+
+.footer a:hover {
+  color: var(--admin-accent);
 }
 
 .setup {
   display: grid;
   gap: 1.25rem;
+}
+
+.settingsCard {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-border);
+  border-radius: 1rem;
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .qr {
@@ -202,20 +429,21 @@
   height: auto;
   margin-inline: auto;
   padding: 0.75rem;
-  background: #fff;
-  border: 1px solid var(--site-border);
-  border-radius: 0.8rem;
+  background: #ffffff;
+  border: 1px solid var(--admin-border);
+  border-radius: 0.9rem;
+  box-shadow: var(--admin-shadow-sm);
 }
 
 .manualCode {
-  color: var(--site-text);
-  font-size: 0.88rem;
+  color: var(--admin-text);
+  font-size: 0.78rem;
 }
 
 .manualCode summary {
-  color: var(--site-heading);
+  color: var(--admin-heading);
   cursor: pointer;
-  font-weight: 650;
+  font-weight: 750;
 }
 
 .manualCode code {
@@ -223,10 +451,11 @@
   margin-block-start: 0.7rem;
   padding: 0.75rem;
   overflow-wrap: anywhere;
-  color: var(--site-heading);
-  background: var(--site-surface);
-  border-radius: 0.55rem;
-  font-size: 0.72rem;
+  color: var(--admin-heading);
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.65rem;
+  font-size: 0.7rem;
 }
 
 .backupCodes {
@@ -235,10 +464,12 @@
   gap: 0.5rem 1rem;
   margin: 0;
   padding: 1rem 1rem 1rem 2.7rem;
-  background: var(--site-surface);
-  border-radius: 0.65rem;
+  color: var(--admin-heading);
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.75rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
 }
 
 .check {
@@ -246,8 +477,8 @@
   grid-template-columns: auto 1fr;
   gap: 0.65rem;
   align-items: start;
-  color: var(--site-text);
-  font-size: 0.9rem;
+  color: var(--admin-text);
+  font-size: 0.78rem;
   line-height: 1.5;
 }
 
@@ -255,12 +486,50 @@
   width: 1.1rem;
   height: 1.1rem;
   margin-block-start: 0.15rem;
-  accent-color: var(--color-orange);
+  accent-color: var(--admin-accent);
+}
+
+@media (max-width: 58rem) {
+  .layout {
+    display: block;
+    width: min(100%, 32rem);
+    min-height: 0;
+  }
+
+  .intro {
+    display: none;
+  }
+
+  .cardBrand {
+    display: inline-flex;
+  }
 }
 
 @media (max-width: 32rem) {
+  .screen {
+    padding: 0;
+    background: var(--admin-panel);
+  }
+
+  .layout {
+    min-height: 100svh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .card {
+    min-height: 100svh;
+    padding: 1.35rem;
+  }
+
   .backupCodes {
     grid-template-columns: 1fr;
+  }
+
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -268,7 +537,10 @@
   .button,
   .secondaryButton,
   .textButton {
-    transition: opacity 160ms ease, transform 160ms ease;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
   }
 
   .button:not(:disabled):hover,

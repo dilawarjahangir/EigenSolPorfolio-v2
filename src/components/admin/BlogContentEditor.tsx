@@ -15,6 +15,7 @@ import {
   List,
   ListOrdered,
   Minus,
+  Pilcrow,
   Quote,
   Redo2,
   Strikethrough,
@@ -22,8 +23,13 @@ import {
   Unlink,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import Image from "next/image";
+import { useCallback, useRef, useState, type Ref } from "react";
+import type { BlogMediaAsset } from "@/contracts/blog-cms";
 import { blogContentExtensions } from "@/lib/blog-content-extensions";
+import { AdminSelect, type AdminSelectOption } from "./AdminSelect";
+import { BlogEditorLinkDialog } from "./BlogEditorLinkDialog";
+import { BlogEditorMediaUpload } from "./BlogEditorMediaUpload";
 import styles from "./BlogContentEditor.module.css";
 
 export type BlogEditorMediaOption = Readonly<{
@@ -48,6 +54,7 @@ type BlogContentEditorProps = Readonly<{
   initialContent: JSONContent;
   media: readonly BlogEditorMediaOption[];
   onChange: (content: JSONContent) => void;
+  onMediaUploaded: (asset: BlogMediaAsset) => void;
   onSaveShortcut?: () => void;
 }>;
 
@@ -55,19 +62,35 @@ type ToolbarButtonProps = Readonly<{
   label: string;
   active?: boolean;
   disabled?: boolean;
+  controls?: string;
+  expanded?: boolean;
+  buttonRef?: Ref<HTMLButtonElement>;
   onClick: () => void;
   children: React.ReactNode;
 }>;
 
-function ToolbarButton({ label, active = false, disabled = false, onClick, children }: ToolbarButtonProps) {
+function ToolbarButton({
+  label,
+  active,
+  disabled = false,
+  controls,
+  expanded,
+  buttonRef,
+  onClick,
+  children,
+}: ToolbarButtonProps) {
   return (
     <button
+      ref={buttonRef}
       className={styles.toolbarButton}
       type="button"
+      aria-controls={controls}
+      aria-expanded={expanded}
       aria-label={label}
-      aria-pressed={active}
+      aria-pressed={active === undefined ? undefined : active}
+      title={label}
       disabled={disabled}
-      data-active={active ? "true" : "false"}
+      data-active={active ? "true" : undefined}
       onClick={onClick}
     >
       {children}
@@ -79,13 +102,23 @@ export function BlogContentEditor({
   initialContent,
   media,
   onChange,
+  onMediaUploaded,
   onSaveShortcut,
 }: BlogContentEditorProps) {
+  const mediaButtonRef = useRef<HTMLButtonElement>(null);
+  const mediaPanelRef = useRef<HTMLFieldSetElement>(null);
   const [selectedAssetId, setSelectedAssetId] = useState(media[0]?.id ?? "");
   const [imageAlt, setImageAlt] = useState("");
   const [imageCaption, setImageCaption] = useState("");
   const [decorative, setDecorative] = useState(false);
   const [galleryItems, setGalleryItems] = useState<readonly GalleryItem[]>([]);
+  const [mediaPanelOpen, setMediaPanelOpen] = useState(false);
+  const [mediaNotice, setMediaNotice] = useState<Readonly<{
+    tone: "success" | "error";
+    message: string;
+  }> | null>(null);
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [initialLinkHref, setInitialLinkHref] = useState("");
 
   const editor = useEditor({
     extensions: blogContentExtensions,
@@ -94,7 +127,9 @@ export function BlogContentEditor({
     editorProps: {
       attributes: {
         class: styles.editorSurface,
+        role: "textbox",
         "aria-label": "Article content",
+        "aria-multiline": "true",
       },
       handleKeyDown: (_view, event) => {
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
@@ -102,30 +137,33 @@ export function BlogContentEditor({
           onSaveShortcut?.();
           return true;
         }
-
         return false;
       },
     },
     onUpdate: ({ editor: currentEditor }) => onChange(currentEditor.getJSON()),
   });
 
+  const closeLinkDialog = useCallback(() => setLinkDialogOpen(false), []);
+
   if (!editor) {
     return <div className={styles.loading} role="status">Loading editor…</div>;
   }
 
-  const setLink = () => {
-    const previous = editor.getAttributes("link").href as string | undefined;
-    const href = window.prompt("Link URL", previous ?? "https://");
-    if (href === null) return;
-    if (!href.trim()) {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: href.trim() }).run();
+  const openLinkDialog = () => {
+    setInitialLinkHref((editor.getAttributes("link").href as string | undefined) ?? "");
+    setLinkDialogOpen(true);
+  };
+
+  const applyLink = (href: string) => {
+    editor.chain().focus().extendMarkRange("link").setLink({ href }).run();
+    setLinkDialogOpen(false);
   };
 
   const selectedImageAttributes = (): GalleryItem | null => {
-    const asset = media.find((candidate) => candidate.id === selectedAssetId);
+    const assetId = media.some((candidate) => candidate.id === selectedAssetId)
+      ? selectedAssetId
+      : media[0]?.id ?? "";
+    const asset = media.find((candidate) => candidate.id === assetId);
     if (!asset) return null;
     const alt = decorative ? "" : imageAlt.trim();
     if (!decorative && !alt) return null;
@@ -150,224 +188,224 @@ export function BlogContentEditor({
   const insertImage = () => {
     const imageAttributes = selectedImageAttributes();
     if (!imageAttributes) return;
-
-    editor
-      .chain()
-      .focus()
-      .setImage({
-        ...imageAttributes,
-        title: imageAttributes.caption,
-      } as Parameters<typeof editor.commands.setImage>[0])
-      .run();
+    editor.chain().focus().setImage({
+      ...imageAttributes,
+      title: imageAttributes.caption,
+    } as Parameters<typeof editor.commands.setImage>[0]).run();
     resetImageFields();
   };
 
   const addGalleryItem = () => {
     const imageAttributes = selectedImageAttributes();
-    if (!imageAttributes) return;
-
-    setGalleryItems((items) => [...items, imageAttributes]);
+    if (!imageAttributes || galleryItems.length >= 12) return;
+    setGalleryItems((items) => items.length >= 12 ? items : [...items, imageAttributes]);
     resetImageFields();
   };
 
   const insertGallery = () => {
-    if (galleryItems.length < 2) return;
-    editor
-      .chain()
-      .focus()
-      .insertContent({ type: "managedGallery", attrs: { items: galleryItems } })
-      .run();
+    if (galleryItems.length < 2 || galleryItems.length > 12) return;
+    editor.chain().focus().insertContent({
+      type: "managedGallery",
+      attrs: { items: galleryItems },
+    }).run();
     setGalleryItems([]);
   };
+
+  const toggleMediaPanel = () => {
+    const nextOpen = !mediaPanelOpen;
+    setMediaPanelOpen(nextOpen);
+    if (nextOpen) {
+      window.setTimeout(() => mediaPanelRef.current?.focus(), 0);
+    }
+  };
+
+  const closeMediaPanel = () => {
+    setMediaPanelOpen(false);
+    window.setTimeout(() => mediaButtonRef.current?.focus(), 0);
+  };
+
+  const handleToolbarUpload = (asset: BlogMediaAsset) => {
+    onMediaUploaded(asset);
+    setSelectedAssetId(asset.id);
+    setMediaNotice({ tone: "success", message: "Image uploaded. Add alt text or mark it decorative before inserting." });
+    setMediaPanelOpen(true);
+    window.setTimeout(() => mediaPanelRef.current?.focus(), 0);
+  };
+
+  const handleToolbarUploadError = (message: string) => {
+    setMediaNotice({ tone: "error", message });
+    setMediaPanelOpen(true);
+    window.setTimeout(() => mediaPanelRef.current?.focus(), 0);
+  };
+
+  const resolvedSelectedAssetId = media.some((asset) => asset.id === selectedAssetId)
+    ? selectedAssetId
+    : media[0]?.id ?? "";
+  const selectedAsset = media.find((asset) => asset.id === resolvedSelectedAssetId);
+  const mediaOptions: AdminSelectOption[] = [];
+  for (const asset of media) {
+    mediaOptions.push({
+      value: asset.id,
+      label: asset.label,
+      description: `${asset.width} × ${asset.height}`,
+    });
+  }
 
   return (
     <div className={styles.root}>
       <div className={styles.toolbar} role="toolbar" aria-label="Article formatting">
-        <ToolbarButton
-          label="Heading level 2"
-          active={editor.isActive("heading", { level: 2 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        >
-          <Heading2 aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Heading level 3"
-          active={editor.isActive("heading", { level: 3 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        >
-          <Heading3 aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Bold"
-          active={editor.isActive("bold")}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          <Bold aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Italic"
-          active={editor.isActive("italic")}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        >
-          <Italic aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Strikethrough"
-          active={editor.isActive("strike")}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-        >
-          <Strikethrough aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Bullet list"
-          active={editor.isActive("bulletList")}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-        >
-          <List aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Numbered list"
-          active={editor.isActive("orderedList")}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        >
-          <ListOrdered aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Blockquote"
-          active={editor.isActive("blockquote")}
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        >
-          <Quote aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Inline code"
-          active={editor.isActive("code")}
-          onClick={() => editor.chain().focus().toggleCode().run()}
-        >
-          <Braces aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Code block"
-          active={editor.isActive("codeBlock")}
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        >
-          <Code aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton label="Add or edit link" active={editor.isActive("link")} onClick={setLink}>
-          <Link2 aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Remove link"
-          disabled={!editor.isActive("link")}
-          onClick={() => editor.chain().focus().unsetLink().run()}
-        >
-          <Unlink aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton label="Horizontal divider" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-          <Minus aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton label="Undo" disabled={!editor.can().undo()} onClick={() => editor.chain().focus().undo().run()}>
-          <Undo2 aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton label="Redo" disabled={!editor.can().redo()} onClick={() => editor.chain().focus().redo().run()}>
-          <Redo2 aria-hidden="true" />
-        </ToolbarButton>
+          <div className={styles.toolbarGroup} data-label="Block" role="group" aria-label="Block style">
+            <ToolbarButton label="Paragraph" active={editor.isActive("paragraph")} onClick={() => editor.chain().focus().setParagraph().run()}>
+              <Pilcrow aria-hidden="true" />
+            </ToolbarButton>
+            <ToolbarButton label="Heading level 2" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+              <Heading2 aria-hidden="true" />
+            </ToolbarButton>
+            <ToolbarButton label="Heading level 3" active={editor.isActive("heading", { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+              <Heading3 aria-hidden="true" />
+            </ToolbarButton>
+          </div>
+          <div className={styles.toolbarGroup} data-label="Text" role="group" aria-label="Inline formatting">
+            <ToolbarButton label="Bold" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}><Bold aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Italic" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}><Italic aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Strikethrough" active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()}><Strikethrough aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Inline code" active={editor.isActive("code")} onClick={() => editor.chain().focus().toggleCode().run()}><Braces aria-hidden="true" /></ToolbarButton>
+          </div>
+          <div className={styles.toolbarGroup} data-label="Layout" role="group" aria-label="Blocks and lists">
+            <ToolbarButton label="Bullet list" active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()}><List aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Numbered list" active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()}><ListOrdered aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Blockquote" active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()}><Quote aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Code block" active={editor.isActive("codeBlock")} onClick={() => editor.chain().focus().toggleCodeBlock().run()}><Code aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Horizontal divider" onClick={() => editor.chain().focus().setHorizontalRule().run()}><Minus aria-hidden="true" /></ToolbarButton>
+          </div>
+          <div className={styles.toolbarGroup} data-label="Insert" role="group" aria-label="Links and media">
+            <ToolbarButton label="Add or edit link" active={editor.isActive("link")} onClick={openLinkDialog}><Link2 aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Remove link" disabled={!editor.isActive("link")} onClick={() => editor.chain().focus().unsetLink().run()}><Unlink aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton
+              label="Insert managed media"
+              active={mediaPanelOpen}
+              controls="article-media-composer"
+              expanded={mediaPanelOpen}
+              buttonRef={mediaButtonRef}
+              onClick={toggleMediaPanel}
+            >
+              <ImagePlus aria-hidden="true" />
+            </ToolbarButton>
+            <BlogEditorMediaUpload
+              buttonClassName={styles.toolbarUploadButton}
+              iconOnly
+              label="Upload image"
+              showStatus={false}
+              onUploaded={handleToolbarUpload}
+              onUploadError={handleToolbarUploadError}
+            />
+          </div>
+          <div className={styles.toolbarGroup} data-label="History" role="group" aria-label="History">
+            <ToolbarButton label="Undo" disabled={!editor.can().undo()} onClick={() => editor.chain().focus().undo().run()}><Undo2 aria-hidden="true" /></ToolbarButton>
+            <ToolbarButton label="Redo" disabled={!editor.can().redo()} onClick={() => editor.chain().focus().redo().run()}><Redo2 aria-hidden="true" /></ToolbarButton>
+          </div>
       </div>
 
-      <EditorContent editor={editor} />
+      <div className={styles.editorFrame}>
+        <div className={styles.canvas}>
+          <div className={styles.canvasHint}>Start writing below. Use H2 and H3 headings to structure the article.</div>
+          <EditorContent editor={editor} />
+        </div>
+      </div>
 
-      <fieldset className={styles.imageInsert}>
-        <legend>
-          <ImagePlus aria-hidden="true" />
-          Insert managed image
-        </legend>
-        {media.length ? (
-          <>
-            <label>
-              <span>Media asset</span>
-              <select value={selectedAssetId} onChange={(event) => setSelectedAssetId(event.target.value)}>
-                {media.map((asset) => (
-                  <option value={asset.id} key={asset.id}>{asset.label}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              <span>Alternative text</span>
-              <input
-                value={imageAlt}
-                onChange={(event) => setImageAlt(event.target.value)}
-                disabled={decorative}
-                required={!decorative}
-                maxLength={300}
+      {mediaPanelOpen ? (
+        <fieldset
+          ref={mediaPanelRef}
+          className={styles.imageInsert}
+          id="article-media-composer"
+          tabIndex={-1}
+          onInput={(event) => event.stopPropagation()}
+        >
+          <legend><ImagePlus aria-hidden="true" /> Insert managed media</legend>
+          <button className={styles.closeComposer} type="button" aria-label="Close media composer" onClick={closeMediaPanel}><X aria-hidden="true" /></button>
+          {mediaNotice ? (
+            <p className={styles.mediaNotice} data-tone={mediaNotice.tone} role={mediaNotice.tone === "error" ? "alert" : "status"}>
+              {mediaNotice.message}
+            </p>
+          ) : null}
+          <BlogEditorMediaUpload
+            compact
+            onUploaded={(asset) => {
+              onMediaUploaded(asset);
+              setSelectedAssetId(asset.id);
+              setMediaNotice({ tone: "success", message: "Image uploaded. Add alt text or mark it decorative before inserting." });
+            }}
+            onUploadError={(message) => setMediaNotice({ tone: "error", message })}
+          />
+          {media.length ? (
+            <>
+              <AdminSelect
+                className={styles.assetSelect}
+                id="editor-media-asset"
+                label="Media asset"
+                value={resolvedSelectedAssetId}
+                options={mediaOptions}
+                size="compact"
+                onValueChange={setSelectedAssetId}
               />
-            </label>
-            <label>
-              <span>Caption (optional)</span>
-              <input
-                value={imageCaption}
-                onChange={(event) => setImageCaption(event.target.value)}
-                maxLength={300}
-              />
-            </label>
-            <label className={styles.decorativeChoice}>
-              <input
-                type="checkbox"
-                checked={decorative}
-                onChange={(event) => setDecorative(event.target.checked)}
-              />
-              This image is decorative
-            </label>
-            <button
-              className={styles.insertButton}
-              type="button"
-              disabled={!selectedAssetId || (!decorative && !imageAlt.trim())}
-              onClick={insertImage}
-            >
-              Insert image
-            </button>
-            <button
-              className={styles.galleryButton}
-              type="button"
-              disabled={!selectedAssetId || (!decorative && !imageAlt.trim())}
-              onClick={addGalleryItem}
-            >
-              <GalleryHorizontal aria-hidden="true" />
-              Add to gallery
-            </button>
-            {galleryItems.length ? (
-              <div className={styles.galleryQueue}>
-                <strong>Gallery images ({galleryItems.length})</strong>
-                <ul>
-                  {galleryItems.map((item, index) => (
-                    <li key={`${item.assetId}-${index}`}>
-                      <span>{item.alt || "Decorative image"}</span>
-                      <button
-                        type="button"
-                        aria-label={`Remove gallery image ${index + 1}`}
-                        onClick={() =>
-                          setGalleryItems((items) => items.filter((_, itemIndex) => itemIndex !== index))
-                        }
-                      >
-                        <X aria-hidden="true" />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className={styles.insertButton}
-                  type="button"
-                  disabled={galleryItems.length < 2}
-                  onClick={insertGallery}
-                >
-                  Insert gallery
-                </button>
-              </div>
-            ) : null}
-          </>
-        ) : (
-          <p>Upload an image in Media before inserting it into the article.</p>
-        )}
-      </fieldset>
+              {selectedAsset ? (
+                <div className={styles.assetPreview}>
+                  <Image
+                    src={selectedAsset.url}
+                    alt={`Preview of ${selectedAsset.label}`}
+                    width={selectedAsset.width}
+                    height={selectedAsset.height}
+                    sizes="(max-width: 48rem) 100vw, 16rem"
+                    unoptimized
+                  />
+                  <span>{selectedAsset.label}</span>
+                </div>
+              ) : null}
+              <label htmlFor="editor-image-alt">
+                <span>Alternative text</span>
+                <input id="editor-image-alt" value={imageAlt} onChange={(event) => setImageAlt(event.target.value)} disabled={decorative} maxLength={300} />
+              </label>
+              <label htmlFor="editor-image-caption">
+                <span>Caption <em>Optional</em></span>
+                <input id="editor-image-caption" value={imageCaption} onChange={(event) => setImageCaption(event.target.value)} maxLength={300} />
+              </label>
+              <label className={styles.decorativeChoice} htmlFor="editor-image-decorative">
+                <input id="editor-image-decorative" type="checkbox" checked={decorative} onChange={(event) => setDecorative(event.target.checked)} />
+                This image is decorative
+              </label>
+              <button className={styles.insertButton} type="button" disabled={!resolvedSelectedAssetId || (!decorative && !imageAlt.trim())} onClick={insertImage}>Insert image</button>
+              <button className={styles.galleryButton} type="button" disabled={galleryItems.length >= 12 || !resolvedSelectedAssetId || (!decorative && !imageAlt.trim())} onClick={addGalleryItem}>
+                <GalleryHorizontal aria-hidden="true" /> {galleryItems.length >= 12 ? "Gallery full (12)" : "Add to gallery"}
+              </button>
+              {galleryItems.length ? (
+                <div className={styles.galleryQueue}>
+                  <strong>Gallery queue ({galleryItems.length})</strong>
+                  <ul>
+                    {galleryItems.map((item, index) => (
+                      <li key={`${item.assetId}-${index}`}>
+                        <Image src={item.src} alt="" width={item.width} height={item.height} unoptimized />
+                        <span>{item.alt || "Decorative image"}</span>
+                        <button type="button" aria-label={`Remove gallery image ${index + 1}`} onClick={() => setGalleryItems((items) => items.filter((_, itemIndex) => itemIndex !== index))}><X aria-hidden="true" /></button>
+                      </li>
+                    ))}
+                  </ul>
+                  <button className={styles.insertButton} type="button" disabled={galleryItems.length < 2} onClick={insertGallery}>Insert gallery</button>
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <p className={styles.emptyMedia}>Upload an image to start building the article.</p>
+          )}
+        </fieldset>
+      ) : null}
+
+      {linkDialogOpen ? (
+        <BlogEditorLinkDialog
+          initialValue={initialLinkHref}
+          onCancel={closeLinkDialog}
+          onSubmit={applyLink}
+        />
+      ) : null}
     </div>
   );
 }

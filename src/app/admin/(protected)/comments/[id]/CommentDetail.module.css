@@ -11,15 +11,17 @@
 
 .commentBody {
   min-height: 10rem;
-  padding: 1rem;
+  padding: 1.1rem;
   margin: 0 0 1.5rem;
-  color: var(--site-heading);
+  color: var(--admin-heading);
+  font-size: 0.88rem;
   line-height: 1.8;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  background: var(--site-surface);
-  border: 1px solid var(--site-border);
-  border-radius: var(--radius-md);
+  background: var(--admin-panel-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.8rem;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--admin-panel) 72%, transparent);
 }
 
 .redacted {
@@ -29,16 +31,22 @@
   min-height: 8rem;
   padding: 1rem;
   margin-block-end: 1.5rem;
-  color: var(--site-muted);
-  background: var(--site-surface);
-  border: 1px dashed var(--site-border);
-  border-radius: var(--radius-md);
+  color: var(--admin-muted);
+  background: var(--admin-danger-soft);
+  border: 1px dashed color-mix(in srgb, var(--admin-danger) 35%, var(--admin-border));
+  border-radius: 0.8rem;
+}
+
+.redacted p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
 }
 
 .redacted svg {
   flex: 0 0 auto;
   width: 1.5rem;
-  color: var(--destructive);
+  color: var(--admin-danger);
 }
 
 .details {
@@ -51,8 +59,8 @@
   display: grid;
   grid-template-columns: minmax(7rem, 0.35fr) minmax(0, 0.65fr);
   gap: 1rem;
-  padding-block: 0.7rem;
-  border-block-start: 1px solid var(--site-border);
+  padding-block: 0.72rem;
+  border-block-start: 1px solid var(--admin-border);
 }
 
 .details div:first-child {
@@ -60,15 +68,15 @@
 }
 
 .details dt {
-  color: var(--site-muted);
-  font-size: 0.75rem;
+  color: var(--admin-muted);
+  font-size: 0.7rem;
 }
 
 .details dd {
   min-width: 0;
   margin: 0;
-  color: var(--site-heading);
-  font-size: 0.8rem;
+  color: var(--admin-heading);
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
 
@@ -76,7 +84,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: var(--color-blue);
+  color: var(--admin-info);
+  font-weight: 700;
 }
 
 .details a svg {
@@ -94,47 +103,61 @@
 .timeline li {
   position: relative;
   display: grid;
-  gap: 0.2rem;
+  gap: 0.18rem;
   padding: 0.8rem 0 0.8rem 1.25rem;
-  border-inline-start: 1px solid var(--site-border);
+  border-inline-start: 1px solid var(--admin-border-strong);
 }
 
 .timeline li::before {
   position: absolute;
-  inset-block-start: 1.1rem;
-  inset-inline-start: -0.3rem;
-  width: 0.55rem;
-  height: 0.55rem;
+  inset-block-start: 1.08rem;
+  inset-inline-start: -0.31rem;
+  width: 0.58rem;
+  height: 0.58rem;
   content: "";
-  background: var(--color-orange);
+  background: var(--admin-accent);
+  border: 2px solid var(--admin-panel);
   border-radius: 50%;
+  box-shadow: 0 0 0 0.2rem var(--admin-accent-soft);
 }
 
 .timeline strong {
-  color: var(--site-heading);
-  font-size: 0.82rem;
+  color: var(--admin-heading);
+  font-size: 0.76rem;
   text-transform: capitalize;
 }
 
 .timeline span,
 .timeline time,
 .privacyNote {
-  color: var(--site-muted);
-  font-size: 0.72rem;
+  color: var(--admin-muted);
+  font-size: 0.67rem;
+  line-height: 1.45;
 }
 
 .privacyNote {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  padding: 0.7rem;
+  background: var(--admin-info-soft);
+  border-radius: 0.7rem;
 }
 
 .privacyNote svg {
   width: 0.9rem;
+  color: var(--admin-info);
 }
 
 @media (min-width: 70rem) {
   .grid {
     grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+  }
+}
+
+@media (max-width: 32rem) {
+  .details div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
   }
 }

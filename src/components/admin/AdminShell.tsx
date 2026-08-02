@@ -1,8 +1,8 @@
 "use client";
 
 import {
+  ArrowUpRight,
   BookOpenText,
-  ChevronLeft,
   FileText,
   ImageIcon,
   LayoutDashboard,
@@ -54,6 +54,15 @@ export function AdminShell({ children, ownerEmail }: AdminShellProps) {
   }, []);
 
   useEffect(() => {
+    if (!navigationOpen || desktopNavigation) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [desktopNavigation, navigationOpen]);
+
+  useEffect(() => {
     if (!navigationOpen) return;
     const firstLink = sidebarRef.current?.querySelector<HTMLAnchorElement>("nav a");
     firstLink?.focus();
@@ -101,7 +110,10 @@ export function AdminShell({ children, ownerEmail }: AdminShellProps) {
       <header className={styles.mobileHeader}>
         <Link className={styles.mobileBrand} href="/admin" aria-label="EigenSol admin dashboard">
           <BookOpenText aria-hidden="true" />
-          <span>EigenSol CMS</span>
+          <span>
+            <strong>EigenSol</strong>
+            <small>Content studio</small>
+          </span>
         </Link>
         <button
           className={styles.menuButton}
@@ -142,41 +154,56 @@ export function AdminShell({ children, ownerEmail }: AdminShellProps) {
           </span>
           <div>
             <strong>EigenSol</strong>
-            <span>Content studio</span>
+            <span>Publishing studio</span>
           </div>
         </div>
 
-        <nav className={styles.navigation} aria-label="Admin navigation">
-          {navigation.map(({ href, label, icon: Icon }) => {
-            const active = routeIsActive(pathname, href);
+        <div className={styles.navigationGroup}>
+          <p className={styles.navigationLabel}>Workspace</p>
+          <nav className={styles.navigation} aria-label="Admin navigation">
+            {navigation.map(({ href, label, icon: Icon }) => {
+              const active = routeIsActive(pathname, href);
 
-            return (
-              <Link
-                className={styles.navigationLink}
-                data-active={active ? "true" : "false"}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                key={href}
-                onClick={() => setNavigationOpen(false)}
-              >
-                <Icon aria-hidden="true" />
-                <span>{label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+              return (
+                <Link
+                  className={styles.navigationLink}
+                  data-active={active ? "true" : "false"}
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  key={href}
+                  onClick={() => setNavigationOpen(false)}
+                >
+                  <span className={styles.navigationIcon} aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <span>{label}</span>
+                  <span className={styles.activeMarker} aria-hidden="true" />
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
 
         <div className={styles.account}>
-          <span>Signed in as</span>
-          <strong title={ownerEmail}>{ownerEmail}</strong>
-          <button type="button" onClick={signOut} disabled={isSigningOut}>
-            <LogOut aria-hidden="true" />
-            {isSigningOut ? "Signing out…" : "Sign out"}
-          </button>
-          <Link href="/blogs" target="_blank" rel="noreferrer">
-            <ChevronLeft aria-hidden="true" />
-            View public site
-          </Link>
+          <div className={styles.accountIdentity}>
+            <span className={styles.accountAvatar} aria-hidden="true">
+              {ownerEmail.slice(0, 1).toUpperCase()}
+            </span>
+            <div>
+              <span>Owner account</span>
+              <strong title={ownerEmail}>{ownerEmail}</strong>
+            </div>
+          </div>
+          <div className={styles.accountActions}>
+            <button type="button" onClick={signOut} disabled={isSigningOut}>
+              <LogOut aria-hidden="true" />
+              {isSigningOut ? "Signing out…" : "Sign out"}
+            </button>
+            <Link href="/blogs" target="_blank" rel="noreferrer">
+              <ArrowUpRight aria-hidden="true" />
+              View public site
+            </Link>
+          </div>
         </div>
       </aside>
 

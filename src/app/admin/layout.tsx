@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import theme from "@/components/admin/AdminTheme.module.css";
 
 export const metadata: Metadata = {
   title: {
@@ -36,5 +37,5 @@ export const metadata: Metadata = {
 export default function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <div className={theme.root}>{children}</div>;
 }

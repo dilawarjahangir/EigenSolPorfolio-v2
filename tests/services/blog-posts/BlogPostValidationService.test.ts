@@ -4,7 +4,10 @@ import { getSchema } from "@tiptap/core";
 import { describe, expect, it } from "vitest";
 import type { BlogPostRevisionInput } from "@/contracts/blog-cms";
 import { blogContentExtensions } from "@/lib/blog-content-extensions";
-import { normalizeBlogRevision } from "@/services/blog-posts/BlogPostValidationService";
+import {
+  assertBlogRevisionPublishable,
+  normalizeBlogRevision,
+} from "@/services/blog-posts/BlogPostValidationService";
 
 const mediaId = "00000000-0000-4000-8000-000000000001";
 
@@ -110,6 +113,14 @@ describe("blog editor document validation", () => {
 
     expect(() => normalizeBlogRevision(invalid)).toThrow(
       "Non-decorative media requires alternative text.",
+    );
+  });
+
+  it("does not publish an editor document that has structure but no meaningful text", () => {
+    const revision = revisionWithContent([{ type: "paragraph" }]);
+
+    expect(() => assertBlogRevisionPublishable(revision)).toThrow(
+      "Published posts require meaningful article content.",
     );
   });
 

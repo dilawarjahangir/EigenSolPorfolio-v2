@@ -17,7 +17,7 @@ export default async function AdminSecurityPage() {
           </p>
         </div>
       </header>
-      <section className={styles.formPanel} aria-label="Two-factor settings">
+      <section aria-label="Two-factor settings">
         <AdminTwoFactorSetup />
       </section>
     </div>

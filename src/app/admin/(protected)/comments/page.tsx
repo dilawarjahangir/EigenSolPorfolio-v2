@@ -5,6 +5,7 @@ import type {
   BlogCommentStatus,
 } from "@/contracts/blog-comments";
 import { AdminConfirmButton } from "@/components/admin/AdminConfirmButton";
+import { AdminSelect } from "@/components/admin/AdminSelect";
 import styles from "@/components/admin/AdminUi.module.css";
 import {
   getAdminBlogCommentCounts,
@@ -123,45 +124,79 @@ export default async function CommentAdminPage({ searchParams }: CommentAdminPag
 
       <section className={styles.statsGrid} aria-label="Comment status totals">
         {statuses.map((item) => (
-          <Link className={styles.statCard} href={queryHref(currentQuery, { status: item })} key={item}>
+          <Link
+            className={styles.statCard}
+            href={queryHref(currentQuery, { status: item })}
+            aria-current={status === item ? "page" : undefined}
+            data-active={status === item ? "true" : undefined}
+            key={item}
+          >
             <span>{item}</span>
             <strong>{counts[item]}</strong>
           </Link>
         ))}
-        <Link className={styles.statCard} href="/admin/comments">
+        <Link
+          className={styles.statCard}
+          href="/admin/comments"
+          aria-current={!status && !postId && !notificationStatus && !search ? "page" : undefined}
+          data-active={!status && !postId && !notificationStatus && !search ? "true" : undefined}
+        >
           <span>All comments</span>
           <strong>{counts.total}</strong>
         </Link>
       </section>
 
       <form className={styles.filterBar} method="get" action="/admin/comments">
-        <label className={styles.field}>
+        <label className={styles.field} htmlFor="comment-search">
           <span>Search comments</span>
-          <input className={styles.input} name="search" defaultValue={search} maxLength={100} />
+          <input
+            className={styles.input}
+            id="comment-search"
+            name="search"
+            defaultValue={search}
+            maxLength={100}
+            placeholder="Name, email, or comment"
+          />
         </label>
-        <label className={styles.fieldCompact}>
-          <span>Article</span>
-          <select className={styles.select} name="postId" defaultValue={postId ?? ""}>
-            <option value="">All articles</option>
-            {postOptions.map((post) => (
-              <option value={post.id} key={post.id}>{post.title}</option>
-            ))}
-          </select>
-        </label>
-        <label className={styles.fieldCompact}>
-          <span>Status</span>
-          <select className={styles.select} name="status" defaultValue={status ?? ""}>
-            <option value="">All statuses</option>
-            {statuses.map((item) => <option value={item} key={item}>{item}</option>)}
-          </select>
-        </label>
-        <label className={styles.fieldCompact}>
-          <span>Email notice</span>
-          <select className={styles.select} name="notification" defaultValue={notificationStatus ?? ""}>
-            <option value="">Any delivery state</option>
-            {notificationStatuses.map((item) => <option value={item} key={item}>{item}</option>)}
-          </select>
-        </label>
+        <AdminSelect
+          className={styles.fieldCompact}
+          id="comment-article"
+          name="postId"
+          label="Article"
+          defaultValue={postId ?? ""}
+          options={[
+            { value: "", label: "All articles" },
+            ...postOptions.map((post) => ({ value: post.id, label: post.title })),
+          ]}
+        />
+        <AdminSelect
+          className={styles.fieldCompact}
+          id="comment-status"
+          name="status"
+          label="Status"
+          defaultValue={status ?? ""}
+          options={[
+            { value: "", label: "All statuses" },
+            ...statuses.map((item) => ({
+              value: item,
+              label: item.charAt(0).toUpperCase() + item.slice(1),
+            })),
+          ]}
+        />
+        <AdminSelect
+          className={styles.fieldCompact}
+          id="comment-notification"
+          name="notification"
+          label="Email notice"
+          defaultValue={notificationStatus ?? ""}
+          options={[
+            { value: "", label: "Any delivery state" },
+            ...notificationStatuses.map((item) => ({
+              value: item,
+              label: item.charAt(0).toUpperCase() + item.slice(1),
+            })),
+          ]}
+        />
         <button className={styles.buttonSecondary} type="submit">
           <Search aria-hidden="true" />
           Filter
@@ -172,7 +207,8 @@ export default async function CommentAdminPage({ searchParams }: CommentAdminPag
         <input type="hidden" name="returnTo" value={returnTo} />
         {comments.items.length ? (
           <>
-            <div className={styles.panel}>
+            <div className={styles.bulkToolbar}>
+              <span>Select pending comments below, then choose an action.</span>
               <div className={styles.inlineActions}>
                 <AdminConfirmButton
                   name="action"
@@ -211,7 +247,7 @@ export default async function CommentAdminPage({ searchParams }: CommentAdminPag
                 <tbody>
                   {comments.items.map((comment) => (
                     <tr key={comment.id}>
-                      <td>
+                      <td data-label="Select">
                         {comment.status === "pending" ? (
                           <input
                             type="checkbox"
@@ -221,20 +257,20 @@ export default async function CommentAdminPage({ searchParams }: CommentAdminPag
                           />
                         ) : null}
                       </td>
-                      <td>
+                      <td data-label="Comment">
                         <div className={styles.primaryCell}>
                           <strong>{comment.authorName ?? "Redacted commenter"}</strong>
                           <span>{comment.bodyPreview ?? "Content permanently removed"}</span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Article">
                         <div className={styles.primaryCell}>
                           <strong>{comment.postTitle}</strong>
                           <span>/{comment.postSlug}</span>
                         </div>
                       </td>
-                      <td><span className={styles.badge} data-tone={statusTone(comment.status)}>{comment.status}</span></td>
-                      <td>
+                      <td data-label="Status"><span className={styles.badge} data-tone={statusTone(comment.status)}>{comment.status}</span></td>
+                      <td data-label="Notification">
                         <span
                           className={styles.badge}
                           data-tone={comment.notificationStatus === "failed" ? "danger" : comment.notificationStatus === "sent" ? "success" : "warning"}
@@ -242,8 +278,8 @@ export default async function CommentAdminPage({ searchParams }: CommentAdminPag
                           {comment.notificationStatus}
                         </span>
                       </td>
-                      <td>{formatDate(comment.createdAt)}</td>
-                      <td>
+                      <td data-label="Submitted">{formatDate(comment.createdAt)}</td>
+                      <td data-label="Review">
                         <Link className={styles.buttonGhost} href={`/admin/comments/${comment.id}`}>
                           Review <ChevronRight aria-hidden="true" />
                         </Link>

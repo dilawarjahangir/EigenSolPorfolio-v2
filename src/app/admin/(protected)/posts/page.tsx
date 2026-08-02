@@ -1,5 +1,6 @@
 import { FilePlus2, Pencil, Search } from "lucide-react";
 import Link from "next/link";
+import { AdminSelect } from "@/components/admin/AdminSelect";
 import type { BlogPostStatus } from "@/contracts/blog-cms";
 import { requireOwner } from "@/services/auth/AdminAuthService";
 import {
@@ -71,33 +72,40 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
       </header>
 
       <form className={ui.filterBar} action="/admin/posts" method="get" role="search">
-        <label className={ui.field}>
+        <label className={ui.field} htmlFor="post-search">
           <span>Search posts</span>
           <input
             className={ui.input}
+            id="post-search"
             name="search"
             defaultValue={search}
             placeholder="Title or slug"
           />
         </label>
-        <label className={ui.fieldCompact}>
-          <span>Status</span>
-          <select className={ui.select} name="status" defaultValue={status ?? ""}>
-            <option value="">All statuses</option>
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-            <option value="archived">Archived</option>
-          </select>
-        </label>
-        <label className={ui.fieldCompact}>
-          <span>Category</span>
-          <select className={ui.select} name="category" defaultValue={category ?? ""}>
-            <option value="">All categories</option>
-            {categories.map((item) => (
-              <option value={item} key={item}>{item}</option>
-            ))}
-          </select>
-        </label>
+        <AdminSelect
+          className={ui.fieldCompact}
+          id="post-status"
+          name="status"
+          label="Status"
+          defaultValue={status ?? ""}
+          options={[
+            { value: "", label: "All statuses" },
+            { value: "draft", label: "Draft" },
+            { value: "published", label: "Published" },
+            { value: "archived", label: "Archived" },
+          ]}
+        />
+        <AdminSelect
+          className={ui.fieldCompact}
+          id="post-category"
+          name="category"
+          label="Category"
+          defaultValue={category ?? ""}
+          options={[
+            { value: "", label: "All categories" },
+            ...categories.map((item) => ({ value: item, label: item })),
+          ]}
+        />
         <button className={ui.buttonSecondary} type="submit">
           <Search aria-hidden="true" />
           Filter
@@ -122,13 +130,13 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
                 <tbody>
                   {result.posts.map((post) => (
                     <tr key={post.id}>
-                      <td>
+                      <td data-label="Post">
                         <div className={ui.primaryCell}>
                           <strong>{post.title}</strong>
                           <span>/{post.slug}</span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <span
                           className={ui.badge}
                           data-tone={
@@ -142,14 +150,14 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
                           {post.status}
                         </span>
                       </td>
-                      <td>#{post.currentRevisionNumber}</td>
-                      <td>
+                      <td data-label="Revision">#{post.currentRevisionNumber}</td>
+                      <td data-label="Schedule">
                         {post.activeSchedule
                           ? `${post.activeSchedule.action} ${pakistanDate.format(new Date(post.activeSchedule.executeAt))}`
                           : "—"}
                       </td>
-                      <td>{pakistanDate.format(new Date(post.updatedAt))}</td>
-                      <td>
+                      <td data-label="Updated">{pakistanDate.format(new Date(post.updatedAt))}</td>
+                      <td data-label="Actions">
                         <Link className={ui.buttonGhost} href={`/admin/posts/${post.id}/edit`}>
                           <Pencil aria-hidden="true" />
                           Edit

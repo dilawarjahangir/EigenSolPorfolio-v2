@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageUp, LoaderCircle } from "lucide-react";
+import { FileImage, ImageUp, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import adminStyles from "./AdminUi.module.css";
@@ -30,6 +30,7 @@ async function readUploadResponse(response: Response): Promise<UploadResponse> {
 export function MediaUploadForm() {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState("");
   const [status, setStatus] = useState<UploadStatus>(null);
 
   const submitUpload = async (event: FormEvent<HTMLFormElement>) => {
@@ -62,6 +63,7 @@ export function MediaUploadForm() {
       }
 
       form.reset();
+      setSelectedFileName("");
       setStatus({
         tone: "success",
         message: result.duplicate
@@ -87,8 +89,17 @@ export function MediaUploadForm() {
       </div>
 
       <label className={styles.fileField} htmlFor="media-file">
-        <span>Image file</span>
+        <span className={styles.fileIcon} aria-hidden="true">
+          <FileImage />
+        </span>
+        <span className={styles.fileCopy}>
+          <strong>{selectedFileName || "Choose an image to upload"}</strong>
+          <small id="media-file-help">
+            JPEG, PNG, WebP, or AVIF · up to 10 MB
+          </small>
+        </span>
         <input
+          className={styles.fileInput}
           id="media-file"
           name="file"
           type="file"
@@ -96,10 +107,8 @@ export function MediaUploadForm() {
           aria-describedby="media-file-help"
           disabled={uploading}
           required
+          onChange={(event) => setSelectedFileName(event.target.files?.[0]?.name ?? "")}
         />
-        <small id="media-file-help">
-          Add image-specific alt text later when placing it in a post.
-        </small>
       </label>
 
       <button className={adminStyles.button} type="submit" disabled={uploading}>

@@ -1,4 +1,14 @@
-import { AlertTriangle, ArrowRight, FilePlus2 } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  CalendarClock,
+  CheckCircle2,
+  FilePenLine,
+  FilePlus2,
+  MailWarning,
+  MessageSquareWarning,
+  Newspaper,
+} from "lucide-react";
 import Link from "next/link";
 import ui from "@/components/admin/AdminUi.module.css";
 import { requireOwner } from "@/services/auth/AdminAuthService";
@@ -46,22 +56,27 @@ export default async function AdminDashboardPage() {
 
       <section className={ui.statsGrid} aria-label="CMS summary">
         <Link className={ui.statCard} href="/admin/posts?status=published">
+          <span className={ui.statIcon} aria-hidden="true"><Newspaper /></span>
           <span>Published posts</span>
           <strong>{posts.postCounts.published}</strong>
         </Link>
         <Link className={ui.statCard} href="/admin/posts?status=draft">
+          <span className={ui.statIcon} aria-hidden="true"><FilePenLine /></span>
           <span>Draft posts</span>
           <strong>{posts.postCounts.draft}</strong>
         </Link>
         <Link className={ui.statCard} href="/admin/comments?status=pending">
+          <span className={ui.statIcon} aria-hidden="true"><MessageSquareWarning /></span>
           <span>Pending comments</span>
           <strong>{comments.pending}</strong>
         </Link>
         <Link className={ui.statCard} href="/admin/posts">
+          <span className={ui.statIcon} aria-hidden="true"><CalendarClock /></span>
           <span>Scheduled publications</span>
           <strong>{posts.scheduledPublications}</strong>
         </Link>
         <Link className={ui.statCard} href="/admin/comments?notification=failed">
+          <span className={ui.statIcon} aria-hidden="true"><MailWarning /></span>
           <span>Notification failures</span>
           <strong>{comments.notificationFailures}</strong>
         </Link>
@@ -96,6 +111,7 @@ export default async function AdminDashboardPage() {
             </ul>
           ) : (
             <div className={ui.emptyState}>
+              <CheckCircle2 aria-hidden="true" />
               <h3>Queue clear</h3>
               <p>There are no pending comments.</p>
             </div>
