@@ -7,6 +7,7 @@ import type {
   BlogMediaAssetPage,
   BlogPostStatus,
   CreateBlogPostDraftInput,
+  HardDeleteBlogPostInput,
   PublishBlogPostInput,
   RestoreBlogPostInput,
   UnpublishBlogPostInput,
@@ -33,6 +34,8 @@ import {
 import {
   archiveBlogPostRecord,
   createBlogPostDraftRecord,
+  hardDeleteBlogPostRecord,
+  type BlogPostHardDeleteRepositoryResult,
   publishBlogPostRevisionRecord,
   restoreBlogPostRecord,
   type BlogPostRepositoryResult,
@@ -101,6 +104,30 @@ function unwrapPostMutation(result: BlogPostRepositoryResult) {
     case "invalid-state":
       throw new BlogCmsConflictError(
         "The blog post is not in a state that allows this operation.",
+        "invalid-state",
+      );
+  }
+}
+
+function unwrapPostHardDelete(result: BlogPostHardDeleteRepositoryResult) {
+  if (result.ok) return result.value;
+
+  switch (result.reason) {
+    case "not-found":
+      throw new BlogCmsNotFoundError("Blog post was not found.", "post-not-found");
+    case "revision-not-found":
+      throw new BlogCmsNotFoundError("Blog revision was not found.", "revision-not-found");
+    case "version-conflict":
+      throw new BlogCmsConflictError(
+        "The blog post changed after it was opened.",
+        "version-conflict",
+        result.actualVersion,
+      );
+    case "slug-conflict":
+      throw new BlogCmsConflictError("That blog slug is already reserved.", "slug-conflict");
+    case "invalid-state":
+      throw new BlogCmsConflictError(
+        "Only archived blog posts can be permanently deleted.",
         "invalid-state",
       );
   }
@@ -282,6 +309,14 @@ export async function restoreBlogPost(input: RestoreBlogPostInput) {
   ensureVersion(input.expectedVersion);
   return unwrapPostMutation(
     await restoreBlogPostRecord({ ...input, actor: normalizeMutationActor(input.actor) }),
+  );
+}
+
+export async function hardDeleteBlogPost(input: HardDeleteBlogPostInput) {
+  validateBlogUuid(input.postId, "post id");
+  ensureVersion(input.expectedVersion);
+  return unwrapPostHardDelete(
+    await hardDeleteBlogPostRecord({ ...input, actor: normalizeMutationActor(input.actor) }),
   );
 }
 

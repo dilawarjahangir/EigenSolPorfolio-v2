@@ -334,6 +334,7 @@ export type UnpublishBlogPostInput = Readonly<{
 
 export type ArchiveBlogPostInput = UnpublishBlogPostInput;
 export type RestoreBlogPostInput = UnpublishBlogPostInput;
+export type HardDeleteBlogPostInput = UnpublishBlogPostInput;
 
 export type BlogPostMutationResult = Readonly<{
   postId: string;
@@ -342,6 +343,13 @@ export type BlogPostMutationResult = Readonly<{
   version: number;
   currentRevisionId: string;
   publishedRevisionId: string | null;
+}>;
+
+export type BlogPostHardDeleteResult = Readonly<{
+  postId: string;
+  slug: string;
+  revisionCount: number;
+  commentCount: number;
 }>;
 
 export type BlogPublicationSchedule = Readonly<{

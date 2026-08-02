@@ -7,6 +7,7 @@ import type {
   BlogCmsActor,
   BlogEditorNode,
   BlogJsonObject,
+  BlogPostHardDeleteResult,
   BlogPostMutationResult,
   BlogPostRevisionInput,
   BlogPostStatus,
@@ -14,6 +15,7 @@ import type {
   UpdateBlogPostDraftInput,
 } from "@/contracts/blog-cms";
 import { getPostgresPool } from "@/database/PostgresDatabase";
+import { insertAdminAuditEventRecord } from "./AdminAuditRepository";
 
 type LockedPostRow = {
   id: string;
@@ -44,6 +46,10 @@ export type BlogPostRepositoryFailure =
 
 export type BlogPostRepositoryResult =
   | Readonly<{ ok: true; value: BlogPostMutationResult }>
+  | Readonly<{ ok: false; reason: BlogPostRepositoryFailure; actualVersion?: number }>;
+
+export type BlogPostHardDeleteRepositoryResult =
+  | Readonly<{ ok: true; value: BlogPostHardDeleteResult }>
   | Readonly<{ ok: false; reason: BlogPostRepositoryFailure; actualVersion?: number }>;
 
 function mapMutation(row: MutationRow): BlogPostMutationResult {
@@ -777,6 +783,138 @@ export function restoreBlogPostRecord(input: Readonly<{
   actor: BlogCmsActor;
 }>) {
   return restoreArchivedBlogPostRecord(input);
+}
+
+export async function hardDeleteBlogPostRecord(input: Readonly<{
+  postId: string;
+  expectedVersion: number;
+  actor: BlogCmsActor;
+}>): Promise<BlogPostHardDeleteRepositoryResult> {
+  const client = await getPostgresPool().connect();
+
+  try {
+    await client.query("BEGIN");
+    await client.query("SET CONSTRAINTS ALL DEFERRED");
+    await lockBlogSlugRegistryRecord(client);
+
+    const post = await lockPost(client, input.postId);
+    if (!post) {
+      await client.query("ROLLBACK");
+      return { ok: false, reason: "not-found" };
+    }
+    if (post.version !== input.expectedVersion) {
+      await client.query("ROLLBACK");
+      return { ok: false, reason: "version-conflict", actualVersion: post.version };
+    }
+    if (post.status !== "archived") {
+      await client.query("ROLLBACK");
+      return { ok: false, reason: "invalid-state" };
+    }
+
+    const revisionCountResult = await client.query<{ count: string }>(
+      `
+        SELECT count(*)::text AS count
+        FROM content.blog_post_revisions
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    const commentCountResult = await client.query<{ count: string }>(
+      `
+        SELECT count(*)::text AS count
+        FROM comments.blog_comments
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    const revisionCount = Number(revisionCountResult.rows[0]?.count ?? "0");
+    const commentCount = Number(commentCountResult.rows[0]?.count ?? "0");
+
+    await insertAdminAuditEventRecord(
+      {
+        actorId: input.actor.id,
+        action: "blog-post.hard-deleted",
+        entityType: "blog-post",
+        entityId: post.id,
+        metadata: {
+          slug: post.slug,
+          revisionCount,
+          commentCount,
+        },
+      },
+      client,
+    );
+
+    await client.query(
+      `
+        DELETE FROM comments.blog_comments
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_publication_schedules
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_post_slugs
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_revision_media
+        WHERE revision_id IN (
+          SELECT id
+          FROM content.blog_post_revisions
+          WHERE post_id = $1
+        )
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_post_audit_events
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_post_revisions
+        WHERE post_id = $1
+      `,
+      [post.id],
+    );
+    await client.query(
+      `
+        DELETE FROM content.blog_posts
+        WHERE id = $1
+      `,
+      [post.id],
+    );
+
+    await client.query("COMMIT");
+    return {
+      ok: true,
+      value: {
+        postId: post.id,
+        slug: post.slug,
+        revisionCount,
+        commentCount,
+      },
+    };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }
 
 async function restoreArchivedBlogPostRecord(input: Readonly<{

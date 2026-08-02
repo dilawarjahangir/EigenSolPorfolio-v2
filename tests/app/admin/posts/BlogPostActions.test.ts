@@ -20,6 +20,7 @@ const mocks = vi.hoisted(() => {
     createBlogPostDraft: vi.fn(),
     updateBlogPostDraft: vi.fn(),
     publishBlogPost: vi.fn(),
+    hardDeleteBlogPost: vi.fn(),
     getActiveBlogPublicationSchedule: vi.fn(),
     scheduleBlogPublication: vi.fn(),
     cancelBlogPublication: vi.fn(),
@@ -42,6 +43,7 @@ vi.mock("@/services/blog-posts/BlogPublicationService", () => ({
 }));
 vi.mock("@/services/blog-posts/BlogPostService", () => ({
   archiveBlogPost: vi.fn(),
+  hardDeleteBlogPost: mocks.hardDeleteBlogPost,
   restoreBlogPost: vi.fn(),
   unpublishBlogPost: vi.fn(),
   getBlogPostForEditing: vi.fn(),
@@ -55,7 +57,11 @@ vi.mock("@/services/blog-posts/BlogPostService", () => ({
   BlogCmsConflictError: mocks.BlogCmsConflictError,
 }));
 
-import { saveBlogPostAction } from "@/app/admin/(protected)/posts/actions";
+import {
+  hardDeleteBlogPostAction,
+  saveBlogPostAction,
+} from "@/app/admin/(protected)/posts/actions";
+import { redirect } from "next/navigation";
 
 function postForm(intent: "save" | "publish" | "schedule") {
   const formData = new FormData();
@@ -158,5 +164,39 @@ describe("saveBlogPostAction", () => {
       executeAt: "2099-01-01T07:00:00.000Z",
       actor: { id: "owner-1" },
     });
+  });
+});
+
+describe("hardDeleteBlogPostAction", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.requireOwner.mockResolvedValue({ userId: "owner-1" });
+    mocks.hardDeleteBlogPost.mockResolvedValue({
+      postId: "post-1",
+      slug: "archived-post",
+      revisionCount: 3,
+      commentCount: 2,
+    });
+  });
+
+  it("requires owner access, deletes the archived post, revalidates affected routes, and redirects to the post list", async () => {
+    const formData = new FormData();
+    formData.set("postId", "post-1");
+    formData.set("expectedVersion", "7");
+
+    await hardDeleteBlogPostAction(formData);
+
+    expect(mocks.requireOwner).toHaveBeenCalledOnce();
+    expect(mocks.hardDeleteBlogPost).toHaveBeenCalledWith({
+      postId: "post-1",
+      expectedVersion: 7,
+      actor: { id: "owner-1" },
+    });
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/admin");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/admin/posts");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/blogs");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/blogs/archived-post");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/sitemap.xml");
+    expect(redirect).toHaveBeenCalledWith("/admin/posts?notice=deleted");
   });
 });

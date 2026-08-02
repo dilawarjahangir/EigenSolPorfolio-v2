@@ -36,6 +36,12 @@ const pakistanDate = new Intl.DateTimeFormat("en-PK", {
   timeZone: "Asia/Karachi",
 });
 
+function noticeText(value: string | undefined) {
+  if (value === "deleted") return "The archived post was permanently deleted.";
+  if (value === "archived") return "The post was archived.";
+  return null;
+}
+
 export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
   await requireOwner();
   const params = await searchParams;
@@ -52,6 +58,7 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
     listBlogCategories(),
   ]);
   const filters = { search, status, category };
+  const notice = noticeText(firstValue(params.notice));
 
   return (
     <div className={ui.page}>
@@ -70,6 +77,8 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
           </Link>
         </div>
       </header>
+
+      {notice ? <div className={ui.successNotice} role="status">{notice}</div> : null}
 
       <form className={ui.filterBar} action="/admin/posts" method="get" role="search">
         <label className={ui.field} htmlFor="post-search">

@@ -1,4 +1,4 @@
-import { Archive, CalendarX2, Globe2, RotateCcw, Undo2 } from "lucide-react";
+import { Archive, CalendarX2, Globe2, RotateCcw, Trash2, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminConfirmButton } from "@/components/admin/AdminConfirmButton";
@@ -15,6 +15,7 @@ import {
 import {
   archiveBlogPostAction,
   cancelBlogScheduleAction,
+  hardDeleteBlogPostAction,
   restoreBlogPostAction,
   restoreBlogRevisionAction,
   unpublishBlogPostAction,
@@ -99,23 +100,38 @@ export default async function EditAdminPostPage({ params, searchParams }: EditPo
         ) : null}
 
         {post.status === "archived" ? (
-          <section className={ui.panel}>
+          <section className={`${ui.panel} ${ui.dangerPanel}`}>
             <h2>Archived post</h2>
             <p className={ui.description}>
-              Archived content is not public and cannot be edited. Restore it to its last published state first.
+              Archived content is not public and cannot be edited. Restore it to its last published state first,
+              or permanently delete it if it should be removed from the CMS.
             </p>
-            <form action={restoreBlogPostAction}>
-              <input type="hidden" name="postId" value={post.id} />
-              <input type="hidden" name="expectedVersion" value={post.version} />
-              <AdminConfirmButton
-                confirmation="Restore this post? Its last published revision will become public again when available."
+            <div className={ui.inlineActions}>
+              <form action={restoreBlogPostAction}>
+                <input type="hidden" name="postId" value={post.id} />
+                <input type="hidden" name="expectedVersion" value={post.version} />
+                <AdminConfirmButton
+                  confirmation="Restore this post? Its last published revision will become public again when available."
                 pendingLabel="Restoring…"
-                tone="primary"
-              >
-                <RotateCcw aria-hidden="true" />
-                Restore post
-              </AdminConfirmButton>
-            </form>
+                  tone="primary"
+                >
+                  <RotateCcw aria-hidden="true" />
+                  Restore post
+                </AdminConfirmButton>
+              </form>
+              <form action={hardDeleteBlogPostAction}>
+                <input type="hidden" name="postId" value={post.id} />
+                <input type="hidden" name="expectedVersion" value={post.version} />
+                <AdminConfirmButton
+                  confirmation="Permanently delete this archived post? This removes revisions, slug history, schedules, comments, and post audit rows. Media assets remain in the media library. This cannot be undone."
+                  pendingLabel="Deleting..."
+                  tone="danger"
+                >
+                  <Trash2 aria-hidden="true" />
+                  Delete permanently
+                </AdminConfirmButton>
+              </form>
+            </div>
           </section>
         ) : (
           <BlogPostEditorForm key={post.currentRevisionId} post={post} media={media.assets} />

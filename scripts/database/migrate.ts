@@ -43,6 +43,11 @@ const migrations: readonly Migration[] = [
     ledger: "auth.schema_migrations",
     file: path.resolve("database/migrations/006_auth_uuid_defaults.sql"),
   },
+  {
+    version: "007_blog_hard_delete",
+    ledger: "content.schema_migrations",
+    file: path.resolve("database/migrations/007_blog_hard_delete.sql"),
+  },
 ];
 
 async function migrationIsApplied(client: PoolClient, migration: Migration) {

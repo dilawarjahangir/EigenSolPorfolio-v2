@@ -21,6 +21,7 @@ import {
   getActiveBlogPublicationSchedule,
   getBlogPostForEditing,
   getBlogPostRevision,
+  hardDeleteBlogPost,
   publishBlogPost,
   restoreBlogPost,
   unpublishBlogPost,
@@ -384,6 +385,18 @@ export async function restoreBlogPostAction(formData: FormData) {
   const result = await restoreBlogPost({ ...input, actor: { id: owner.userId } });
   revalidateBlogRoutes(result.postId, result.slug);
   redirect(`/admin/posts/${result.postId}/edit?notice=restored`);
+}
+
+export async function hardDeleteBlogPostAction(formData: FormData) {
+  const owner = await requireOwner();
+  const input = requiredMutationFields(formData);
+  const result = await hardDeleteBlogPost({ ...input, actor: { id: owner.userId } });
+  revalidatePath("/admin");
+  revalidatePath("/admin/posts");
+  revalidatePath("/blogs");
+  revalidatePath(`/blogs/${result.slug}`);
+  revalidatePath("/sitemap.xml");
+  redirect("/admin/posts?notice=deleted");
 }
 
 export async function unpublishBlogPostAction(formData: FormData) {
