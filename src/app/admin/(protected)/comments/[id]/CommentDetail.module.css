@@ -1,0 +1,140 @@
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.commentBody {
+  min-height: 10rem;
+  padding: 1rem;
+  margin: 0 0 1.5rem;
+  color: var(--site-heading);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-md);
+}
+
+.redacted {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 8rem;
+  padding: 1rem;
+  margin-block-end: 1.5rem;
+  color: var(--site-muted);
+  background: var(--site-surface);
+  border: 1px dashed var(--site-border);
+  border-radius: var(--radius-md);
+}
+
+.redacted svg {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  color: var(--destructive);
+}
+
+.details {
+  display: grid;
+  gap: 0;
+  margin: 0 0 1.5rem;
+}
+
+.details div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.35fr) minmax(0, 0.65fr);
+  gap: 1rem;
+  padding-block: 0.7rem;
+  border-block-start: 1px solid var(--site-border);
+}
+
+.details div:first-child {
+  border-block-start: 0;
+}
+
+.details dt {
+  color: var(--site-muted);
+  font-size: 0.75rem;
+}
+
+.details dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--site-heading);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.details a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-blue);
+}
+
+.details a svg {
+  width: 0.8rem;
+}
+
+.timeline {
+  display: grid;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.8rem 0 0.8rem 1.25rem;
+  border-inline-start: 1px solid var(--site-border);
+}
+
+.timeline li::before {
+  position: absolute;
+  inset-block-start: 1.1rem;
+  inset-inline-start: -0.3rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  content: "";
+  background: var(--color-orange);
+  border-radius: 50%;
+}
+
+.timeline strong {
+  color: var(--site-heading);
+  font-size: 0.82rem;
+  text-transform: capitalize;
+}
+
+.timeline span,
+.timeline time,
+.privacyNote {
+  color: var(--site-muted);
+  font-size: 0.72rem;
+}
+
+.privacyNote {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.privacyNote svg {
+  width: 0.9rem;
+}
+
+@media (min-width: 70rem) {
+  .grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+  }
+}

@@ -1,0 +1,28 @@
+.root {
+  overflow: hidden;
+  background: var(--site-background);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+}
+
+.previewBar {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--site-heading);
+  background: color-mix(in srgb, var(--site-surface-raised) 95%, transparent);
+  border-block-end: 1px solid var(--site-border);
+  backdrop-filter: blur(1rem);
+}
+
+@media (max-width: 36rem) {
+  .previewBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

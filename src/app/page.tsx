@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CreativeProjectsSection, {
   CreativeProjectsCursor,
 } from "@/components/CreativeProjectsSection";
@@ -13,7 +14,8 @@ import PositioningBanner from "@/components/PositioningBanner";
 import ServicesSection from "@/components/ServicesSection";
 import TrustedPartnersSection from "@/components/TrustedPartnersSection";
 import VideoSection from "@/components/VideoSection";
-import { buildPageMetadata } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildPageMetadata, siteJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "EigenSol | Custom Software, Web, Mobile, AI & Cloud",
@@ -25,6 +27,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default function Home() {
   return (
     <>
+      <JsonLd data={siteJsonLd()} />
       <Header />
       <HomeScrollControl>
         <HomePageExperience>
@@ -46,4 +49,3 @@ export default function Home() {
     </>
   );
 }
-import type { Metadata } from "next";

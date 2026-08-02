@@ -1,0 +1,139 @@
+.form {
+  display: grid;
+  gap: 1rem;
+  padding-block-end: 7rem;
+}
+
+.form h2 {
+  margin: 0 0 1rem;
+  color: var(--site-heading);
+  font-size: 1.05rem;
+}
+
+.form :global(.ProseMirror-selectednode) {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 0.2rem;
+}
+
+.editorField {
+  display: grid;
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.editorField > span:first-child {
+  color: var(--site-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.editorLoading {
+  min-height: 26rem;
+  padding: 2rem;
+  color: var(--site-muted);
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+}
+
+.mediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.mediaField {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+  margin: 0;
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-md);
+}
+
+.mediaField legend {
+  padding-inline: 0.25rem;
+  color: var(--site-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.mediaField label {
+  color: var(--site-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.publishBar {
+  position: fixed;
+  z-index: 20;
+  right: 1rem;
+  bottom: 1rem;
+  left: calc(var(--admin-sidebar-width, 17rem) + 1rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--site-surface-raised) 94%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1rem 3rem color-mix(in srgb, var(--site-shadow) 28%, transparent);
+  backdrop-filter: blur(1rem);
+}
+
+.publishBar > div:first-child {
+  min-width: 12rem;
+}
+
+.publishBar strong,
+.publishBar span {
+  display: block;
+}
+
+.publishBar strong {
+  color: var(--site-heading);
+  font-size: 0.8rem;
+}
+
+.publishBar span {
+  color: var(--site-muted);
+  font-size: 0.68rem;
+}
+
+.scheduleField {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.scheduleField input {
+  min-width: 13rem;
+}
+
+@media (max-width: 70rem) {
+  .publishBar {
+    left: 1rem;
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 44rem) {
+  .form {
+    padding-block-end: 15rem;
+  }
+
+  .publishBar > div:last-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scheduleField {
+    grid-column: 1 / -1;
+  }
+
+  .scheduleField input {
+    min-width: 0;
+  }
+}

@@ -34,6 +34,7 @@ type PageMetadataInput = {
   image?: string;
   type?: "website" | "article";
   publishedTime?: string;
+  modifiedTime?: string;
 };
 
 export function buildPageMetadata({
@@ -43,6 +44,7 @@ export function buildPageMetadata({
   image = seoConfig.defaultImage,
   type = "website",
   publishedTime,
+  modifiedTime,
 }: PageMetadataInput): Metadata {
   const canonical = absoluteUrl(path);
   const imageUrl = absoluteUrl(image);
@@ -56,6 +58,7 @@ export function buildPageMetadata({
           siteName: seoConfig.name,
           locale: seoConfig.locale,
           publishedTime,
+          modifiedTime,
           images: [{ url: imageUrl, alt: title }],
         }
       : {
@@ -209,18 +212,30 @@ export function articleJsonLd(post: {
   title: string;
   excerpt: string;
   publishedAt: string;
+  modifiedAt?: string | null;
   author: string;
-  image: string;
+  image:
+    | string
+    | { publicUrl: string }
+    | { asset: { publicUrl: string } }
+    | null;
 }): JsonLdObject {
   const url = absoluteUrl(`/blogs/${post.slug}`);
+  const image =
+    typeof post.image === "string"
+      ? post.image
+      : post.image && "asset" in post.image
+        ? post.image.asset.publicUrl
+        : post.image?.publicUrl ?? seoConfig.defaultImage;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     "@id": `${url}#article`,
     headline: post.title,
     description: post.excerpt,
-    image: absoluteUrl(post.image),
+    image: absoluteUrl(image),
     datePublished: post.publishedAt,
+    dateModified: post.modifiedAt ?? undefined,
     author: { "@type": "Organization", name: post.author },
     publisher: { "@id": organizationId },
     mainEntityOfPage: { "@id": `${url}#webpage` },

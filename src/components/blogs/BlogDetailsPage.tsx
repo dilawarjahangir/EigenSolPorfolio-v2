@@ -4,21 +4,40 @@ import {
   Clock3,
   Mail,
   MessageCircle,
-  Quote,
   Tag,
 } from "lucide-react";
 import type { SVGProps } from "react";
+import type { BlogPostDetail, BlogPostSummary } from "@/contracts/blog-cms";
 import type { ApprovedBlogComment } from "@/contracts/blog-comments";
-import type { BlogPost } from "@/data/blogs";
+import { BlogContentRenderer } from "./BlogContentRenderer";
 import BlogComments from "./BlogComments";
 import BlogReplyForm from "./BlogReplyForm";
 import styles from "./BlogPages.module.css";
 
 type BlogDetailsPageProps = {
-  post: BlogPost;
-  nextPost: BlogPost;
+  post: BlogPostDetail;
+  nextPost: BlogPostSummary | null;
   comments: readonly ApprovedBlogComment[];
+  preview?: boolean;
 };
+
+const postDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function postDate(value: string) {
+  const date = new Date(value.length === 10 ? `${value}T00:00:00Z` : value);
+  return Number.isNaN(date.getTime()) ? "Date unavailable" : postDateFormatter.format(date);
+}
+
+function mediaAlt(
+  media: BlogPostSummary["image"],
+  fallback: string,
+) {
+  if (!media) return fallback;
+  return media.decorative ? "" : media.altText || fallback;
+}
 
 const socialLinks = [
   {
@@ -43,7 +62,12 @@ const socialLinks = [
   },
 ] as const;
 
-export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetailsPageProps) {
+export default function BlogDetailsPage({
+  post,
+  nextPost,
+  comments,
+  preview = false,
+}: BlogDetailsPageProps) {
   const commentCountLabel = `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`;
 
   return (
@@ -56,17 +80,25 @@ export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetail
                 <Tag aria-hidden="true" />
                 {post.category}
               </span>
-              <span>{post.readTime}</span>
+              <span>{post.readTimeMinutes} min read</span>
             </div>
             <h1>{post.title}</h1>
             <div className={styles.detailsMeta}>
               <div className={styles.detailsAuthor}>
-                <Image src={post.authorImage} alt="" width={42} height={42} />
+                <Image
+                  src={
+                    post.authorImage?.asset.publicUrl ??
+                    "/agntix-blog/blog-masonry-user-1.jpg"
+                  }
+                  alt={mediaAlt(post.authorImage, post.author)}
+                  width={42}
+                  height={42}
+                />
                 <strong>{post.author}</strong>
               </div>
               <time dateTime={post.publishedAt}>
                 <Clock3 aria-hidden="true" />
-                {post.date}
+                {postDate(post.publishedAt)}
               </time>
               <span>
                 <MessageCircle aria-hidden="true" />
@@ -81,8 +113,15 @@ export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetail
         <div className={styles.container1750}>
           <div className={styles.detailsBanner}>
             <Image
-              src="/agntix-blog/blog-details-banner.jpg"
-              alt=""
+              src={
+                post.heroImage?.asset.publicUrl ??
+                post.image?.asset.publicUrl ??
+                "/agntix-blog/blog-details-banner.jpg"
+              }
+              alt={mediaAlt(
+                post.heroImage ?? post.image,
+                `Hero image for ${post.title}`,
+              )}
               fill
               priority
               sizes="(min-width: 1800px) 1720px, calc(100vw - 30px)"
@@ -115,106 +154,16 @@ export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetail
             </aside>
 
             <div className={styles.articleBody}>
-              <div className={styles.articleText}>
-                <p>
-                  Reliable digital products are rarely the result of one perfect framework or one
-                  major technical decision. They come from a sequence of clear choices about
-                  outcomes, constraints, ownership, and the feedback a team needs to keep improving.
-                </p>
-                <p>
-                  The useful question is not whether a system can scale in theory. It is whether the
-                  team can change it safely, understand its behavior in production, and keep the
-                  product aligned with the business as both evolve.
-                </p>
-              </div>
-
-              <section className={styles.articleSection}>
-                <h2>Start with the decision</h2>
-                <p>
-                  Before choosing an architecture, define the decision it must support. A good
-                  technical direction makes the next important product change easier without
-                  introducing operating costs the business cannot justify.
-                </p>
-              </section>
-
-              <div className={styles.articleImagePair}>
-                <Image
-                  src="/agntix-blog/blog-details-sm-1.jpg"
-                  alt=""
-                  width={405}
-                  height={420}
-                />
-                <Image
-                  src="/agntix-blog/blog-details-sm-2.jpg"
-                  alt=""
-                  width={405}
-                  height={420}
-                />
-              </div>
-
-              <p className={styles.articleParagraph}>
-                Product, design, and engineering constraints should be discussed together. When
-                those constraints remain hidden, teams optimize different parts of the same system
-                and discover the conflicts only after delivery becomes expensive.
-              </p>
-
-              <blockquote className={styles.articleQuote}>
-                <Quote aria-hidden="true" />
-                <div>
-                  <p>
-                    Success comes from clear outcomes, disciplined execution, learning from
-                    failure, and the persistence to improve the system.
-                  </p>
-                  <cite>EigenSol Engineering</cite>
-                </div>
-              </blockquote>
-
-              <p className={styles.articleParagraph}>
-                The strongest systems make quality visible. Teams can see what changed, understand
-                what failed, and connect technical behavior to the customer or operational outcome
-                that matters.
-              </p>
-
-              <section className={styles.articleSection}>
-                <h2>Make constraints visible</h2>
-                <p>
-                  A practical engineering brief records the assumptions that could change the
-                  solution. It gives the team a shared basis for evaluating scope and tradeoffs.
-                </p>
-              </section>
-
-              <div className={styles.articleList}>
-                <p>A useful decision record should include:</p>
-                <ul>
-                  <li>The product outcome and the metric that demonstrates progress.</li>
-                  <li>The operational, security, data, and integration constraints.</li>
-                  <li>The expected load profile and realistic growth assumptions.</li>
-                  <li>The rollback, observability, and ownership model after release.</li>
-                </ul>
-              </div>
-
-              <pre className={styles.codeBlock}>
-                <code>{`type ProductDecision = {
-  outcome: string;
-  constraint: string;
-  successSignal: string;
-  owner: string;
-};`}</code>
-              </pre>
-
-              <p className={styles.articleParagraph}>
-                This level of clarity does not slow delivery. It reduces ambiguity, prevents
-                accidental complexity, and gives every discipline a more useful way to challenge
-                the plan before implementation.
-              </p>
+              <BlogContentRenderer content={post.content.doc} media={post.media} />
 
               <div className={styles.articleTagRow}>
                 <div className={styles.tagCloud}>
                   <strong>Tagged with:</strong>
-                  <Link href="/blogs">Engineering</Link>
-                  <Link href="/blogs">Product</Link>
-                  <Link href="/blogs">Architecture</Link>
-                  <Link href="/blogs">Delivery</Link>
+                  {post.tags.length ? (
+                    post.tags.map((tag) => <Link href="/blogs" key={tag}>{tag}</Link>)
+                  ) : (
+                    <Link href="/blogs">{post.category}</Link>
+                  )}
                 </div>
                 <div className={styles.inlineSocials}>
                   {socialLinks.map(({ label, href, icon: Icon }) => (
@@ -233,18 +182,22 @@ export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetail
 
               <div className={styles.authorPanel}>
                 <Image
-                  src="/agntix-blog/blog-av-1.jpg"
-                  alt=""
+                  src={
+                    post.authorProfileImage?.asset.publicUrl ??
+                    post.authorImage?.asset.publicUrl ??
+                    "/agntix-blog/blog-av-1.jpg"
+                  }
+                  alt={mediaAlt(
+                    post.authorProfileImage ?? post.authorImage,
+                    `Portrait of ${post.author}`,
+                  )}
                   width={100}
                   height={100}
                 />
                 <div>
                   <span>About Author</span>
-                  <h2>EigenSol Engineering</h2>
-                  <p>
-                    EigenSol designs and delivers software, web, mobile, cloud, and AI systems for
-                    teams that need reliable products and measurable operating outcomes.
-                  </p>
+                  <h2>{post.author}</h2>
+                  <p>{post.authorBio}</p>
                   <div className={styles.authorSocials}>
                     {socialLinks.map(({ label, href, icon: Icon }) => (
                       <a
@@ -266,41 +219,48 @@ export default function BlogDetailsPage({ post, nextPost, comments }: BlogDetail
           </div>
         </div>
 
-        <div className={styles.container1750}>
-          <Link className={styles.nextPost} href={`/blogs/${nextPost.slug}`}>
-            <div className={styles.nextPostImage}>
-              <Image
-                src="/agntix-blog/blog-details-2.jpg"
-                alt=""
-                fill
-                sizes="(min-width: 1800px) 1720px, calc(100vw - 30px)"
-                data-speed=".8"
-              />
-            </div>
-            <div className={styles.nextPostContent}>
-              <span>Next Post</span>
-              <h2>{nextPost.title}</h2>
-            </div>
-          </Link>
-        </div>
-
-        <div className={styles.container1330}>
-          <div className={styles.commentsWrap}>
-            <section className={styles.commentsSection}>
-              <h2>Comments ({comments.length})</h2>
-              <BlogComments comments={comments} />
-            </section>
-
-            <section className={styles.replySection}>
-              <h2>Leave a Comment</h2>
-              <p>
-                Your email address will not be published. Comments are reviewed before appearing.
-                Required fields are marked *
-              </p>
-              <BlogReplyForm postSlug={post.slug} />
-            </section>
+        {nextPost ? (
+          <div className={styles.container1750}>
+            <Link className={styles.nextPost} href={`/blogs/${nextPost.slug}`}>
+              <div className={styles.nextPostImage}>
+                <Image
+                  src={
+                    nextPost.image?.asset.publicUrl ??
+                    "/agntix-blog/blog-details-2.jpg"
+                  }
+                  alt={mediaAlt(nextPost.image, `Cover image for ${nextPost.title}`)}
+                  fill
+                  sizes="(min-width: 1800px) 1720px, calc(100vw - 30px)"
+                  data-speed=".8"
+                />
+              </div>
+              <div className={styles.nextPostContent}>
+                <span>Next Post</span>
+                <h2>{nextPost.title}</h2>
+              </div>
+            </Link>
           </div>
-        </div>
+        ) : null}
+
+        {!preview ? (
+          <div className={styles.container1330}>
+            <div className={styles.commentsWrap}>
+              <section className={styles.commentsSection}>
+                <h2>Comments ({comments.length})</h2>
+                <BlogComments comments={comments} />
+              </section>
+
+              <section className={styles.replySection}>
+                <h2>Leave a Comment</h2>
+                <p>
+                  Your email address will not be published. Comments are reviewed before appearing.
+                  Required fields are marked *
+                </p>
+                <BlogReplyForm postSlug={post.slug} />
+              </section>
+            </div>
+          </div>
+        ) : null}
       </section>
     </article>
   );

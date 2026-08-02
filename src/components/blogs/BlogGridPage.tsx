@@ -1,11 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Clock3, PenLine } from "lucide-react";
-import { blogPosts } from "@/data/blogs";
+import type { BlogPostPage } from "@/contracts/blog-cms";
 import BlogVideoButton from "./BlogVideoButton";
 import styles from "./BlogPages.module.css";
 
-export default function BlogGridPage() {
+type BlogGridPageProps = Readonly<{
+  page: BlogPostPage;
+}>;
+
+const postDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function postDate(value: string) {
+  const date = new Date(value.length === 10 ? `${value}T00:00:00Z` : value);
+  return Number.isNaN(date.getTime()) ? "Date unavailable" : postDateFormatter.format(date);
+}
+
+function pageHref(page: number) {
+  return page === 1 ? "/blogs" : `/blogs?page=${page}`;
+}
+
+function mediaAlt(
+  media: BlogPostPage["posts"][number]["image"],
+  fallback: string,
+) {
+  if (!media) return fallback;
+  return media.decorative ? "" : media.altText || fallback;
+}
+
+function visiblePages(currentPage: number, totalPages: number) {
+  const pages = new Set([1, totalPages]);
+  for (let page = currentPage - 2; page <= currentPage + 2; page += 1) {
+    if (page > 0 && page <= totalPages) pages.add(page);
+  }
+  return [...pages].sort((first, second) => first - second);
+}
+
+export default function BlogGridPage({ page }: BlogGridPageProps) {
   return (
     <div className={styles.blogPage}>
       <section className={styles.blogHero} aria-labelledby="blog-page-title">
@@ -49,12 +84,21 @@ export default function BlogGridPage() {
 
       <section className={styles.blogGridSection} id="articles" aria-label="EigenSol articles">
         <div className={styles.container1330}>
-          <div className={styles.blogGrid}>
-            {blogPosts.map((post) => (
+          {page.posts.length ? (
+            <div className={styles.blogGrid}>
+              {page.posts.map((post) => (
               <article className={styles.blogCard} key={post.slug}>
                 <div className={styles.blogCardTop}>
                   <div className={styles.authorSummary}>
-                    <Image src={post.authorImage} alt="" width={42} height={42} />
+                    <Image
+                      src={
+                        post.authorImage?.asset.publicUrl ??
+                        "/agntix-blog/blog-masonry-user-1.jpg"
+                      }
+                      alt={mediaAlt(post.authorImage, post.author)}
+                      width={42}
+                      height={42}
+                    />
                     <div>
                       <strong>{post.author}</strong>
                       <span>{post.authorRole}</span>
@@ -62,15 +106,18 @@ export default function BlogGridPage() {
                   </div>
                   <time dateTime={post.publishedAt}>
                     <Clock3 aria-hidden="true" />
-                    {post.date}
+                    {postDate(post.publishedAt)}
                   </time>
                 </div>
 
                 <div className={styles.blogMedia}>
                   <Link href={`/blogs/${post.slug}`} aria-label={`Read ${post.title}`}>
                     <Image
-                      src={post.image}
-                      alt=""
+                      src={
+                        post.image?.asset.publicUrl ??
+                        "/agntix-blog/blog-masonry-thumb-1.jpg"
+                      }
+                      alt={mediaAlt(post.image, `Cover image for ${post.title}`)}
                       fill
                       sizes="(min-width: 768px) 620px, calc(100vw - 60px)"
                     />
@@ -95,17 +142,37 @@ export default function BlogGridPage() {
                   </Link>
                 </div>
               </article>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.blogEmptyState}>
+              <h2>No articles found</h2>
+              <p>This page does not contain any published articles.</p>
+              {page.page > 1 ? <Link href="/blogs">Return to the latest articles</Link> : null}
+            </div>
+          )}
 
-          <nav className={styles.pagination} aria-label="Blog pagination">
-            <span aria-current="page">1</span>
-            <Link href="/blogs?page=2">2</Link>
-            <Link href="/blogs?page=3">3</Link>
-            <Link href="/blogs?page=2" aria-label="Next blog page">
-              <ArrowRight aria-hidden="true" />
-            </Link>
-          </nav>
+          {page.totalPages > 1 ? (
+            <nav className={styles.pagination} aria-label="Blog pagination">
+              {visiblePages(page.page, page.totalPages).map((number, index, numbers) => (
+                <Fragment key={number}>
+                  {index > 0 && number - numbers[index - 1] > 1 ? (
+                    <span className={styles.paginationGap} aria-hidden="true">…</span>
+                  ) : null}
+                  {number === page.page ? (
+                    <span aria-current="page">{number}</span>
+                  ) : (
+                    <Link href={pageHref(number)}>{number}</Link>
+                  )}
+                </Fragment>
+              ))}
+              {page.page < page.totalPages ? (
+                <Link href={pageHref(page.page + 1)} aria-label="Next blog page">
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              ) : null}
+            </nav>
+          ) : null}
         </div>
       </section>
     </div>

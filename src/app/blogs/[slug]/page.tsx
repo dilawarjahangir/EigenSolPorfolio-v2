@@ -1,39 +1,32 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { connection } from "next/server";
 import BlogDetailsPage from "@/components/blogs/BlogDetailsPage";
 import CreativeStudioFooter from "@/components/CreativeStudioFooter";
 import Header from "@/components/Header";
 import AgntixInnerPageExperience from "@/components/site/AgntixInnerPageExperience";
 import JsonLd from "@/components/seo/JsonLd";
-import { blogPosts, getBlogPostBySlug, getNextBlogPost } from "@/data/blogs";
 import { articleJsonLd, breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 import { getApprovedBlogComments } from "@/services/blog-comments/BlogCommentService";
+import {
+  getNextPublishedBlogPost,
+  getPublishedBlogPostBySlug,
+} from "@/services/blog-posts/BlogPostService";
 
 type BlogDetailsRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamicParams = false;
 export const runtime = "nodejs";
-
-export const generateStaticParams = () => {
-  const params: Array<{ slug: string }> = [];
-
-  for (const post of blogPosts) {
-    params.push({ slug: post.slug });
-  }
-
-  return params;
-};
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: BlogDetailsRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const resolution = await getPublishedBlogPostBySlug(slug);
 
-  if (!post) {
+  if (!resolution) {
     return {
       title: "Article Not Found | EigenSol",
       description: "The requested EigenSol article could not be found.",
@@ -41,24 +34,30 @@ export async function generateMetadata({
     };
   }
 
+  const post = resolution.post;
+
   return buildPageMetadata({
-    title: `${post.title} | EigenSol Insights`,
-    description: post.excerpt,
-    path: `/blogs/${post.slug}`,
-    image: post.image,
+    title: post.seoTitle || `${post.title} | EigenSol Insights`,
+    description: post.seoDescription || post.excerpt,
+    path: `/blogs/${resolution.canonicalSlug}`,
+    image: post.socialImage?.asset.publicUrl ?? post.image?.asset.publicUrl,
     type: "article",
     publishedTime: post.publishedAt,
+    modifiedTime: post.modifiedAt ?? undefined,
   });
 }
 
 export default async function BlogDetailsRoute({ params }: BlogDetailsRouteProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
-
-  if (!post) notFound();
-
   await connection();
+  const resolution = await getPublishedBlogPostBySlug(slug);
+
+  if (!resolution) notFound();
+  if (resolution.redirect) permanentRedirect(`/blogs/${resolution.canonicalSlug}`);
+
+  const post = resolution.post;
   const comments = await getApprovedBlogComments(post.slug);
+  const nextPost = await getNextPublishedBlogPost(post.id);
 
   return (
     <>
@@ -77,7 +76,7 @@ export default async function BlogDetailsRoute({ params }: BlogDetailsRouteProps
         <main>
           <BlogDetailsPage
             post={post}
-            nextPost={getNextBlogPost(post.slug)}
+            nextPost={nextPost}
             comments={comments}
           />
         </main>

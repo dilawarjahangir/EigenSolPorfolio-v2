@@ -1,0 +1,124 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--site-surface-raised) 94%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1rem 3rem color-mix(in srgb, var(--site-shadow) 18%, transparent);
+}
+
+.preview {
+  position: relative;
+  display: grid;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--site-surface);
+  place-items: center;
+}
+
+.preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview > span:last-child:not(.placeholder) {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+}
+
+.placeholder {
+  display: grid;
+  gap: 0.55rem;
+  color: var(--site-muted);
+  font-size: 0.75rem;
+  place-items: center;
+}
+
+.placeholder svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.details {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.details h2 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--site-heading);
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.details dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.details dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.details dt,
+.details dd {
+  margin: 0;
+  font-size: 0.72rem;
+}
+
+.details dt {
+  color: var(--site-muted);
+}
+
+.details dd {
+  color: var(--site-text);
+  text-align: end;
+}
+
+.storageKey {
+  overflow: hidden;
+  padding: 0.5rem;
+  color: var(--site-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--site-surface);
+  border-radius: var(--radius-sm);
+}
+
+.details form,
+.details form button {
+  width: 100%;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.5rem;
+  color: var(--site-muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 32rem) {
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

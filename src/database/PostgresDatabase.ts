@@ -4,6 +4,7 @@ import { Pool, type PoolConfig } from "pg";
 
 type PostgresGlobal = typeof globalThis & {
   eigensolPostgresPool?: Pool;
+  eigensolAuthPostgresPool?: Pool;
 };
 
 const postgresGlobal = globalThis as PostgresGlobal;
@@ -30,15 +31,26 @@ function databaseSslConfiguration(): PoolConfig["ssl"] | undefined {
   throw new Error("Invalid database configuration: DATABASE_SSL");
 }
 
-function createPostgresPool() {
+type PostgresPoolOptions = {
+  applicationName: string;
+  maxConnections: number;
+  searchPath?: string;
+};
+
+function createPostgresPool({
+  applicationName,
+  maxConnections,
+  searchPath,
+}: PostgresPoolOptions) {
   const ssl = databaseSslConfiguration();
   const configuration: PoolConfig = {
     connectionString: databaseConnectionString(),
-    application_name: "eigensol-website",
-    max: 5,
+    application_name: applicationName,
+    max: maxConnections,
     connectionTimeoutMillis: 5_000,
     idleTimeoutMillis: 30_000,
     statement_timeout: 5_000,
+    ...(searchPath ? { options: `-c search_path=${searchPath}` } : {}),
     ...(ssl === undefined ? {} : { ssl }),
   };
   const pool = new Pool(configuration);
@@ -59,8 +71,23 @@ export function databaseErrorCode(error: unknown) {
 
 export function getPostgresPool() {
   if (!postgresGlobal.eigensolPostgresPool) {
-    postgresGlobal.eigensolPostgresPool = createPostgresPool();
+    postgresGlobal.eigensolPostgresPool = createPostgresPool({
+      applicationName: "eigensol-website",
+      maxConnections: 5,
+    });
   }
 
   return postgresGlobal.eigensolPostgresPool;
+}
+
+export function getAuthPostgresPool() {
+  if (!postgresGlobal.eigensolAuthPostgresPool) {
+    postgresGlobal.eigensolAuthPostgresPool = createPostgresPool({
+      applicationName: "eigensol-admin-auth",
+      maxConnections: 3,
+      searchPath: "auth,public",
+    });
+  }
+
+  return postgresGlobal.eigensolAuthPostgresPool;
 }

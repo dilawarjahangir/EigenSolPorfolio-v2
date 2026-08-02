@@ -12,7 +12,6 @@ type MailConfiguration = {
   user: string;
   password: string;
   from: string;
-  to: string;
 };
 
 function requiredEnvironmentVariable(name: string) {
@@ -40,7 +39,6 @@ function getMailConfiguration(): MailConfiguration {
     user,
     password: requiredEnvironmentVariable("ZOHO_SMTP_PASS"),
     from: process.env.CONTACT_FROM_EMAIL?.trim() || user,
-    to: requiredEnvironmentVariable("CONTACT_TO_EMAIL"),
   };
 }
 
@@ -76,7 +74,7 @@ function singleLine(value: string) {
 
 async function sendMail(
   configuration: MailConfiguration,
-  kind: "blog-comment" | "project-inquiry",
+  kind: "admin-password-reset" | "blog-comment" | "project-inquiry",
   message: Parameters<Transporter["sendMail"]>[0],
 ) {
   const mailer = getTransporter(configuration);
@@ -142,7 +140,7 @@ export async function sendProjectInquiryEmail(submission: ProjectInquirySubmissi
       name: "EigenSol Website",
       address: configuration.from,
     },
-    to: configuration.to,
+    to: requiredEnvironmentVariable("CONTACT_TO_EMAIL"),
     replyTo: {
       name: singleLine(submission.name),
       address: submission.email,
@@ -164,13 +162,42 @@ export async function sendBlogCommentModerationEmail(
       name: "EigenSol Website",
       address: configuration.from,
     },
-    to: configuration.to,
+    to: requiredEnvironmentVariable("CONTACT_TO_EMAIL"),
     replyTo: {
       name: singleLine(notification.authorName),
       address: notification.authorEmail,
     },
     subject: `Blog comment awaiting moderation: ${singleLine(notification.postTitle)}`,
     text: blogCommentModerationText(notification),
+    disableFileAccess: true,
+    disableUrlAccess: true,
+  });
+}
+
+export async function sendAdminPasswordResetEmail({
+  email,
+  resetUrl,
+}: {
+  email: string;
+  resetUrl: string;
+}) {
+  const configuration = getMailConfiguration();
+
+  await sendMail(configuration, "admin-password-reset", {
+    from: {
+      name: "EigenSol Admin",
+      address: configuration.from,
+    },
+    to: email,
+    subject: "Reset your EigenSol admin password",
+    text: [
+      "A password reset was requested for the EigenSol admin account.",
+      "",
+      "Reset your password:",
+      resetUrl,
+      "",
+      "This link expires in 30 minutes. If you did not request it, you can ignore this email.",
+    ].join("\n"),
     disableFileAccess: true,
     disableUrlAccess: true,
   });

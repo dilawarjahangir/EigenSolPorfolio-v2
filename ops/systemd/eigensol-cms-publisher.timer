@@ -1,0 +1,11 @@
+[Unit]
+Description=Publish due EigenSol CMS revisions every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+AccuracySec=1s
+Persistent=true
+Unit=eigensol-cms-publisher.service
+
+[Install]
+WantedBy=timers.target

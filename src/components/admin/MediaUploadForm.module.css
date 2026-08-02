@@ -1,0 +1,86 @@
+.form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  margin-block-end: 2rem;
+  background: color-mix(in srgb, var(--site-surface-raised) 94%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1rem 3rem color-mix(in srgb, var(--site-shadow) 18%, transparent);
+}
+
+.copy h2,
+.copy p {
+  margin: 0;
+}
+
+.copy h2 {
+  color: var(--site-heading);
+  font-size: 1.05rem;
+}
+
+.copy p {
+  margin-block-start: 0.4rem;
+  color: var(--site-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.fileField {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.fileField span {
+  color: var(--site-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.fileField input {
+  min-width: 0;
+  padding: 0.65rem;
+  color: var(--site-text);
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-md);
+}
+
+.fileField input:focus-visible {
+  outline: 0.15rem solid var(--color-orange);
+  outline-offset: 0.15rem;
+}
+
+.fileField small {
+  color: var(--site-muted);
+  font-size: 0.72rem;
+}
+
+.success,
+.error {
+  grid-column: 1 / -1;
+  padding: 0.75rem 0.9rem;
+  margin: 0;
+  color: var(--site-text);
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-inline-start-width: 0.25rem;
+  border-radius: var(--radius-md);
+}
+
+.success {
+  border-inline-start-color: var(--color-lime);
+}
+
+.error {
+  border-inline-start-color: var(--destructive);
+}
+
+@media (min-width: 56rem) {
+  .form {
+    grid-template-columns: minmax(14rem, 0.75fr) minmax(18rem, 1fr) auto;
+  }
+}

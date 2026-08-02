@@ -1,0 +1,11 @@
+[Unit]
+Description=Run EigenSol CMS retention maintenance daily
+
+[Timer]
+OnCalendar=*-*-* 03:17:00 Asia/Karachi
+Persistent=true
+RandomizedDelaySec=5min
+Unit=eigensol-cms-maintenance.service
+
+[Install]
+WantedBy=timers.target

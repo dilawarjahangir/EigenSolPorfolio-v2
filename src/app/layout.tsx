@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import JsonLd from "@/components/seo/JsonLd";
 import RouteScrollReset from "@/components/RouteScrollReset";
-import { absoluteUrl, seoConfig, siteJsonLd } from "@/lib/seo";
+import { absoluteUrl, seoConfig } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -84,7 +83,6 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="min-h-full flex flex-col">
-        <JsonLd data={siteJsonLd()} />
         <RouteScrollReset />
         {children}
       </body>

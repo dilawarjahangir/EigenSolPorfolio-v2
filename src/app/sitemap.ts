@@ -1,10 +1,16 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/data/blogs";
+import { connection } from "next/server";
 import { portfolioProjects } from "@/data/projects";
 import { serviceOfferings } from "@/data/services";
 import { absoluteUrl } from "@/lib/seo";
+import { getPublishedBlogSitemapEntries } from "@/services/blog-posts/BlogPostService";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await connection();
+  const publishedBlogs = await getPublishedBlogSitemapEntries();
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
@@ -27,9 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: project.featured ? 0.8 : 0.7,
   }));
-  const blogs: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+  const blogs: MetadataRoute.Sitemap = publishedBlogs.map((post) => ({
     url: absoluteUrl(`/blogs/${post.slug}`),
-    lastModified: post.publishedAt,
+    lastModified: post.modifiedAt ?? post.publishedAt,
     changeFrequency: "monthly",
     priority: 0.7,
   }));

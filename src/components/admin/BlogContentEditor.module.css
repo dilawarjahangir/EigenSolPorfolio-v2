@@ -1,0 +1,268 @@
+.root {
+  overflow: hidden;
+  background: var(--site-surface-raised);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+}
+
+.toolbar {
+  position: sticky;
+  z-index: 5;
+  inset-block-start: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.65rem;
+  background: color-mix(in srgb, var(--site-surface-raised) 94%, transparent);
+  border-block-end: 1px solid var(--site-border);
+  backdrop-filter: blur(0.8rem);
+}
+
+.toolbarButton {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--site-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  place-items: center;
+}
+
+.toolbarButton:hover,
+.toolbarButton[data-active="true"] {
+  color: var(--site-heading);
+  background: color-mix(in srgb, var(--color-orange) 12%, transparent);
+  border-color: color-mix(in srgb, var(--color-orange) 28%, transparent);
+}
+
+.toolbarButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.toolbarButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.editorSurface {
+  min-height: 26rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--site-text);
+  line-height: 1.8;
+  outline: none;
+}
+
+.editorSurface > *:first-child {
+  margin-block-start: 0;
+}
+
+.editorSurface h2,
+.editorSurface h3 {
+  margin: 1.75em 0 0.5em;
+  color: var(--site-heading);
+}
+
+.editorSurface h2 {
+  font-size: 1.65rem;
+}
+
+.editorSurface h3 {
+  font-size: 1.25rem;
+}
+
+.editorSurface p,
+.editorSurface ul,
+.editorSurface ol,
+.editorSurface blockquote,
+.editorSurface pre {
+  margin: 0 0 1rem;
+}
+
+.editorSurface ul,
+.editorSurface ol {
+  padding-inline-start: 1.5rem;
+}
+
+.editorSurface blockquote {
+  padding: 1rem 1.25rem;
+  color: var(--site-heading);
+  background: var(--site-surface);
+  border-inline-start: 0.25rem solid var(--color-orange);
+}
+
+.editorSurface pre {
+  overflow-x: auto;
+  padding: 1rem;
+  color: var(--site-heading);
+  font-family: var(--font-mono);
+  background: var(--site-surface);
+  border-radius: var(--radius-md);
+}
+
+.editorSurface img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  border-radius: var(--radius-md);
+}
+
+.editorSurface a {
+  color: var(--color-blue);
+  text-decoration: underline;
+}
+
+.imageInsert {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  margin: 0;
+  background: var(--site-surface);
+  border: 0;
+  border-block-start: 1px solid var(--site-border);
+}
+
+.imageInsert legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-inline: 0.3rem;
+  color: var(--site-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.imageInsert legend svg {
+  width: 1rem;
+}
+
+.imageInsert label:not(.decorativeChoice) {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.imageInsert label span {
+  color: var(--site-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.imageInsert input,
+.imageInsert select {
+  min-height: 2.45rem;
+  padding-inline: 0.7rem;
+  color: var(--site-heading);
+  background: var(--site-surface-raised);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-sm);
+}
+
+.decorativeChoice {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  gap: 0.5rem;
+  min-height: 2.45rem;
+  color: var(--site-text);
+  font-size: 0.75rem;
+}
+
+.decorativeChoice input {
+  min-height: auto;
+  accent-color: var(--color-orange);
+}
+
+.insertButton,
+.galleryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  align-self: end;
+  min-height: 2.45rem;
+  color: var(--color-white);
+  font-weight: 800;
+  background: var(--color-orange);
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
+.galleryButton {
+  color: var(--site-heading);
+  background: var(--site-surface-raised);
+  border: 1px solid var(--site-border);
+}
+
+.galleryButton svg {
+  width: 1rem;
+}
+
+.insertButton:disabled,
+.galleryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.galleryQueue {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  background: var(--site-surface-raised);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-md);
+}
+
+.galleryQueue > strong {
+  color: var(--site-heading);
+  font-size: 0.75rem;
+}
+
+.galleryQueue ul {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.galleryQueue li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--site-text);
+  font-size: 0.75rem;
+}
+
+.galleryQueue li button {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: 0 0 auto;
+  padding: 0;
+  color: var(--site-muted);
+  background: transparent;
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-sm);
+  place-items: center;
+}
+
+.galleryQueue li svg {
+  width: 0.8rem;
+}
+
+.loading {
+  min-height: 26rem;
+  padding: 2rem;
+  color: var(--site-muted);
+  background: var(--site-surface);
+  border: 1px solid var(--site-border);
+  border-radius: var(--radius-lg);
+}

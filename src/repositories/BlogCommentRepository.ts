@@ -11,6 +11,7 @@ import type {
 import { getPostgresPool } from "@/database/PostgresDatabase";
 
 type PendingBlogCommentInput = {
+  postId: string;
   postSlug: string;
   postTitle: string;
   authorName: string;
@@ -37,6 +38,7 @@ type PendingCommentRow = {
 };
 
 type ModerationRow = {
+  id: string;
   post_slug: string;
 };
 
@@ -51,6 +53,7 @@ type RateLimitBucket = {
 };
 
 const moderationTokenLifetimeMilliseconds = 7 * 24 * 60 * 60 * 1_000;
+const pendingCommentLifetimeMilliseconds = 30 * 24 * 60 * 60 * 1_000;
 
 function moderationTokenHash(token: string) {
   return createHash("sha256").update(token).digest("hex");
@@ -63,33 +66,53 @@ export async function createPendingBlogComment(
   const client = await pool.connect();
   const commentId = randomUUID();
   const tokenId = randomUUID();
+  const notificationAttemptId = randomUUID();
   const moderationToken = randomBytes(32).toString("base64url");
   const tokenHash = moderationTokenHash(moderationToken);
 
   try {
     await client.query("BEGIN");
-    const result = await client.query<{ created_at: Date }>(
+    const result = await client.query<{ created_at: Date; expires_at: Date }>(
       `
         INSERT INTO comments.blog_comments (
           id,
+          post_id,
           post_slug,
           post_title,
           author_name,
           author_email,
           author_website,
-          body
+          body,
+          expires_at,
+          notification_attempt_id,
+          notification_last_attempted_at
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING created_at
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8,
+          now() + ($9::bigint * interval '1 millisecond'),
+          $10,
+          now()
+        )
+        RETURNING created_at, expires_at
       `,
       [
         commentId,
+        input.postId,
         input.postSlug,
         input.postTitle,
         input.authorName,
         input.authorEmail,
         input.websiteUrl,
         input.body,
+        pendingCommentLifetimeMilliseconds,
+        notificationAttemptId,
       ],
     );
 
@@ -111,7 +134,9 @@ export async function createPendingBlogComment(
       id: commentId,
       ...input,
       createdAt: result.rows[0].created_at.toISOString(),
+      expiresAt: result.rows[0].expires_at.toISOString(),
       moderationToken,
+      notificationAttemptId,
     };
   } catch (error) {
     await client.query("ROLLBACK");
@@ -141,39 +166,67 @@ export async function deletePendingBlogComment(commentId: string) {
 }
 
 export async function deleteExpiredPendingBlogComments() {
-  await getPostgresPool().query(
+  const { expirePendingBlogComments } = await import("./BlogCommentLifecycleRepository");
+  await expirePendingBlogComments();
+}
+
+export async function markBlogCommentNotificationSent(
+  commentId: string,
+  notificationAttemptId: string,
+) {
+  const result = await getPostgresPool().query(
     `
-      WITH expired_comments AS (
-        SELECT comment.id
-        FROM comments.blog_comment_moderation_tokens AS token
-        INNER JOIN comments.blog_comments AS comment ON comment.id = token.comment_id
-        WHERE token.consumed_at IS NULL
-          AND token.expires_at <= now()
-          AND comment.status = 'pending'
-        ORDER BY token.expires_at ASC
-        LIMIT 100
-        FOR UPDATE OF token SKIP LOCKED
-      )
-      DELETE FROM comments.blog_comments AS comment
-      USING expired_comments AS expired
-      WHERE comment.id = expired.id
+      UPDATE comments.blog_comments
+      SET
+        notification_status = 'sent',
+        notification_attempt_count = notification_attempt_count + 1,
+        notification_last_attempted_at = now(),
+        notification_sent_at = now(),
+        notification_last_error_code = NULL
+      WHERE id = $1
+        AND notification_attempt_id = $2
     `,
+    [commentId, notificationAttemptId],
   );
+
+  return (result.rowCount ?? 0) > 0;
+}
+
+export async function markBlogCommentNotificationFailed(
+  commentId: string,
+  notificationAttemptId: string,
+  errorCode: string,
+) {
+  const result = await getPostgresPool().query(
+    `
+      UPDATE comments.blog_comments
+      SET
+        notification_status = 'failed',
+        notification_attempt_count = notification_attempt_count + 1,
+        notification_last_attempted_at = now(),
+        notification_last_error_code = $3
+      WHERE id = $1
+        AND notification_attempt_id = $2
+    `,
+    [commentId, notificationAttemptId, errorCode.slice(0, 80)],
+  );
+
+  return (result.rowCount ?? 0) > 0;
 }
 
 export async function listApprovedBlogComments(
-  postSlug: string,
+  postId: string,
 ): Promise<readonly ApprovedBlogComment[]> {
   const result = await getPostgresPool().query<ApprovedCommentRow>(
     `
       SELECT id, author_name, author_website, body, created_at
       FROM comments.blog_comments
-      WHERE post_slug = $1
+      WHERE post_id = $1
         AND status = 'approved'
       ORDER BY created_at ASC, id ASC
       LIMIT 100
     `,
-    [postSlug],
+    [postId],
   );
 
   return result.rows.map((row) => ({
@@ -203,6 +256,7 @@ export async function findBlogCommentForModeration(
         AND token.consumed_at IS NULL
         AND token.expires_at > now()
         AND comment.status = 'pending'
+        AND comment.expires_at > now()
       LIMIT 1
     `,
     [moderationTokenHash(token)],
@@ -257,8 +311,10 @@ export async function moderateBlogComment(
                 status = 'approved',
                 author_email = NULL,
                 moderated_at = now()
-              WHERE id = $1 AND status = 'pending'
-              RETURNING post_slug
+              WHERE id = $1
+                AND status = 'pending'
+                AND expires_at > now()
+              RETURNING id, post_slug
             `,
             [tokenRow.comment_id],
           )
@@ -272,8 +328,10 @@ export async function moderateBlogComment(
                 author_website = NULL,
                 body = NULL,
                 moderated_at = now()
-              WHERE id = $1 AND status = 'pending'
-              RETURNING post_slug
+              WHERE id = $1
+                AND status = 'pending'
+                AND expires_at > now()
+              RETURNING id, post_slug
             `,
             [tokenRow.comment_id],
           );
@@ -291,6 +349,18 @@ export async function moderateBlogComment(
         WHERE token_hash = $1
       `,
       [tokenHash, action],
+    );
+    await client.query(
+      `
+        INSERT INTO comments.blog_comment_moderation_events (
+          id,
+          comment_id,
+          action,
+          source
+        )
+        VALUES ($1, $2, $3, 'email_token')
+      `,
+      [randomUUID(), commentRow.id, action],
     );
     await client.query("COMMIT");
 

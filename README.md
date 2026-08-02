@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Production CMS deployment, backup, scheduling, and recovery procedures are documented in [the operator runbook](docs/operations/blog-cms.md).
+
 ## Getting Started
 
 First, run the development server:
@@ -68,10 +70,36 @@ COMMENT_RATE_LIMIT_SECRET=a-random-secret-at-least-32-characters-long
 
 Keep real values in an ignored `.env` file or the hosting platform's secret store. The runtime database role should have only `CONNECT`, schema `USAGE`, and the required `SELECT`, `INSERT`, `UPDATE`, and `DELETE` privileges; never use the PostgreSQL superuser in `DATABASE_URL`. Set `DATABASE_SSL=false` only for a trusted loopback connection such as `127.0.0.1` on the same server.
 
-Apply database migrations with an administrative PostgreSQL account before deploying the application:
+Apply database migrations and the idempotent six-post seed in their required order with an administrative PostgreSQL account before deploying the application:
 
 ```bash
-psql "$ADMIN_DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/001_blog_comments.sql
+npm run db:migrate
 ```
 
 The moderation page is intentionally `noindex` and receives the raw token only through the URL fragment. Moderation is performed by an explicit POST request; visiting or previewing the email link cannot approve a comment.
+
+## Admin authentication
+
+The private `/admin` workspace uses Better Auth with PostgreSQL sessions, database-backed rate limits, password reset through the configured Zoho mailbox, and mandatory authenticator-app TOTP. Public account creation is disabled and the database permits only one owner account.
+
+Add these server-only values to the deployment secret store:
+
+```bash
+ADMIN_EMAIL=owner@example.com
+BETTER_AUTH_SECRET=a-random-secret-at-least-32-characters-long
+BETTER_AUTH_URL=https://eigensol.com
+```
+
+Apply all migrations, then bootstrap the owner once. The command reads the initial password twice from an interactive terminal without echoing or persisting it:
+
+```bash
+npm run admin:bootstrap
+```
+
+After the first password sign-in, `/admin/settings/security` requires TOTP enrollment and presents the recovery codes once. For break-glass recovery when both the authenticator and recovery codes are unavailable, run the following from a trusted administrative environment. It revokes every admin session and requires fresh TOTP enrollment:
+
+```bash
+npm run admin:reset-2fa
+```
+
+An interactive `npm run admin:reset-password` command is also available for SSH break-glass password recovery. Both recovery commands revoke all existing owner sessions and write a non-sensitive audit event. Keep `ADMIN_EMAIL` stable after bootstrapping; changing it intentionally locks out the existing account until the database identity is migrated to the new allowlisted address.
