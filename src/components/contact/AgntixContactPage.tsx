@@ -28,7 +28,7 @@ type ContactCard = {
 const contactCards: ContactCard[] = [
   {
     title: "Lahore Office",
-    image: "/agntix-contact/contact-us-thumb-1.jpg",
+    image: "/agntix-contact/lahore.jpg",
     address: "3570, N2, Khayaban-e-Amin, Lahore, Pakistan",
     email: "info@eigensol.com",
     phone: "+92 326 0335144",
@@ -39,11 +39,11 @@ const contactCards: ContactCard[] = [
   },
   {
     title: "London Office",
-    image: "/agntix-contact/contact-location-2.jpg",
+    image: "/agntix-contact/london.jpg",
     address: "106 Queens Road, London, United Kingdom",
     email: "info@eigensol.com",
-    phone: "+44 7832 344661",
-    phoneHref: "tel:+447832344661",
+    phone: "+44 738 089 2575",
+    phoneHref: "tel:+447380892575",
     mapHref:
       "https://www.google.com/maps/search/?api=1&query=106%20Queens%20Road%20London%20United%20Kingdom",
     speed: ".9",
@@ -52,7 +52,7 @@ const contactCards: ContactCard[] = [
   },
   {
     title: "Doha Office",
-    image: "/agntix-contact/contact-location-3.jpg",
+    image: "/agntix-contact/qatar.jpg",
     address: "Jabal Al Ajfa, Street 665, Villa 38, Doha, Qatar",
     email: "info@eigensol.com",
     phone: "+974 7098 3298",
