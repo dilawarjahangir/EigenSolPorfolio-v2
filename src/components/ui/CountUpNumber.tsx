@@ -19,7 +19,7 @@ export default function CountUpNumber({
   const counterRef = useRef<HTMLSpanElement>(null);
   const hasStartedRef = useRef(false);
   const isVisible = useInView(counterRef, { once: true, amount: 0.6 });
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(end);
   const shouldStart = start && isVisible;
 
   useEffect(() => {

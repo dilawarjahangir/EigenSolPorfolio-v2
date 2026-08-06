@@ -10,6 +10,7 @@ import {
   CloudCog,
   Code2,
   Palette,
+  Megaphone,
   Play,
   Smartphone,
   X,
@@ -36,6 +37,7 @@ const serviceIcons: Record<ServiceSlug, LucideIcon> = {
   "ui-ux-design-systems": Palette,
   "cloud-devops": CloudCog,
   "ai-machine-learning": BrainCircuit,
+  "digital-marketing-content-creation": Megaphone,
 };
 
 const services: readonly Service[] = serviceOfferings.map((service) => ({
@@ -55,6 +57,8 @@ const marqueeItems = [
   "UI/UX systems",
   "Cloud & DevOps",
   "AI engineering",
+  "Digital marketing",
+  "Content creation",
   "Quality engineering",
   "Data platforms",
   "Discovery sprints",
@@ -167,9 +171,9 @@ function ServiceHero() {
             data-delay=".3"
           >
             <h1 id="service-page-title" className={styles.heroTitle}>
-              Full-Stack Software
+              Product, Technology
               <br />
-              {" "}Development Expertise
+              {" "}And Growth Expertise
             </h1>
           </div>
           <div className={`${styles.heroCopy} service4-fade`} data-delay=".5">

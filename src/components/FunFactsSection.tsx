@@ -73,7 +73,7 @@ const panels: readonly FunFactPanel[] = [
     id: 3,
     tone: "yellow",
     subtitle: "( Experience )",
-    title: ["years of", "delivery"],
+    title: ["combined team", "experience"],
     images: [
       { src: "/agntix-home/funfact/funfact-1.png" },
       { src: "/agntix-home/funfact/funfact-2.png" },
@@ -117,10 +117,10 @@ const titleScales: Record<string, number> = {
   projects: 0.91,
   global: 0.91,
   clients: 0.91,
-  "years of": 0.91,
-  delivery: 0.91,
-  client: 0.91,
-  satisfaction: 0.88,
+  "combined team": 0.91,
+  experience: 0.91,
+  "core service": 0.91,
+  areas: 0.91,
 };
 
 function renderImage(image: FunFactImage, secondary = false) {

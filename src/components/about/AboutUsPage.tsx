@@ -181,15 +181,15 @@ export default function AboutUsPage() {
                     <div className={styles.counterGrid}>
                       <div className={`${styles.counter} tp_fade_anim`} data-delay=".3">
                         <strong>
-                          <CountUpNumber end={98} suffix="%" duration={1800} />
+                          <CountUpNumber end={7} duration={1800} />
                         </strong>
-                        <span>Client satisfaction and repeat work</span>
+                        <span>Core service areas across product, technology, and growth</span>
                       </div>
                       <div className={`${styles.counter} tp_fade_anim`} data-delay=".5">
                         <strong>
                           <CountUpNumber end={150} suffix="+" duration={1800} />
                         </strong>
-                        <span>Products and projects delivered</span>
+                        <span>Products and project engagements delivered</span>
                       </div>
                     </div>
                   </div>

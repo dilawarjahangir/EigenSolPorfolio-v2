@@ -7,7 +7,7 @@ type AnimatedCounterProps = {
 };
 
 export default function AnimatedCounter({ value }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(value);
   const targetRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {

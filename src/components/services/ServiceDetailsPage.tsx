@@ -78,9 +78,11 @@ export default function ServiceDetailsPage({ service }: ServiceDetailsPageProps)
       <ServiceDetailsHero service={service} />
       <ServiceDetailsBanner service={service} />
       <ServiceOverview service={service} />
+      <ServiceAnswerHighlights service={service} />
       <ServiceCapabilities service={service} />
       <ServiceImagePair service={service} />
       <ServiceProcess service={service} />
+      <ServiceFaqs service={service} />
       <ServiceEngagements />
     </div>
   );
@@ -211,6 +213,91 @@ function ServiceOverview({ service }: ServiceDetailsPageProps) {
               />
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceAnswerHighlights({ service }: ServiceDetailsPageProps) {
+  return (
+    <section
+      className={styles.answerHighlights}
+      aria-labelledby="service-quick-answer-title"
+    >
+      <div className={styles.container1230}>
+        <div className={styles.answerGrid}>
+          <article className={`${styles.quickAnswerCard} tp_fade_anim`} data-delay=".3">
+            <div className={styles.sectionEyebrow}>
+              <span aria-hidden="true" />
+              <strong>Quick answer</strong>
+            </div>
+            <h2 id="service-quick-answer-title">What is {service.title}?</h2>
+            <p>{service.quickAnswer}</p>
+          </article>
+
+          <aside
+            className={`${styles.idealForCard} tp_fade_anim`}
+            data-delay=".5"
+            aria-labelledby="service-ideal-for-title"
+          >
+            <div className={styles.idealForHeading}>
+              <span>Best fit</span>
+              <h3 id="service-ideal-for-title">Who this service is ideal for</h3>
+            </div>
+            <ul>
+              {service.idealFor.map((item) => (
+                <li key={item}>
+                  <span aria-hidden="true">
+                    <Check />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function ServiceFaqs({ service }: ServiceDetailsPageProps) {
+  return (
+    <section className={styles.faqs} aria-labelledby="service-faq-title">
+      <div className={styles.container1230}>
+        <div className={styles.faqHeading}>
+          <div className={styles.sectionEyebrow}>
+            <span aria-hidden="true" />
+            <strong>Questions &amp; answers</strong>
+          </div>
+          <h2 id="service-faq-title">
+            Frequently asked
+            <br />
+            questions
+          </h2>
+          <p>
+            Clear answers about our {service.title.toLowerCase()} service,
+            delivery approach, and capabilities.
+          </p>
+        </div>
+
+        <div className={styles.faqList}>
+          {service.faqs.map((faq, index) => (
+            <details className={styles.faqItem} open={index === 0} key={faq.question}>
+              <summary>
+                <span className={styles.faqNumber}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className={styles.faqQuestion}>{faq.question}</span>
+                <span className={styles.faqToggle} aria-hidden="true" />
+              </summary>
+              <div className={styles.faqAnswer}>
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
         </div>
       </div>
     </section>

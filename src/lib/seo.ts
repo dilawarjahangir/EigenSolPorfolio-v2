@@ -143,6 +143,23 @@ export function breadcrumbJsonLd(
   };
 }
 
+export function faqPageJsonLd(
+  items: readonly { question: string; answer: string }[],
+): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 export function webPageJsonLd(
   type: "AboutPage" | "ContactPage" | "WebPage",
   name: string,
@@ -192,6 +209,7 @@ export function serviceJsonLd(service: {
   title: string;
   shortDescription: string;
   slug: string;
+    idealFor?: readonly string[];
 }): JsonLdObject {
   const url = absoluteUrl(`/services/${service.slug}`);
   return {
@@ -204,6 +222,10 @@ export function serviceJsonLd(service: {
     provider: { "@id": organizationId },
     areaServed: "Worldwide",
     serviceType: service.title,
+      audience: service.idealFor?.map((audienceType) => ({
+        "@type": "Audience",
+        audienceType,
+      })),
   };
 }
 

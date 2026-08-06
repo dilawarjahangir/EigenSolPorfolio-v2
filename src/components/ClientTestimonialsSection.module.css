@@ -375,3 +375,26 @@
     transform: rotate(0deg);
   }
 }
+
+
+.projectLink {
+  display: inline-flex;
+  margin-top: 24px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+}
+
+.projectLink:hover,
+.projectLink:focus-visible {
+  opacity: 0.65;
+}
+
+.avatar img {
+  object-fit: cover;
+}

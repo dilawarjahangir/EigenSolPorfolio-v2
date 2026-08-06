@@ -1,63 +1,70 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./ClientTestimonialsSection.module.css";
 
-const testimonials = [
+const projectProofs = [
   {
-    id: 1,
-    quote:
-      "EigenSol transformed our entire digital infrastructure. Their team delivered a scalable platform that increased our operational efficiency by 300%.",
-    name: "Jennifer Martinez",
-    position: "Operations Lead",
-    avatar: "/agntix-home/testimonial/avatars/avatar-1.png",
+    id: "hmc-holding",
+    summary:
+      "A multi-page advisory platform connecting service discovery, calculators, gated project access, SEO content, and structured inquiry workflows.",
+    project: "HMC Holding",
+    client: "HMC Holding · UAE business advisory",
+    image: "/projects/hmc-holding/Screenshot 2026-03-18 201158.webp",
+    href: "/case-studies/hmc-holding",
     tone: "white",
   },
   {
-    id: 2,
-    quote:
-      "Working with EigenSol was a game-changer for our startup. They turned our vision into a high-performing product our users love.",
-    name: "Michael Chen",
-    position: "Startup Founder",
-    avatar: "/agntix-home/testimonial/avatars/avatar-2.png",
+    id: "a2prop",
+    summary:
+      "A full-stack Dubai real-estate platform combining live inventory, multilingual content, CRM-connected lead capture, and premium property discovery.",
+    project: "A2 Properties",
+    client: "A2 Properties · Dubai real estate",
+    image: "/projects/a2properties/A2-prop-cover.webp",
+    href: "/case-studies/a2prop",
     tone: "orange",
   },
   {
-    id: 3,
-    quote:
-      "They don't just build software, they build solutions that drive real business value. Our customer satisfaction scores have never been higher.",
-    name: "Sarah Williams",
-    position: "Product Director",
-    avatar: "/agntix-home/testimonial/avatars/avatar-3.jpg",
+    id: "eigenmc",
+    summary:
+      "A production motor-carrier intelligence SaaS with large-scale FMCSA data ingestion, advanced search, lead workflows, exports, quotas, and administration.",
+    project: "EigenMC",
+    client: "EigenSol product · Logistics intelligence",
+    image: "/projects/eigenmc/1.webp",
+    href: "/case-studies/eigenmc",
     tone: "black",
   },
   {
-    id: 4,
-    quote:
-      "EigenSol delivered a secure platform that exceeded expectations. Their technical discipline gave us the confidence to scale quickly.",
-    name: "David Rodriguez",
-    position: "Technology Director",
-    avatar: "/agntix-home/testimonial/avatars/avatar-4.jpg",
+    id: "1016-visualizer",
+    summary:
+      "An interactive automotive parts visualizer and dealer-ordering system using vehicle imagery, SVG highlights, material options, invoices, and catalog workflows.",
+    project: "1016 Visualizer",
+    client: "1016 Industries · Automotive",
+    image: "/projects/1016/Screenshot 2026-03-18 193425.webp",
+    href: "/case-studies/1016-visualizer",
     tone: "white",
   },
   {
-    id: 5,
-    quote:
-      "Our e-commerce rebuild was a massive undertaking, but EigenSol made it seamless. They delivered on time and the results speak for themselves.",
-    name: "Emily Thompson",
-    position: "Growth Lead",
-    avatar: "/agntix-home/testimonial/avatars/avatar-5.jpg",
+    id: "sleep-tracking",
+    summary:
+      "A mobile-first sleep-wellness platform connecting overnight audio capture, event detection, analytics, protected media, subscriptions, and admin operations.",
+    project: "ExceedSleep",
+    client: "Confidential client · Sleep wellness",
+    image: "/projects/sleep-tracking/sleep-tracking-cover.webp",
+    href: "/case-studies/sleep-tracking",
     tone: "gray",
   },
   {
-    id: 6,
-    quote:
-      "The mobile app EigenSol built for us is intuitive, stable, and easy to maintain. Their UX thinking and engineering support were excellent.",
-    name: "James Wilson",
-    position: "Product Manager",
-    avatar: "/agntix-home/testimonial/avatars/avatar-6.jpg",
+    id: "zainather",
+    summary:
+      "A consultation-first medical website with structured patient contact flows, professional CV access, practical care tools, SEO, and custom-domain deployment.",
+    project: "zainather.com",
+    client: "Dr. Zain Ather · Medical services",
+    image: "/projects/zainather/1.webp",
+    href: "/case-studies/zainather",
     tone: "orange",
   },
 ] as const;
@@ -99,7 +106,7 @@ export default function ClientTestimonialsSection() {
             <div className={styles.titleWrap}>
               <div className={styles.titleBox}>
                 <h2 id="reviews-heading" className={styles.title}>
-                  <span>Client Reviews</span>
+                  <span>Proven Work</span>
                 </h2>
               </div>
 
@@ -115,9 +122,9 @@ export default function ClientTestimonialsSection() {
                   />
                   <div className={styles.ratingInfo}>
                     <div className={styles.ratingLine}>
-                      <span>Client feedback</span>
+                      <span>Selected delivery</span>
                     </div>
-                    <p>Six stories from EigenSol partners</p>
+                    <p>Six documented products and case studies</p>
                   </div>
                 </div>
               </div>
@@ -145,28 +152,30 @@ export default function ClientTestimonialsSection() {
             0: { slidesPerView: 1 },
           }}
         >
-          {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <article className={`${styles.card} ${toneClasses[testimonial.tone]}`}>
+          {projectProofs.map((project) => (
+            <SwiperSlide key={project.id}>
+              <article className={`${styles.card} ${toneClasses[project.tone]}`}>
                 <div className={styles.quote}>
-                  <p>&ldquo;{testimonial.quote}&rdquo;</p>
+                  <p>{project.summary}</p>
                 </div>
                 <div className={styles.author}>
                   <div className={styles.avatar}>
                     <Image
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
+                      src={project.image}
+                      alt={`${project.project} project`}
                       width={51}
                       height={51}
                       loading="eager"
-                      unoptimized
                     />
                   </div>
                   <div className={styles.authorInfo}>
-                    <span>{testimonial.name}</span>
-                    <p>{testimonial.position}</p>
+                    <span>{project.project}</span>
+                    <p>{project.client}</p>
                   </div>
                 </div>
+                <Link className={styles.projectLink} href={project.href}>
+                  View case study
+                </Link>
               </article>
             </SwiperSlide>
           ))}

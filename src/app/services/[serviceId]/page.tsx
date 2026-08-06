@@ -6,7 +6,7 @@ import ServiceDetailsPage from "@/components/services/ServiceDetailsPage";
 import ServiceFourExperience from "@/components/services/ServiceFourExperience";
 import JsonLd from "@/components/seo/JsonLd";
 import { getServiceBySlug, serviceOfferings } from "@/data/services";
-import { breadcrumbJsonLd, buildPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, buildPageMetadata, faqPageJsonLd, serviceJsonLd } from "@/lib/seo";
 
 type ServiceDetailRouteProps = {
   params: Promise<{ serviceId: string }>;
@@ -51,6 +51,7 @@ export default async function ServiceDetailRoute({ params }: ServiceDetailRouteP
       <JsonLd
         data={[
           serviceJsonLd(service),
+          faqPageJsonLd(service.faqs),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
             { name: "Services", path: "/services" },

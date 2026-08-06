@@ -4,7 +4,8 @@ export type ServiceSlug =
   | "mobile-app-development"
   | "ui-ux-design-systems"
   | "cloud-devops"
-  | "ai-machine-learning";
+  | "ai-machine-learning"
+  | "digital-marketing-content-creation";
 
 export type ServiceMetric = {
   value: number;
@@ -15,6 +16,11 @@ export type ServiceMetric = {
 export type ServiceCapability = {
   title: string;
   categories: readonly string[];
+};
+
+export type ServiceFaq = {
+  question: string;
+  answer: string;
 };
 
 export type ServiceProcessStep = {
@@ -28,6 +34,9 @@ export type ServiceOffering = {
   title: string;
   lines: readonly [string, string];
   shortDescription: string;
+  quickAnswer: string;
+  idealFor: readonly string[];
+  faqs: readonly ServiceFaq[];
   hero: {
     lines: readonly [string, string, string];
     badge: string;
@@ -58,6 +67,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["Custom Software", "Development"],
     shortDescription:
       "End-to-end software systems tailored to your operating model and growth plans.",
+    quickAnswer:
+      "Custom software development is the design and engineering of a system built specifically around a company’s workflows, users, integrations, and long-term goals.",
+    idealFor: [
+      "Businesses relying on spreadsheets, disconnected tools, or manual processes",
+      "Companies that need software tailored to unique operational workflows",
+      "Organizations modernizing legacy systems or replacing outdated applications",
+      "Teams building a new SaaS platform, internal portal, or customer-facing product",
+    ],
+    faqs: [
+      {
+        question: "What is custom software development?",
+        answer: "Custom software development is the process of planning, designing, building, testing, and maintaining software created for the specific needs of one business or user group.",
+      },
+      {
+        question: "What types of custom software does EigenSol build?",
+        answer: "EigenSol builds business platforms, workflow systems, SaaS products, customer portals, internal tools, APIs, integrations, data-driven applications, and legacy-system replacements.",
+      },
+      {
+        question: "How long does custom software development take?",
+        answer: "The timeline depends on scope, integrations, complexity, and validation needs. A focused discovery sprint can take two weeks, while complete product delivery is planned in phased milestones.",
+      },
+      {
+        question: "Can EigenSol modernize an existing software system?",
+        answer: "Yes. EigenSol can assess an existing application, improve its architecture and performance, replace fragile components, migrate data, and deliver modernization in controlled stages.",
+      },
+    ],
     hero: {
       lines: ["Custom Software", "Built Around", "Your Business"],
       badge: "Engineering",
@@ -134,6 +169,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["Web Application", "Development"],
     shortDescription:
       "Fast, accessible, and scalable web applications built around real user workflows.",
+    quickAnswer:
+      "Web application development is the creation of interactive browser-based software that combines responsive interfaces, backend services, databases, authentication, and integrations.",
+    idealFor: [
+      "Businesses launching a SaaS platform, portal, dashboard, or marketplace",
+      "Organizations replacing static websites with interactive user workflows",
+      "Teams that need secure authentication, data management, and third-party integrations",
+      "Companies improving the speed, accessibility, and scalability of an existing web product",
+    ],
+    faqs: [
+      {
+        question: "What is a web application?",
+        answer: "A web application is interactive software accessed through a browser. Unlike a basic informational website, it allows users to complete tasks, manage data, sign in, make transactions, or collaborate.",
+      },
+      {
+        question: "Which technologies does EigenSol use for web applications?",
+        answer: "EigenSol commonly uses modern technologies such as React, Next.js, TypeScript, secure backend APIs, relational databases, cloud infrastructure, and automated testing tools.",
+      },
+      {
+        question: "Can EigenSol build both the frontend and backend?",
+        answer: "Yes. EigenSol provides full-stack delivery covering product flows, responsive interfaces, APIs, databases, authentication, integrations, testing, deployment, and production monitoring.",
+      },
+      {
+        question: "How does EigenSol improve web application performance?",
+        answer: "Performance work can include image optimization, efficient rendering, caching, database tuning, API improvements, code splitting, Core Web Vitals testing, and production monitoring.",
+      },
+    ],
     hero: {
       lines: ["Web Applications", "That Turn Traffic", "Into Growth"],
       badge: "Web Apps",
@@ -211,6 +272,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["Mobile App", "Development"],
     shortDescription:
       "Native and cross-platform mobile products designed for iOS and Android.",
+    quickAnswer:
+      "Mobile app development is the design, engineering, testing, and release of applications built for iOS and Android devices, including their backend services and integrations.",
+    idealFor: [
+      "Companies launching a consumer or business mobile product",
+      "Businesses that need iOS and Android apps from one coordinated team",
+      "Organizations requiring notifications, device permissions, offline behavior, or native integrations",
+      "Teams extending an existing web platform with a dedicated mobile experience",
+    ],
+    faqs: [
+      {
+        question: "Does EigenSol build apps for both iOS and Android?",
+        answer: "Yes. EigenSol develops mobile applications for iOS and Android, including cross-platform delivery with React Native and Expo where that approach fits the product requirements.",
+      },
+      {
+        question: "What is the difference between native and cross-platform app development?",
+        answer: "Native apps use platform-specific technologies, while cross-platform apps share more code between iOS and Android. The right option depends on performance, device features, timeline, and maintenance goals.",
+      },
+      {
+        question: "Can EigenSol connect a mobile app to an existing backend?",
+        answer: "Yes. EigenSol can integrate a mobile application with existing APIs, databases, authentication systems, payment services, analytics, notifications, and other business platforms.",
+      },
+      {
+        question: "Does mobile app development include app-store release support?",
+        answer: "Yes. Delivery can include release preparation, signing, store assets, submission support, production monitoring, crash reporting, and improvements after launch.",
+      },
+    ],
     hero: {
       lines: ["Mobile Experiences", "Made for Everyday", "Momentum"],
       badge: "Mobile",
@@ -282,6 +369,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["UI/UX Design", "Systems"],
     shortDescription:
       "Research-led product interfaces and reusable systems designed to scale.",
+    quickAnswer:
+      "UI/UX design combines user research, information architecture, interaction design, visual design, prototyping, and reusable components to create clear and consistent digital products.",
+    idealFor: [
+      "Teams designing a new web or mobile product",
+      "Companies redesigning a confusing or inconsistent user experience",
+      "Organizations that need a reusable component library and design standards",
+      "Product teams improving collaboration between designers and developers",
+    ],
+    faqs: [
+      {
+        question: "What is the difference between UI and UX design?",
+        answer: "UX design focuses on user goals, journeys, structure, and usability. UI design focuses on the visual and interactive presentation of screens, components, states, typography, spacing, and color.",
+      },
+      {
+        question: "What is a design system?",
+        answer: "A design system is a documented collection of reusable foundations, components, patterns, states, and guidelines that helps teams build consistent digital experiences efficiently.",
+      },
+      {
+        question: "Does EigenSol create clickable prototypes?",
+        answer: "Yes. EigenSol can create wireframes and interactive prototypes to validate navigation, workflows, content hierarchy, responsive behavior, and product decisions before development.",
+      },
+      {
+        question: "Can EigenSol improve an existing product interface?",
+        answer: "Yes. EigenSol can audit the current experience, identify usability and consistency issues, redesign priority journeys, and create a scalable interface system for future features.",
+      },
+    ],
     hero: {
       lines: ["Design Systems", "That Make Products", "Feel Effortless"],
       badge: "UI / UX",
@@ -350,6 +463,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["Cloud &", "DevOps"],
     shortDescription:
       "Reliable infrastructure, deployment automation, observability, and security.",
+    quickAnswer:
+      "Cloud and DevOps services improve how software is deployed, secured, monitored, scaled, backed up, and operated through reliable infrastructure and delivery automation.",
+    idealFor: [
+      "Teams with slow, manual, or unreliable deployments",
+      "Businesses migrating applications to cloud infrastructure",
+      "Organizations that need CI/CD, monitoring, backups, and recovery controls",
+      "Product teams improving security, scalability, uptime, or infrastructure cost",
+    ],
+    faqs: [
+      {
+        question: "What is DevOps?",
+        answer: "DevOps is a set of engineering and operational practices that connects software development with deployment, infrastructure, testing, monitoring, security, and continuous improvement.",
+      },
+      {
+        question: "What cloud platforms can EigenSol work with?",
+        answer: "EigenSol can design and operate solutions across major cloud and server environments, selecting infrastructure based on the application, security, reliability, budget, and operational requirements.",
+      },
+      {
+        question: "Can EigenSol automate deployments?",
+        answer: "Yes. EigenSol can implement CI/CD pipelines, automated testing, repeatable builds, environment promotion, infrastructure configuration, rollback procedures, and deployment monitoring.",
+      },
+      {
+        question: "Does Cloud and DevOps work include monitoring and backups?",
+        answer: "Yes. Engagements can include logs, metrics, alerts, uptime monitoring, access controls, backup schedules, recovery testing, operational runbooks, and incident-response improvements.",
+      },
+    ],
     hero: {
       lines: ["Cloud Platforms", "Built to Scale with", "Confidence"],
       badge: "Cloud",
@@ -418,6 +557,32 @@ export const serviceOfferings: readonly ServiceOffering[] = [
     lines: ["AI & Machine", "Learning"],
     shortDescription:
       "Applied intelligence and automation built around measurable business value.",
+    quickAnswer:
+      "AI and machine learning services use data, models, automation, and application engineering to improve decisions, accelerate workflows, and add intelligent features to digital products.",
+    idealFor: [
+      "Businesses automating repetitive knowledge or data-processing work",
+      "Teams adding AI assistants, search, recommendations, or document intelligence",
+      "Organizations that need measurable evaluation before deploying an AI solution",
+      "Companies integrating machine learning or large language models into existing products",
+    ],
+    faqs: [
+      {
+        question: "What AI solutions does EigenSol build?",
+        answer: "EigenSol can build AI assistants, document-processing workflows, intelligent search, classification systems, recommendation features, machine-learning pipelines, and AI-powered business automation.",
+      },
+      {
+        question: "How does EigenSol decide whether an AI use case is practical?",
+        answer: "EigenSol evaluates the business outcome, available data, expected quality, cost, latency, risks, user workflow, and fallback requirements before recommending a production approach.",
+      },
+      {
+        question: "Can AI be integrated into an existing application?",
+        answer: "Yes. EigenSol can connect AI capabilities to existing products through APIs, permissions, user interfaces, databases, workflow rules, monitoring, and human-review controls.",
+      },
+      {
+        question: "How is AI quality measured after launch?",
+        answer: "Production AI can be monitored using task-specific evaluation criteria, user feedback, failure rates, latency, cost, safety checks, fallback usage, and reviewed real-world examples.",
+      },
+    ],
     hero: {
       lines: ["Applied AI", "That Turns Data", "Into Decisions"],
       badge: "AI / ML",
@@ -484,6 +649,111 @@ export const serviceOfferings: readonly ServiceOffering[] = [
       ],
     },
   },
+  {
+    slug: "digital-marketing-content-creation",
+    title: "Digital Marketing & Content Creation",
+    lines: ["Digital Marketing", "& Content Creation"],
+    shortDescription:
+      "Strategy, campaigns, and content systems that grow visibility, engagement, and qualified demand.",
+    quickAnswer:
+      "Digital marketing uses search, social media, paid advertising, content, analytics, and conversion optimization to attract the right audience and generate measurable business growth.",
+    idealFor: [
+      "Businesses that need more qualified leads, traffic, or online visibility",
+      "Brands launching a new product, service, or market campaign",
+      "Companies that need consistent social, search, and website content",
+      "Teams improving paid advertising, SEO, analytics, or conversion performance",
+    ],
+    faqs: [
+      {
+        question: "What is included in EigenSol digital marketing services?",
+        answer: "Services can include audience research, campaign strategy, paid media, SEO content, social media content, copywriting, creative production, analytics, reporting, and conversion optimization.",
+      },
+      {
+        question: "How long does digital marketing take to show results?",
+        answer: "Paid campaigns can begin generating measurable traffic quickly, while SEO, organic content, brand visibility, and audience growth usually require consistent work over a longer period.",
+      },
+      {
+        question: "Does EigenSol provide both content creation and campaign management?",
+        answer: "Yes. EigenSol can connect content planning and production with organic publishing, paid campaigns, targeting, landing pages, performance analysis, and ongoing optimization.",
+      },
+      {
+        question: "How is digital marketing performance measured?",
+        answer: "Performance is measured against agreed goals such as qualified leads, conversions, cost per acquisition, search visibility, engagement, website behavior, campaign return, and revenue contribution.",
+      },
+    ],
+    hero: {
+      lines: ["Digital Marketing", "Built to Earn", "Attention & Growth"],
+      badge: "Growth",
+      description:
+        "We combine audience insight, channel strategy, creative production, and performance analysis to help brands attract the right people and turn attention into measurable growth.",
+    },
+    metrics: [
+      { value: 5, label: ["Core", "Channels"] },
+      { value: 4, label: ["Campaign", "Phases"] },
+      { value: 1, label: ["Integrated", "Team"] },
+    ],
+    overview: {
+      description:
+        "Digital marketing and content creation work best as one connected system. EigenSol aligns positioning, campaign strategy, search visibility, social media, paid acquisition, creative production, and analytics around clear business goals instead of disconnected posts and short-term activity.",
+      approachTitle: "Our Approach to Digital Growth",
+      steps: [
+        "Audience and market discovery - understanding customers, competitors, channels, positioning, and conversion goals.",
+        "Campaign and content strategy - defining messages, formats, publishing plans, channel roles, budgets, and success measures.",
+        "Creative production and activation - producing content and launching coordinated organic and paid campaigns.",
+        "Measurement and optimization - reviewing performance, improving creative, refining targeting, and scaling what works.",
+      ],
+    },
+    media: {
+            overview:
+              "/agntix-service-details/digital-marketing/Digital-marketing-1024x576.jpg",
+            banner:
+              "/agntix-service-details/digital-marketing/banner.jpg",
+            pair: [
+              "/agntix-service-details/digital-marketing/images.jpg",
+              "/agntix-service-details/digital-marketing/Digital-marketing-1024x576.jpg",
+            ],
+          },
+          capabilities: [
+      {
+        title: "Marketing strategy and acquisition",
+        categories: ["Campaign strategy", "Paid media", "Audience targeting"],
+      },
+      {
+        title: "Content and brand storytelling",
+        categories: ["Social content", "Copywriting", "Creative production"],
+      },
+      {
+        title: "Search, analytics, and optimization",
+        categories: ["SEO content", "Performance reporting", "Conversion optimization"],
+      },
+    ],
+    process: {
+      title: ["Content and campaigns", "built for growth"],
+      steps: [
+        {
+          number: "01",
+          title: ["Research", "And Insights"],
+          description: "Understand the audience, market, competitors, channels, and growth opportunity.",
+        },
+        {
+          number: "02",
+          title: ["Strategy", "And Planning"],
+          description: "Define positioning, campaign priorities, content pillars, and measurable targets.",
+        },
+        {
+          number: "03",
+          title: ["Create", "And Launch"],
+          description: "Produce platform-ready content and activate coordinated organic and paid campaigns.",
+        },
+        {
+          number: "04",
+          title: ["Measure", "And Improve"],
+          description: "Analyze results, refine creative and targeting, and scale the strongest opportunities.",
+        },
+      ],
+    },
+  },
+
 ] as const;
 
 export const getServiceBySlug = (slug: string) =>

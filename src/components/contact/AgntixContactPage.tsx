@@ -27,17 +27,6 @@ type ContactCard = {
 
 const contactCards: ContactCard[] = [
   {
-    title: "Lahore Office",
-    image: "/agntix-contact/lahore.jpg",
-    address: "3570, N2, Khayaban-e-Amin, Lahore, Pakistan",
-    email: "info@eigensol.com",
-    phone: "+92 326 0335144",
-    phoneHref: "tel:+923260335144",
-    mapHref:
-      "https://www.google.com/maps/search/?api=1&query=3570%20N2%20Khayaban-e-Amin%20Lahore%20Pakistan",
-    speed: "1.2",
-  },
-  {
     title: "London Office",
     image: "/agntix-contact/london.jpg",
     address: "106 Queens Road, London, United Kingdom",
@@ -47,6 +36,17 @@ const contactCards: ContactCard[] = [
     mapHref:
       "https://www.google.com/maps/search/?api=1&query=106%20Queens%20Road%20London%20United%20Kingdom",
     speed: ".9",
+  },
+  {
+    title: "Lahore Office",
+    image: "/agntix-contact/lahore.jpg",
+    address: "3570, N2, Khayaban-e-Amin, Lahore, Pakistan",
+    email: "info@eigensol.com",
+    phone: "+92 326 0335144",
+    phoneHref: "tel:+923260335144",
+    mapHref:
+      "https://www.google.com/maps/search/?api=1&query=3570%20N2%20Khayaban-e-Amin%20Lahore%20Pakistan",
+    speed: "1.2",
     offset: true,
     featured: true,
   },

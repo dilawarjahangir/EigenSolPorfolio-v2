@@ -35,7 +35,12 @@ export const metadata: Metadata = {
     description: seoConfig.description,
     siteName: seoConfig.name,
     locale: seoConfig.locale,
-    images: [{ url: absoluteUrl(seoConfig.defaultImage), alt: "EigenSol product engineering" }],
+    images: [
+      {
+        url: absoluteUrl(seoConfig.defaultImage),
+        alt: "EigenSol product engineering",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -43,10 +48,14 @@ export const metadata: Metadata = {
     description: seoConfig.description,
     images: [absoluteUrl(seoConfig.defaultImage)],
   },
-  icons: { icon: "/icon.svg", apple: "/apple-icon" },
+  icons: {
+    icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    shortcut: ["/favicon.ico"],
+    apple: ["/apple-icon"],
+  },
   manifest: "/manifest.webmanifest",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: "En3o_4RcNFokDNi5VyMmei9Xg684d0x3EDRTuvAqLeM",
     other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,
@@ -70,6 +79,26 @@ const themeScript = `
   })();
 `;
 
+const googleTagManagerScript = `
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),
+        dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-N599ZRVQ');
+`;
+
+const googleAnalyticsScript = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8G3E6QSGNY');
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -81,8 +110,27 @@ export default function RootLayout({
         <Script id="eigensol-theme-bootstrap" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <Script id="google-tag-manager" strategy="beforeInteractive">
+          {googleTagManagerScript}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col">
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-N599ZRVQ"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-8G3E6QSGNY"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {googleAnalyticsScript}
+        </Script>
         <RouteScrollReset />
         {children}
       </body>
